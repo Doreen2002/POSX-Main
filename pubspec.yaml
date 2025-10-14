@@ -1,0 +1,103 @@
+name: offline_pos
+description: "PosX By 9T9 Information Technology."
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.7.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # Core
+  cupertino_icons: ^1.0.8
+  google_fonts: ^6.2.1
+  auto_size_text: ^3.0.0
+  math_expressions: ^3.1.0
+  flutter_screenutil: ^5.9.0
+  uuid: ^4.3.3
+
+  # Storage & Database
+  flutter_secure_storage: ^5.0.2
+  path_provider: ^2.0.14
+  sqflite: ^2.4.2
+  sqflite_common_ffi: ^2.3.0
+  path: ^1.9.1
+  shared_preferences: ^2.2.3
+  synchronized: ^3.1.0+1
+
+  # Networking
+  http: ^1.2.1
+  connectivity_plus: ^6.0.3
+  internet_connection_checker: ^1.0.0+1
+  mysql1: ^0.20.0
+  mysql_client: ^0.0.27
+
+  # UI
+  awesome_dialog: ^3.3.0
+  fl_chart: ^1.0.0
+  overlay_support: ^2.1.0
+  oktoast: ^3.4.0
+  dotted_border: ^2.1.0
+  flutter_typeahead: ^5.2.0
+  loading_indicator: ^3.1.1
+  window_manager: ^0.5.1
+
+  # State management
+  get_it: ^7.7.0
+  stacked: ^3.4.2
+  provider: ^6.1.2
+
+  # Printing & HTML
+  printing: ^5.12.0
+  flutter_html: ^3.0.0
+  flutter_html_to_pdf: ^0.7.0
+
+  # Audio
+  audioplayers: ^5.2.1
+
+  # Serial communication
+  flutter_libserialport: ^0.4.0
+
+  # Date/Time & Intl
+  intl: ^0.20.2
+
+  # App Info & Device Info
+  package_info_plus: ^8.0.0
+  device_info_plus: ^10.0.0
+
+  usb_serial: ^0.2.4
+
+  # Barcode scanning
+  mobile_scanner: ^5.0.0
+  permission_handler: ^11.3.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+
+flutter:
+
+  
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/ico/home.png
+    - assets/ico/open.png
+    - assets/ico/close.png
+    - assets/ico/sync.png
+    - assets/ico/user.png
+    - assets/ico/purchase.png
+    - assets/ico/voucher.png
+    - assets/ico/tickets.png
+    - assets/ico/backspace.png
+    - assets/images/illustration.png
+    - assets/images/9T9_Logo_2023.png
+    - assets/images/no_image.png
+    - assets/sounds/barcode_beep.wav
