@@ -320,7 +320,6 @@ Future<void> addItemsToCartTable(model, context, item, {scan=false}) async {
                 vatExclusiveRate: item.vatExclusiveRate,
                 customVATInclusive: item.customVATInclusive,
                 itemTotal: item.standardRate, // Line total will be calculated later (rate × qty)
-                originalRate: item.standardRate,
                 // ✅ NEW: Initialize pricing rule fields
                 hasPricingRuleApplied: false,
                 appliedPricingRuleId: null,
@@ -386,7 +385,6 @@ Future<void> addItemsToCartTable(model, context, item, {scan=false}) async {
                         maxDiscount: item.maxDiscount,
                         vatExclusiveRate: item.vatExclusiveRate,
                         customVATInclusive: item.customVATInclusive,
-                        originalRate: item.standardRate,
                         // ✅ NEW: Initialize pricing rule fields
                         hasPricingRuleApplied: false,
                         appliedPricingRuleId: null,
@@ -504,7 +502,6 @@ Future<void> addItemsToCartTable(model, context, item, {scan=false}) async {
             maxDiscount: item.maxDiscount,
             vatExclusiveRate: item.vatExclusiveRate,
             customVATInclusive: item.customVATInclusive,
-            originalRate: item.standardRate,
             // ✅ NEW: Initialize pricing rule fields
             hasPricingRuleApplied: false,
             appliedPricingRuleId: null,

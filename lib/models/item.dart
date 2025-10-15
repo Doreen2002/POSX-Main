@@ -47,7 +47,6 @@ class Item {
   double? maxDiscount;
   dynamic customVATInclusive;
   dynamic vatExclusiveRate;
-  dynamic originalRate;
   
   // ✅ NEW: Pricing rule tracking fields
   bool? hasPricingRuleApplied;
@@ -96,7 +95,6 @@ class Item {
     this.maxDiscount,
     this.vatExclusiveRate,
     this.customVATInclusive,
-    this.originalRate,
     // PLU for barcode lookup
     this.plu,
     // ✅ NEW: Pricing rule fields with defaults
@@ -114,9 +112,8 @@ class Item {
     stockUom: json["stock_uom"],
     image: json["image"],
     qty: json["qty"],
-    itemTotal: json["valuation_rate"],
-    originalRate: json["valuation_rate"]?.toDouble() ?? 0.0,
-    newRate: json["new_rate"]?.toDouble(),
+    itemTotal: (json["standard_rate"]?.toDouble() ?? 0.0) * (json["qty"] ?? 1), // Line total = selling price × quantity
+    newRate: json["new_rate"]?.toDouble() ?? json["standard_rate"]?.toDouble() ?? 0.0,
     openingStock: json["opening_stock"]?.toDouble(),
     hasBatchNo : json['has_batch_no'],
     hasSerialNo : json['has_serial_no'],
@@ -163,7 +160,7 @@ class Item {
     "stock_uom": stockUom,
     "image": image,
     "qty": qty,
-    "valuation_rate": itemTotal,
+    "standard_rate": itemTotal / (qty > 0 ? qty : 1), // Reverse calculate unit rate from line total
     "new_rate": newRate,
     "opening_stock": openingStock,
     "has_batch_no": hasBatchNo,
@@ -194,7 +191,6 @@ class Item {
     'max_discount': maxDiscount,
     'custom_is_vat_inclusive': customVATInclusive,
     'vat_exclusive_rate': vatExclusiveRate,
-    'original_rate': originalRate,
     // PLU for barcode lookup
     'plu': plu,
     // ✅ NEW: Pricing rule fields
