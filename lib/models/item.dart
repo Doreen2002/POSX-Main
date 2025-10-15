@@ -45,6 +45,7 @@ class Item {
   double? newNetAmount;
   int? isScanned;
   double? maxDiscount;
+  double? valuationRate;  // Cost price from ERPNext Bin for below-cost validation (cached from TempItem)
   dynamic customVATInclusive;
   dynamic vatExclusiveRate;
   
@@ -93,6 +94,7 @@ class Item {
     this.newNetAmount,
     this.isScanned,
     this.maxDiscount,
+    this.valuationRate,
     this.vatExclusiveRate,
     this.customVATInclusive,
     // PLU for barcode lookup
@@ -141,6 +143,7 @@ class Item {
     newNetAmount : json['new_net_amount'],
     isScanned : json['is_scanned'],
     maxDiscount: json['max_discount']?.toDouble() ?? 0.0,
+    valuationRate: json['valuation_rate']?.toDouble(),
     customVATInclusive: json['custom_is_vat_inclusive'].toInt() ?? 0,
     vatExclusiveRate: json['vat_exclusive_rate']?.toDouble() ?? 0,
     // PLU for barcode lookup
@@ -189,6 +192,7 @@ class Item {
     'new_net_amount':newNetAmount,
     'is_scanned':isScanned,
     'max_discount': maxDiscount,
+    'valuation_rate': valuationRate,
     'custom_is_vat_inclusive': customVATInclusive,
     'vat_exclusive_rate': vatExclusiveRate,
     // PLU for barcode lookup

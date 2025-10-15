@@ -54,6 +54,7 @@ Future<List<TempPOSProfileModel>> posProfileRequest(String httpType, String frap
               await UserPreference.putString(PrefKeys.applyDiscountOn, item['apply_discount_on']);
               await UserPreference.putString(PrefKeys.posProfileWarehouse, item['warehouse']);
               await UserPreference.putString(PrefKeys.maxDiscountAllowed, item['custom_max_invoice_discount'].toString());
+              await UserPreference.putBool(PrefKeys.enableBelowCostValidation, item['custom_enable_below_cost_validation'] == 1);
               
               // Cash Drawer Settings from ERPNext
               if (item['settings'] != null) {

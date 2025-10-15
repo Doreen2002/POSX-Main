@@ -76,6 +76,7 @@ class PrefKeys {
   static const String country = "country";
   static const String applyDiscountOn = "applyDiscountOn";
   static const String maxDiscountAllowed = "maxDiscountAllowed";
+  static const String enableBelowCostValidation = "enableBelowCostValidation";
 
   static const String openingCounter = "openingCounter";
   static const String closeCounter = "closeCounter";

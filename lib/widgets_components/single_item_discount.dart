@@ -8,7 +8,10 @@ import 'package:offline_pos/services/optimized_data_manager.dart';
 import 'package:offline_pos/data_source/local/pref_keys.dart';
 import 'package:offline_pos/data_source/local/user_preference.dart';
 import 'package:offline_pos/models/item_model.dart';
+import 'package:offline_pos/models/item.dart';
 import 'package:offline_pos/widgets_components/complete_order_dialog.dart';
+import 'package:offline_pos/utils/below_cost_validator.dart';
+import 'package:quickalert/quickalert.dart';
 import '../common_utils/app_colors.dart';
 import '../common_widgets/single_text.dart';
 import '../common_widgets/common_search_bar.dart';
@@ -778,6 +781,16 @@ Widget singleItemDiscountScreen(
                         onPressed: () async{
                           final item = model.cartItems[selectedItemIndex];
 
+                          // PERFORMANCE OPTIMIZATION: Early exit pattern for below-cost validation
+                          
+                          // FAST PATH 1: Check if discount exists (cheapest check)
+                          final hasDiscountAmount = model.singlediscountAmountController.text.isNotEmpty;
+                          final hasDiscountPercent = model.singlediscountPercentController.text.isNotEmpty;
+                          final hasAnyDiscount = hasDiscountAmount || hasDiscountPercent;
+                          
+                          // FAST PATH 2: Check if below-cost validation is enabled (fast)
+                          final isValidationEnabled = hasAnyDiscount && BelowCostValidator.isValidationEnabled();
+
                           // Case 1: No discount entered
                           if (model
                                   .singlediscountAmountController
@@ -842,6 +855,52 @@ Widget singleItemDiscountScreen(
                               return; // Do not continue
                             }
 
+                            // BELOW-COST VALIDATION: Only if feature enabled and discount exists
+                            if (isValidationEnabled) {
+                              final finalPrice = (item.newNetRate ?? 0) - enteredAmount;
+                              // FAST: O(1) lookup from cached item data
+                              final costPrice = item.valuationRate ?? 0.0;
+                              
+                              if (costPrice > 0 && BelowCostValidator.isBelowCost(
+                                sellingPrice: finalPrice,
+                                costPrice: costPrice,
+                              )) {
+                                // Show three-button dialog
+                                final result = await showBelowCostDialog(
+                                  context: context,
+                                  item: item,
+                                  discountedPrice: finalPrice,
+                                  costPrice: costPrice,
+                                  currency: UserPreference.getString(PrefKeys.currency) ?? '',
+                                  decimalPoints: model.decimalPoints,
+                                );
+                                
+                                switch (result) {
+                                  case 'cancel':
+                                    return; // Stay on discount screen
+                                  case 'break_even':
+                                    // Auto-adjust to break-even price
+                                    final breakEvenDiscount = BelowCostValidator.calculateBreakEvenDiscountAmount(
+                                      originalPrice: item.newNetRate ?? 0,
+                                      costPrice: costPrice,
+                                    );
+                                    enteredAmount = breakEvenDiscount;
+                                    enteredPercent = BelowCostValidator.calculateBreakEvenDiscount(
+                                      originalPrice: item.newNetRate ?? 0,
+                                      costPrice: costPrice,
+                                    );
+                                    // Update controllers to show adjusted values
+                                    model.singlediscountAmountController.text = enteredAmount.toStringAsFixed(model.decimalPoints);
+                                    model.singlediscountPercentController.text = enteredPercent.toStringAsFixed(model.decimalPoints);
+                                    break;
+                                  case 'proceed':
+                                  default:
+                                    // Continue with original discount
+                                    break;
+                                }
+                              }
+                            }
+
                             //  If validation passes, apply the discount
                             item.singleItemDiscAmount = enteredAmount;
                             
@@ -865,6 +924,16 @@ Widget singleItemDiscountScreen(
                           );
                           model.itemDiscountVisible = false;
                           model.hasFocus = '';
+                          
+                          // Focus search field for next item after successful discount application
+                          Future.delayed(Duration(milliseconds: 100), () {
+                            if (model.searchController.text.isEmpty) {
+                              // Only focus if search is empty (ready for next scan)
+                              FocusScope.of(context).requestFocus(FocusNode());
+                              // Note: Actual focus will be handled by the main screen's search field
+                            }
+                          });
+                          
                           model.notifyListeners();
 
                           if (model.cartItems[selectedItemIndex].qty == 0) {
@@ -1257,4 +1326,40 @@ void onChangeItemQTY(value, model, selectedItemIndex) {
     );
     model.notifyListeners();
   }
+}
+
+/// Shows the three-button below-cost validation dialog
+Future<String?> showBelowCostDialog({
+  required BuildContext context,
+  required Item item,
+  required double discountedPrice,
+  required double costPrice,
+  required String currency,
+  required int decimalPoints,
+}) async {
+  return await QuickAlert.show(
+    context: context,
+    type: QuickAlertType.warning,
+    title: 'Below Cost Sale Warning',
+    text: 'The discounted price (${currency} ${discountedPrice.toStringAsFixed(decimalPoints)}) is below the item cost (${currency} ${costPrice.toStringAsFixed(decimalPoints)}).\n\nChoose an action:',
+    showCancelBtn: true,
+    showConfirmBtn: true,
+    cancelBtnText: 'Cancel',
+    confirmBtnText: 'OK - Proceed',
+    barrierDismissible: false,
+    widget: Container(
+      padding: EdgeInsets.symmetric(vertical: 10),
+      child: ElevatedButton(
+        onPressed: () => Navigator.pop(context, 'break_even'),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.orange,
+          foregroundColor: Colors.white,
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+        ),
+        child: Text('Set Break-Even'),
+      ),
+    ),
+    onCancelBtnTap: () => Navigator.pop(context, 'cancel'),
+    onConfirmBtnTap: () => Navigator.pop(context, 'proceed'),
+  );
 }
