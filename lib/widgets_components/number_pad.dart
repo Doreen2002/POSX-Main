@@ -1,4 +1,4 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:offline_pos/utils/dialog_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:offline_pos/controllers/item_screen_controller.dart';
 import 'package:offline_pos/data_source/local/pref_keys.dart';
@@ -469,57 +469,22 @@ void sumbitPaymentFnine(model, context) async {
       model.allItemsDiscountPercent.text = '';
       model.allItemsDiscountAmount.text = '';
 
-      AwesomeDialog(
+      DialogUtils.showDiscountError(
         context: context,
-        dialogType: DialogType.noHeader,
-        animType: AnimType.scale,
+        message: "Discount cannot be greater than ${UserPreference.getString(PrefKeys.currency)} ${(double.tryParse(_maxAmount.toString()) ?? 0).toStringAsFixed(model.decimalPoints)}",
         width: MediaQuery.of(context).size.width * 0.4,
-        title:
-            "Discount cannot be greater than ${UserPreference.getString(PrefKeys.currency)} ${(double.tryParse(_maxAmount.toString()) ?? 0).toStringAsFixed(model.decimalPoints)}",
-        descTextStyle: const TextStyle(fontSize: 16, color: Color(0xFF2B3691)),
-        headerAnimationLoop: false,
-        btnOkText: "OK",
-        btnOkColor: Color(0xFF006A35),
-        btnOkOnPress: () {},
-      ).show();
+      );
 
       model.notifyListeners();
       model.discountCalculation('', '');
       return;
     }
     if (model.grandTotal <= 0) {
-      AwesomeDialog(
+      DialogUtils.showDiscountError(
         context: context,
-        dialogType: DialogType.noHeader,
-        animType: AnimType.scale,
+        message: "Discount can't be more than grand total",
         width: MediaQuery.of(context).size.width * 0.4,
-        title: "Discount can't be more than grand total",
-        descTextStyle: const TextStyle(fontSize: 16, color: Color(0xFF2B3691)),
-        headerAnimationLoop: false,
-        titleTextStyle: const TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 20,
-          color: Color(0xFF006A35),
-        ),
-        btnOk: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Color(0xFF006A35),
-            foregroundColor: Colors.white,
-            minimumSize: const Size(160, 80), // bigger button
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(4), // square corners
-            ),
-            textStyle: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          child: const Text("OK"),
-        ),
-      ).show();
+      );
 
       return;
     }
@@ -547,39 +512,12 @@ void sumbitPaymentFnine(model, context) async {
       }
 
       if (model.cartItems.isEmpty) {
-        AwesomeDialog(
+        DialogUtils.showError(
           context: context,
-          dialogType: DialogType.noHeader, // Red theme
-          animType: AnimType.scale,
-          width: MediaQuery.of(context).size.width * 0.4,
           title: "Empty Cart",
-          desc: "Please add items to the cart before proceeding.",
-          descTextStyle: const TextStyle(fontSize: 16, color: Colors.black87),
-          headerAnimationLoop: false,
-          titleTextStyle: const TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 20,
-            color: Colors.red,
-          ),
-          btnOk: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.red,
-              foregroundColor: Colors.white,
-              minimumSize: const Size(160, 80), // big and touch friendly
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(4), // square corners
-              ),
-              textStyle: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: const Text("OK"),
-          ),
-        ).show();
+          message: "Please add items to the cart before proceeding.",
+          width: MediaQuery.of(context).size.width * 0.4,
+        );
 
         model.msgTimeOut = true;
         model.notifyListeners();
@@ -587,39 +525,12 @@ void sumbitPaymentFnine(model, context) async {
       }
 
       if (model.customerListController.text.isEmpty) {
-        AwesomeDialog(
+        DialogUtils.showWarning(
           context: context,
-          dialogType: DialogType.noHeader,
-          animType: AnimType.scale,
-          width: MediaQuery.of(context).size.width * 0.4,
           title: "Customer Missing",
-          desc: "Please select a customer before submitting.",
-          descTextStyle: const TextStyle(fontSize: 16, color: Colors.black87),
-          headerAnimationLoop: false,
-          titleTextStyle: const TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 20,
-            color: Colors.orange,
-          ),
-          btnOk: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.orange,
-              foregroundColor: Colors.white,
-              minimumSize: const Size(160, 80), // big and touch friendly
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(4), // square corners
-              ),
-              textStyle: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: const Text("OK"),
-          ),
-        ).show();
+          message: "Please select a customer before submitting.",
+          width: MediaQuery.of(context).size.width * 0.4,
+        );
 
         model.msgTimeOut = true;
         model.notifyListeners();

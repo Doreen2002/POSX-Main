@@ -89,14 +89,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.0"
-  awesome_dialog:
-    dependency: "direct main"
-    description:
-      name: awesome_dialog
-      sha256: "4c5821a0a637ceee022084e78c1b8237dd4b8bfca4dd24ac2484662a56707338"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.3.0"
   barcode:
     dependency: transitive
     description:
@@ -456,14 +448,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.2.1"
-  graphs:
-    dependency: transitive
-    description:
-      name: graphs
-      sha256: "741bbf84165310a68ff28fe9e727332eef1407342fca52759cb21ad8177bb8d0"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.3.2"
   html:
     dependency: transitive
     description:
@@ -928,22 +912,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.2"
-  rive:
-    dependency: transitive
+  quickalert:
+    dependency: "direct main"
     description:
-      name: rive
-      sha256: "10bb9ce79f06b293dcfd0bcadb3afcc5cca7e9f0cbc54c2bc471d97387b52767"
+      name: quickalert
+      sha256: b5d62b1e20b08cc0ff5f40b6da519bdc7a5de6082f13d90572cf4e72eea56c5e
       url: "https://pub.dev"
     source: hosted
-    version: "0.14.0-dev.10"
-  rive_native:
-    dependency: transitive
-    description:
-      name: rive_native
-      sha256: "012ea597d2e559dc08459e2f269122f7be514c1c64b9c1d4ae3dff9dd483f59d"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.0.13"
+    version: "1.1.0"
   screen_retriever:
     dependency: transitive
     description:

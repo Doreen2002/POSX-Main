@@ -1,4 +1,4 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:offline_pos/utils/dialog_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -294,24 +294,13 @@ class _HoldCartListPageState extends State<HoldCartListPage> {
                                                 if (((item.qty ?? 0) >
                                                     matchItem.openingStock && matchItem.hasBatchNo == 0) || ((item.qty ?? 0) >
                                                     (matchbatch.batchQty ?? 0 )&& matchItem.hasBatchNo == 1)) {
-                                                  return AwesomeDialog(
+                                                  DialogUtils.showError(
                                                     context: context!,
-                                                    dialogType:
-                                                        DialogType.warning,
-                                                    animType: AnimType.scale,
-                                                    width: 600,
                                                     title: 'Insufficient Stock',
-                                                    desc:
+                                                    message:
                                                         'You cannot set quantity greater than available stock.\nAvailable stock: ${item.openingStock}',
-                                                    btnOkOnPress: () {},
-                                                    headerAnimationLoop: false,
-                                                    titleTextStyle:
-                                                        const TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: 18,
-                                                        ),
-                                                  ).show();
+                                                  );
+                                                  continue; // Skip this item and continue with next
                                                 }
                                                 await model.addItemsToCart(
                                                   from_hold: true,

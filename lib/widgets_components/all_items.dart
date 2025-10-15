@@ -1,4 +1,4 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:offline_pos/utils/dialog_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -253,71 +253,25 @@ class _AllItemsWidgetState extends State<AllItemsWidget> {
 }
 
 Future<void> showOpeningPOSDialog(context, model, item) async {
-  AwesomeDialog(
+  DialogUtils.showConfirm(
     context: context,
-    dialogType: DialogType.noHeader,
-    animType: AnimType.scale,
-    width: 600,
     title: 'Create POS Opening Entry',
-    headerAnimationLoop: false,
-
-    // Use theme-based styles instead of hardcoding
-    titleTextStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
-      color: const Color(0xFF006A35),
-      fontWeight: FontWeight.bold,
-      fontSize: 20,
-    ),
-    descTextStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
-      fontSize: 16,
-      color: const Color(0xFF444444),
-    ),
-
-    btnCancel: ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        backgroundColor: const Color(0xFF006A35),
-        foregroundColor: Colors.white,
-        minimumSize: const Size(160, 80), // Big & touch friendly
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(4), // Slight rounding
-        ),
-        textStyle: Theme.of(context).textTheme.labelLarge?.copyWith(
-          fontWeight: FontWeight.bold,
-          fontSize: 18,
-        ),
-      ),
-      onPressed: () async {
-        Navigator.of(context).pop();
-        await showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return openingEntryDialog(context, model);
-          },
-        );
-        await getPosOpening();
-        if (posOpeningList.isNotEmpty) {
-          addItemsToCartTable(model, context, item);
-        }
-      },
-      child: const Text('Create POS Opening'),
-    ),
-
-    btnOk: OutlinedButton(
-      style: OutlinedButton.styleFrom(
-        side: const BorderSide(color: Color(0xFF2B3691)),
-        minimumSize: const Size(160, 80),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
-        foregroundColor: const Color(0xFF2B3691),
-        textStyle: Theme.of(context).textTheme.labelLarge?.copyWith(
-          fontWeight: FontWeight.bold,
-          fontSize: 18,
-        ),
-      ),
-      onPressed: () {
-        Navigator.of(context).pop();
-      },
-      child: const Text('Cancel'),
-    ),
-  ).show();
+    message: '',
+    confirmText: 'Create POS Opening',
+    cancelText: 'Cancel',
+    onConfirm: () async {
+      await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return openingEntryDialog(context, model);
+        },
+      );
+      await getPosOpening();
+      if (posOpeningList.isNotEmpty) {
+        addItemsToCartTable(model, context, item);
+      }
+    },
+  );
 
   model.msgTimeOut = true;
   model.notifyListeners();
@@ -631,38 +585,9 @@ Future<void> addItemsToCartTable(model, context, item, {scan=false}) async {
 }
 
 void batchDialogError(context) {
-  AwesomeDialog(
+  DialogUtils.showError(
     context: context,
-    dialogType: DialogType.noHeader,
-    animType: AnimType.bottomSlide,
-    width: 550,
     title: 'Batch field cannot be empty',
-    desc: 'Please select batch',
-    btnOkOnPress: () {},
-    btnOkText: "OK",
-    btnOkColor: Colors.redAccent,
-    dialogBorderRadius: BorderRadius.circular(4), // More square corners
-    titleTextStyle: const TextStyle(
-      color: Colors.redAccent,
-      fontWeight: FontWeight.bold,
-      fontSize: 20,
-    ),
-    descTextStyle: const TextStyle(fontSize: 16, color: Color(0xFF444444)),
-    btnOk: ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.redAccent,
-        foregroundColor: Colors.white,
-        minimumSize: const Size(160, 80), // Big & touch-friendly
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(4), // Square corners
-        ),
-        textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-      ),
-      onPressed: () {
-        Navigator.of(context).pop();
-        // btnOkOnPress logic if any
-      },
-      child: const Text("OK"),
-    ),
-  ).show();
+    message: 'Please select batch',
+  );
 }

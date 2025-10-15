@@ -1,4 +1,4 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:offline_pos/utils/dialog_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -147,55 +147,19 @@ Widget buildTopBarContent(
               model.showAddDiscount = false;
               model.notifyListeners();
             } else if (model.cartItems.isEmpty) {
-              await AwesomeDialog(
+              await DialogUtils.showError(
                 context: context,
-                dialogType: DialogType.noHeader,
-                width: MediaQuery.of(context).size.width * 0.4,
-                animType: AnimType.scale,
                 title: "Empty Cart",
-                desc: "Cannot hold an empty cart.",
-                btnOk: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.orange,
-                    foregroundColor: Colors.white,
-                    minimumSize: const Size(160, 80),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    textStyle: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  onPressed: () => Navigator.of(context).pop(),
-                  child: const Text('OK'),
-                ),
-              ).show();
-            } else if (model.customerListController.text.isEmpty) {
-              await await AwesomeDialog(
-                context: context,
-                dialogType: DialogType.noHeader,
+                message: "Cannot hold an empty cart.",
                 width: MediaQuery.of(context).size.width * 0.4,
-                animType: AnimType.scale,
+              );
+            } else if (model.customerListController.text.isEmpty) {
+              await DialogUtils.showError(
+                context: context,
                 title: "Customer Required",
-                desc: "Cannot hold unless a customer is selected.",
-                btnOk: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.orange,
-                    foregroundColor: Colors.white,
-                    minimumSize: const Size(160, 80),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                    textStyle: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  onPressed: () => Navigator.of(context).pop(),
-                  child: const Text('OK'),
-                ),
-              ).show();
+                message: "Cannot hold unless a customer is selected.",
+                width: MediaQuery.of(context).size.width * 0.4,
+              );
             }
           }
           if (key == LogicalKeyboardKey.f3) {
@@ -276,92 +240,29 @@ Widget buildTopBarContent(
                 model.hasFocus = '';
                 model.notifyListeners();
               } else if (model.cartItems.isEmpty) {
-                await AwesomeDialog(
+                await DialogUtils.showError(
                   context: context,
-                  dialogType: DialogType.noHeader,
-                  animType: AnimType.scale,
-                  width: MediaQuery.of(context).size.width * 0.4,
                   title: "Empty Cart",
-                  desc: "Please add items to the cart before proceeding.",
-                  btnOk: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red,
-                      foregroundColor: Colors.white,
-                      minimumSize: const Size(160, 80), // Big button size
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(
-                          4,
-                        ), // Square corners
-                      ),
-                      textStyle: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: const Text('OK'),
-                  ),
-                ).show();
+                  message: "Please add items to the cart before proceeding.",
+                );
 
                 return;
               }
               if (model.salesListController.text.isNotEmpty) {
-                await AwesomeDialog(
+                await DialogUtils.showError(
                   context: context,
-                  dialogType: DialogType.noHeader,
-                  animType: AnimType.scale,
-                  width: MediaQuery.of(context).size.width * 0.4,
                   title: "Select Sales Person",
-                  desc: "Please select a sales person before proceeding.",
-                  btnOk: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red,
-                      foregroundColor: Colors.white,
-                      minimumSize: const Size(160, 80), // Big button size
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(
-                          4,
-                        ), // Square corners
-                      ),
-                      textStyle: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: const Text('OK'),
-                  ),
-                ).show();
+                  message: "Please select a sales person before proceeding.",
+                );
 
                 return;
               }
               if (model.customerListController.text.isEmpty) {
-                await AwesomeDialog(
+                await DialogUtils.showWarning(
                   context: context,
-                  dialogType: DialogType.noHeader,
-                  animType: AnimType.scale,
-                  width: MediaQuery.of(context).size.width * 0.4,
                   title: "Customer Missing",
-                  desc: "Please select a customer before submitting.",
-                  btnOk: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.orange,
-                      foregroundColor: Colors.white,
-                      minimumSize: const Size(160, 80), // Big button
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(
-                          4,
-                        ), // Square corners
-                      ),
-                      textStyle: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: const Text('OK'),
-                  ),
-                ).show();
+                  message: "Please select a customer before submitting.",
+                );
 
                 return;
               }
@@ -725,32 +626,11 @@ Widget buildTopBarContent(
                             model.setSalesPerson = val ?? false;
                             if (val == true) {
                               if (model.salesListController.text.isEmpty) {
-                                await AwesomeDialog(
+                                await DialogUtils.showWarning(
                                   context: context,
-                                  dialogType: DialogType.noHeader,
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.4,
-                                  animType: AnimType.scale,
                                   title: "Sales Person Required",
-                                  desc: "Please select a sales person.",
-                                  btnOk: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.orange,
-                                      foregroundColor: Colors.white,
-                                      minimumSize: const Size(160, 80),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(4),
-                                      ),
-                                      textStyle: const TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    onPressed:
-                                        () => {Navigator.of(context).pop(),model.searchFocusNode.requestFocus()},
-                                    child: const Text('OK'),
-                                  ),
-                                ).show();
+                                  message: "Please select a sales person.",
+                                );
                                 model.setSalesPerson = false;
                                 return;
                               }

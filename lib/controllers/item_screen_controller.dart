@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:offline_pos/utils/dialog_utils.dart';
 import 'package:offline_pos/api_requests/customer.dart';
 import 'package:offline_pos/api_requests/items.dart';
 import 'package:offline_pos/api_requests/post_pos_entry.dart';
@@ -307,22 +307,12 @@ Future<void>  initializePaymentModes(List<PaymentModeTypeAheadModel> jsonData) a
           
         }
        else  if ((cartItem.itemCode == item.itemCode && cartItem.hasBatchNo == 0 && cartItem.qty >= (item.openingStock ?? 0))|| (cartItem.itemCode == item.itemCode && cartItem.hasBatchNo == 1 && cartItem.batchNumberSeries == item.batchNumberSeries && cartItem.qty >= (item.batchQty ?? 0))) {
-             await AwesomeDialog(
+             await DialogUtils.showError(
               context: context!,
-              dialogType: DialogType.noHeader,
-              animType: AnimType.scale,
-              width: 600,
               title: 'Insufficient Stock',
-              desc:
+              message:
               'You cannot set quantity greater than available stock.\nAvailable stock: ${ item.hasBatchNo != 1? item.openingStock : item.batchQty }',
-              btnOkOnPress: () {},
-                  headerAnimationLoop: false,
-                  titleTextStyle: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                  ),
-                  
-                ).show();
+                );
                 discountCalculation(allItemsDiscountAmount.text, allItemsDiscountPercent.text);
                 notifyListeners();
                   return cartItems;

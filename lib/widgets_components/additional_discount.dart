@@ -1,4 +1,4 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:offline_pos/utils/dialog_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -305,19 +305,12 @@ void allItemsDiscountAmountOnChange(model, value, context) async {
     model.allItemsDiscountPercent.text = '';
     model.allItemsDiscountAmount.text = '';
 
-    AwesomeDialog(
+    DialogUtils.showError(
       context: context,
-      dialogType: DialogType.noHeader,
-      animType: AnimType.scale,
-      width: MediaQuery.of(context).size.width * 0.4,
       title:
           "Discount cannot be greater than ${UserPreference.getString(PrefKeys.currency)} ${(double.tryParse(_maxAmount.toString()) ?? 0).toStringAsFixed(model.decimalPoints)}",
-      descTextStyle: const TextStyle(fontSize: 16, color: Color(0xFF2B3691)),
-      headerAnimationLoop: false,
-      btnOkText: "OK",
-      btnOkColor: Color(0xFF006A35),
-      btnOkOnPress: () {},
-    ).show();
+      message: "",
+    );
 
     model.notifyListeners();
     model.discountCalculation('', '');
@@ -350,20 +343,11 @@ void allItemsDiscountPercentOnChange(model, val, context) async {
       model.allItemsDiscountPercent.text = '';
       model.allItemsDiscountAmount.text = '';
 
-      AwesomeDialog(
+      DialogUtils.showWarning(
         context: context,
-        dialogType:
-            DialogType
-                .warning, // Keep as warning for the icon, but we'll change colors
-        animType: AnimType.scale,
-        width: MediaQuery.of(context).size.width * 0.4,
         title: "Discount cannot be greater than $_maxPercent %",
-        descTextStyle: const TextStyle(fontSize: 16, color: Color(0xFF2B3691)),
-        headerAnimationLoop: false,
-        btnOkText: "OK",
-        btnOkColor: Color(0xFF006A35), // Changed to blue (1st requirement)
-        btnOkOnPress: () {},
-      ).show();
+        message: "",
+      );
 
       model.msgTimeOut = true;
       model.notifyListeners();

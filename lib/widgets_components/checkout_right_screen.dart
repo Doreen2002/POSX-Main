@@ -30,7 +30,7 @@ import '../widgets_components/decimal_input_formatter.dart';
 
 import '../widgets_components/complete_order_dialog.dart';
 
-import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:offline_pos/utils/dialog_utils.dart';
 
 Widget checkOutRightSide(context, CartItemScreenController model) {
   return Visibility(
@@ -277,77 +277,11 @@ Widget checkOutRightSide(context, CartItemScreenController model) {
                                                             0.0;
                                                         if (enteredValue >
                                                             loyaltyPointsAmount) {
-                                                          AwesomeDialog(
+                                                          DialogUtils.showLoyaltyPointsError(
                                                             context: context,
-                                                            dialogType:
-                                                                DialogType
-                                                                    .warning,
-                                                            animType:
-                                                                AnimType.scale,
-                                                            width:
-                                                                MediaQuery.of(
-                                                                  context,
-                                                                ).size.width *
-                                                                0.4,
-                                                            title:
-                                                                "Loyalty Points Exceeded",
-                                                            desc:
-                                                                "You cannot use more loyalty points than available.",
-                                                            headerAnimationLoop:
-                                                                false,
-                                                            titleTextStyle:
-                                                                const TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                  fontSize: 20,
-                                                                  color:
-                                                                      Colors
-                                                                          .orange,
-                                                                ),
-                                                            descTextStyle:
-                                                                const TextStyle(
-                                                                  fontSize: 16,
-                                                                  color:
-                                                                      Colors
-                                                                          .black87,
-                                                                ),
-                                                            btnOk: ElevatedButton(
-                                                              style: ElevatedButton.styleFrom(
-                                                                backgroundColor:
-                                                                    Colors
-                                                                        .orange,
-                                                                foregroundColor:
-                                                                    Colors
-                                                                        .white,
-                                                                minimumSize:
-                                                                    const Size(
-                                                                      160,
-                                                                      80,
-                                                                    ), // Big & touch-friendly
-                                                                shape: RoundedRectangleBorder(
-                                                                  borderRadius:
-                                                                      BorderRadius.circular(
-                                                                        4,
-                                                                      ), // Square corners
-                                                                ),
-                                                                textStyle: const TextStyle(
-                                                                  fontSize: 18,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                ),
-                                                              ),
-                                                              onPressed: () {
-                                                                Navigator.of(
-                                                                  context,
-                                                                ).pop();
-                                                              },
-                                                              child: const Text(
-                                                                "OK",
-                                                              ),
-                                                            ),
-                                                          ).show();
+                                                            message: "You cannot use more loyalty points than available.",
+                                                            width: MediaQuery.of(context).size.width * 0.4,
+                                                          );
 
                                                           return;
                                                         }
@@ -681,39 +615,12 @@ Future<void> _showDialog(BuildContext context, model) async {
           .toStringAsFixed(model.decimalPoints),
     );
     if (model.customerListController.text.isEmpty) {
-      AwesomeDialog(
+      DialogUtils.showWarning(
         context: context,
-        dialogType: DialogType.noHeader,
-        animType: AnimType.scale,
-        width: MediaQuery.of(context).size.width * 0.4,
         title: "Customer Missing",
-        desc: "Please select a customer before submitting.",
-        descTextStyle: const TextStyle(fontSize: 16, color: Colors.black87),
-        headerAnimationLoop: false,
-        titleTextStyle: const TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 20,
-          color: Colors.orange,
-        ),
-        btnOk: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.orange,
-            foregroundColor: Colors.white,
-            minimumSize: const Size(160, 80), // big and touch friendly
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(4), // square corners
-            ),
-            textStyle: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          child: const Text("OK"),
-        ),
-      ).show();
+        message: "Please select a customer before submitting.",
+        width: MediaQuery.of(context).size.width * 0.4,
+      );
       return;
     }
 
@@ -726,42 +633,11 @@ Future<void> _showDialog(BuildContext context, model) async {
           final enteredValue =
               double.tryParse((pay.controller.text ?? '0') ?? '0') ?? 0.0;
           if (enteredValue > loyaltyPointsAmount) {
-            AwesomeDialog(
+            DialogUtils.showLoyaltyPointsError(
               context: context,
-              dialogType: DialogType.noHeader,
-              animType: AnimType.scale,
+              message: "You cannot use more loyalty points than available.",
               width: MediaQuery.of(context).size.width * 0.4,
-              title: "Loyalty Points Exceeded",
-              desc: "You cannot use more loyalty points than available.",
-              headerAnimationLoop: false,
-              titleTextStyle: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
-                color: Colors.orange,
-              ),
-              descTextStyle: const TextStyle(
-                fontSize: 16,
-                color: Colors.black87,
-              ),
-              btnOk: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.orange,
-                  foregroundColor: Colors.white,
-                  minimumSize: const Size(160, 80), // bigger size
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(4), // square corners
-                  ),
-                  textStyle: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Text("OK"),
-              ),
-            ).show();
+            );
 
             return;
           }
@@ -771,43 +647,12 @@ Future<void> _showDialog(BuildContext context, model) async {
           final enteredValue =
               double.tryParse((pay.controller.text ?? '0') ?? '0') ?? 0.0;
           if (enteredValue >= model.grandTotal) {
-            AwesomeDialog(
+            DialogUtils.showWarning(
               context: context,
-              dialogType: DialogType.noHeader,
-              animType: AnimType.scale,
-              width: MediaQuery.of(context).size.width * 0.4,
               title: "Invoice Cannot Be Paid with Loyalty Points Only",
-              desc:
-                  "Please use another payment method in addition to Loyalty Points.",
-              headerAnimationLoop: false,
-              titleTextStyle: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
-                color: Colors.orange,
-              ),
-              descTextStyle: const TextStyle(
-                fontSize: 16,
-                color: Colors.black87,
-              ),
-              btnOk: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.orange,
-                  foregroundColor: Colors.white,
-                  minimumSize: const Size(160, 80), // bigger button
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(4), // square corners
-                  ),
-                  textStyle: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Text("OK"),
-              ),
-            ).show();
+              message: "Please use another payment method in addition to Loyalty Points.",
+              width: MediaQuery.of(context).size.width * 0.4,
+            );
             return;
           }
         }
@@ -871,57 +716,12 @@ Future<void> _showDialog(BuildContext context, model) async {
       model.paymentmsgTimeOut = true;
       model.notifyListeners();
 
-      AwesomeDialog dialog = AwesomeDialog(
+      DialogUtils.showWarning(
         context: context,
-        dialogType: DialogType.noHeader,
-        animType: AnimType.scale,
-        width: MediaQuery.of(context).size.width * 0.4,
         title: "Payment!",
-        desc: "Outstanding amount must be ZERO.",
-        headerAnimationLoop: false,
-        titleTextStyle: const TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 20,
-          color: Color(0xFF07723C),
-        ),
-        descTextStyle: const TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.bold,
-          color: Color(0xFF2B3691),
-        ),
-        btnOk: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFF07723C),
-            foregroundColor: Colors.white,
-            minimumSize: const Size(90, 80),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(4),
-            ),
-            textStyle: const TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          child: const Text("OK"),
-        ),
+        message: "Outstanding amount must be ZERO.",
+        width: MediaQuery.of(context).size.width * 0.4,
       );
-
-      dialog.show();
-
-      // Listen for Enter key after dialog is shown
-      RawKeyboard.instance.addListener((RawKeyEvent event) {
-        if (event is RawKeyDownEvent &&
-            (event.logicalKey == LogicalKeyboardKey.enter ||
-                event.logicalKey == LogicalKeyboardKey.numpadEnter)) {
-          if (Navigator.of(context).canPop()) {
-            Navigator.of(context).pop();
-            RawKeyboard.instance.removeListener((_) {}); // Remove listener
-          }
-        }
-      });
     }
   } catch (e) {
     logErrorToFile("$e");

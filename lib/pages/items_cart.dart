@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:async';
-import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:offline_pos/utils/dialog_utils.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:offline_pos/api_requests/license_details.dart';
@@ -381,137 +381,20 @@ class _CartItemScreenState extends State<CartItemScreen> {
                                                  
                                                   case 'Clear Cart':
                                                     () async {
-                                                      final completer =
-                                                          Completer<bool>();
-
-                                                      AwesomeDialog(
+                                                      bool shouldClear = false;
+                                                      await DialogUtils.showConfirm(
                                                         context: context,
-                                                        dialogType:
-                                                            DialogType.warning,
-                                                        animType:
-                                                            AnimType.scale,
-                                                        width: 600,
-                                                        headerAnimationLoop:
-                                                            false,
-                                                        customHeader: const Icon(
-                                                          Icons
-                                                              .warning_amber_rounded,
-                                                          color: Color(
-                                                            0xFFFFC107,
-                                                          ),
-                                                          size: 60,
-                                                        ),
                                                         title: 'Are you sure?',
-                                                        titleTextStyle:
-                                                            const TextStyle(
-                                                              fontSize: 22,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              color:
-                                                                  Colors
-                                                                      .black87,
-                                                            ),
+                                                        message: '',
+                                                        confirmText: 'Yes, Clear',
+                                                        cancelText: 'Cancel',
+                                                        onConfirm: () {
+                                                          shouldClear = true;
+                                                        },
+                                                      );
 
-                                                        btnCancel: ElevatedButton(
-                                                          style: ElevatedButton.styleFrom(
-                                                            backgroundColor:
-                                                                Color(
-                                                                  0xFF2B3691,
-                                                                ),
-                                                            foregroundColor:
-                                                                const Color.fromARGB(
-                                                                  255,
-                                                                  255,
-                                                                  255,
-                                                                  255,
-                                                                ),
-                                                            side:
-                                                                const BorderSide(
-                                                                  color: Color(
-                                                                    0xFF2B3691,
-                                                                  ),
-                                                                ),
-                                                            minimumSize:
-                                                                const Size(
-                                                                  160,
-                                                                  80,
-                                                                ),
-                                                            shape: RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius.circular(
-                                                                    12,
-                                                                  ),
-                                                            ),
-                                                            textStyle:
-                                                                const TextStyle(
-                                                                  fontSize: 18,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                ),
-                                                          ),
-                                                          onPressed: () {
-                                                            Navigator.of(
-                                                              context,
-                                                            ).pop();
-                                                            completer.complete(
-                                                              false,
-                                                            );
-                                                          },
-                                                          child: const Text(
-                                                            'Cancel',
-                                                          ),
-                                                        ),
-                                                        btnOk: ElevatedButton(
-                                                          style: ElevatedButton.styleFrom(
-                                                            backgroundColor:
-                                                                const Color(
-                                                                  0xFF006A35,
-                                                                ),
-                                                            foregroundColor:
-                                                                Colors.white,
-                                                            minimumSize:
-                                                                const Size(
-                                                                  160,
-                                                                  80,
-                                                                ),
-                                                            shape: RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius.circular(
-                                                                    12,
-                                                                  ),
-                                                            ),
-                                                            textStyle:
-                                                                const TextStyle(
-                                                                  fontSize: 18,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                ),
-                                                          ),
-                                                          onPressed: () {
-                                                            model.cartItems
-                                                                .clear();
-                                                            Navigator.of(
-                                                              context,
-                                                            ).pop();
-                                                            completer.complete(
-                                                              true,
-                                                            );
-                                                          },
-                                                          child: const Text(
-                                                            'Yes, Clear',
-                                                          ),
-                                                        ),
-                                                      ).show();
-
-                                                      final shouldRefresh =
-                                                          await completer
-                                                              .future;
-
-                                                      if (shouldRefresh ==
-                                                          true) {
+                                                      if (shouldClear) {
+                                                        model.cartItems.clear();
                                                         model.refresh();
                                                       }
                                                     }();
@@ -554,114 +437,20 @@ class _CartItemScreenState extends State<CartItemScreen> {
                                                     } else if (model
                                                         .cartItems
                                                         .isEmpty) {
-                                                      AwesomeDialog(
+                                                      DialogUtils.showWarning(
                                                         context: context,
-                                                        dialogType:
-                                                            DialogType.warning,
-                                                        width:
-                                                            MediaQuery.of(
-                                                              context,
-                                                            ).size.width *
-                                                            0.4,
-                                                        animType:
-                                                            AnimType.scale,
                                                         title: "Empty Cart",
-                                                        desc:
-                                                            "Cannot hold an empty cart.",
-                                                        btnOk: ElevatedButton(
-                                                          style: ElevatedButton.styleFrom(
-                                                            backgroundColor:
-                                                                const Color(
-                                                                  0xFF006A35,
-                                                                ),
-                                                            foregroundColor:
-                                                                Colors.white,
-                                                            minimumSize:
-                                                                const Size(
-                                                                  160,
-                                                                  80,
-                                                                ),
-                                                            shape: RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius.circular(
-                                                                    8,
-                                                                  ),
-                                                            ),
-                                                            textStyle:
-                                                                const TextStyle(
-                                                                  fontSize: 18,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                ),
-                                                          ),
-                                                          onPressed: () {
-                                                            Navigator.of(
-                                                              context,
-                                                            ).pop();
-                                                          },
-                                                          child: const Text(
-                                                            "OK",
-                                                          ),
-                                                        ),
-                                                      ).show();
+                                                        message: "Cannot hold an empty cart.",
+                                                      );
                                                     } else if (model
                                                         .customerListController
                                                         .text
                                                         .isEmpty) {
-                                                      AwesomeDialog(
+                                                      DialogUtils.showWarning(
                                                         context: context,
-                                                        dialogType:
-                                                            DialogType.warning,
-                                                        width:
-                                                            MediaQuery.of(
-                                                              context,
-                                                            ).size.width *
-                                                            0.4,
-                                                        animType:
-                                                            AnimType.scale,
-                                                        title:
-                                                            "Customer Required",
-                                                        desc:
-                                                            "Cannot hold unless a customer is selected.",
-                                                        btnOk: ElevatedButton(
-                                                          style: ElevatedButton.styleFrom(
-                                                            backgroundColor:
-                                                                const Color(
-                                                                  0xFF006A35,
-                                                                ),
-                                                            foregroundColor:
-                                                                Colors.white,
-                                                            minimumSize:
-                                                                const Size(
-                                                                  160,
-                                                                  80,
-                                                                ),
-                                                            shape: RoundedRectangleBorder(
-                                                              borderRadius:
-                                                                  BorderRadius.circular(
-                                                                    8,
-                                                                  ),
-                                                            ),
-                                                            textStyle:
-                                                                const TextStyle(
-                                                                  fontSize: 18,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                ),
-                                                          ),
-                                                          onPressed: () {
-                                                            Navigator.of(
-                                                              context,
-                                                            ).pop();
-                                                          },
-                                                          child: const Text(
-                                                            "OK",
-                                                          ),
-                                                        ),
-                                                        btnOkOnPress: () {},
-                                                      ).show();
+                                                        title: "Customer Required",
+                                                        message: "Cannot hold unless a customer is selected.",
+                                                      );
                                                     }
                                                     break;
 

@@ -6,7 +6,7 @@ import 'package:offline_pos/data_source/local/pref_keys.dart';
 import 'package:offline_pos/data_source/local/user_preference.dart';
 import 'package:offline_pos/widgets_components/log_error_to_file.dart';
 import 'items_cart.dart';
-import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:offline_pos/utils/dialog_utils.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -50,35 +50,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<void> _handleLogin() async {
     if (!_formKey.currentState!.validate()) return; // Validate form fields
 
-    AwesomeDialog(
-      context: context,
-      dialogType: DialogType.noHeader,
-      animType: AnimType.scale,
-      width: 600,
-      dismissOnTouchOutside: false,
-      dismissOnBackKeyPress: false,
-      body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 32),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: const [
-            CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF006A35)),
-            ),
-            SizedBox(height: 20),
-            Text(
-              'Please wait...',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-                color: Color(0xFF006A35),
-              ),
-            ),
-          ],
-        ),
-      ),
-      showCloseIcon: false,
-    ).show();
+    await DialogUtils.showLoginLoading(context: context);
 
     try {
       final success = await loginRequest(
@@ -112,17 +84,10 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _showErrorDialog(String message) {
-    AwesomeDialog(
+    DialogUtils.showLoginError(
       context: context,
-      dialogType: DialogType.noHeader,
-      animType: AnimType.scale,
-      title: 'Login Failed',
-      width: 600,
-      desc: message,
-      btnOkText: 'OK',
-      btnOkColor: Color(0xFFD32F2F),
-      btnOkOnPress: () {},
-    ).show();
+      message: message,
+    );
   }
 
   @override

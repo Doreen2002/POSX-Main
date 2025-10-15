@@ -1,4 +1,4 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:offline_pos/utils/dialog_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:async';
@@ -571,70 +571,20 @@ Widget closingEntryDialog(BuildContext context, model) {
     );
   } else {
     Future.microtask(() {
-      AwesomeDialog(
+      DialogUtils.showConfirm(
         context: context,
-        dialogType: DialogType.noHeader,
-        animType: AnimType.scale,
-        width: 600,
-        headerAnimationLoop: false,
-        body: Padding(
-          padding: EdgeInsets.all(20.w),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(Icons.point_of_sale, color: Color(0xFF006A35), size: 60.w),
-              SizedBox(height: 20.h),
-              Text(
-                "Opening POS Entry Is Required",
-                style: TextStyle(
-                  color: Color(0xFF006A35),
-                  fontWeight: FontWeight.bold,
-                  fontSize: 8.sp,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(height: 20.h),
-              Text(
-                "You need to create a POS opening entry before closing the session.",
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 4.sp),
-              ),
-            ],
-          ),
-        ),
-        btnOk: OutlinedButton(
-          style: OutlinedButton.styleFrom(
-            side: BorderSide(color: Color(0xFF061D81)),
-            minimumSize: Size(160.w, 60.h),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
-            ),
-            textStyle: TextStyle(fontSize: 4.sp, fontWeight: FontWeight.bold),
-          ),
-          onPressed: () => Navigator.of(context).pop(),
-          child: Text('Cancel', style: TextStyle(color: Color(0xFF061D81))),
-        ),
-        btnCancel: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Color(0xFF006A35),
-            foregroundColor: Colors.white,
-            minimumSize: Size(160.w, 60.h),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
-            ),
-            textStyle: TextStyle(fontSize: 4.sp, fontWeight: FontWeight.bold),
-          ),
-          onPressed: () {
-            Navigator.of(context).pop();
-            showDialog(
-              context: context,
-              builder:
-                  (BuildContext context) => openingEntryDialog(context, model),
-            );
-          },
-          child: Text('Create POS Opening'),
-        ),
-      ).show();
+        title: "Opening POS Entry Is Required",
+        message: "You need to create a POS opening entry before closing the session.",
+        confirmText: "Create POS Opening",
+        cancelText: "Cancel",
+        onConfirm: () {
+          showDialog(
+            context: context,
+            builder:
+                (BuildContext context) => openingEntryDialog(context, model),
+          );
+        },
+      );
     });
     return SizedBox.shrink();
   }

@@ -1,4 +1,4 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:offline_pos/utils/dialog_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:async';
@@ -717,21 +717,12 @@ Widget singleItemDiscountScreen(
                                               item.hasSerialNo != 1 &&
                                               item.qty >=
                                                   (item.batchQty ?? 0))) {
-                                        AwesomeDialog(
+                                        DialogUtils.showError(
                                           context: context!,
-                                          dialogType: DialogType.noHeader,
-                                          animType: AnimType.scale,
-                                          width: 600,
                                           title: 'Insufficient Stock',
-                                          desc:
+                                          message:
                                               'You cannot set quantity greater than available stock.\nAvailable stock: ${item.hasBatchNo != 1 ? item.openingStock : item.batchQty}',
-                                          btnOkOnPress: () {},
-                                          headerAnimationLoop: false,
-                                          titleTextStyle: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 18,
-                                          ),
-                                        ).show();
+                                        );
                                       }
                                     },
                             child: Container(
@@ -1179,39 +1170,12 @@ Future<void> onChangeDiscountPercentage(model, val, selectedItemIndex, context) 
       model.decimalPoints,
     );
     if (double.parse(val) > maxPercent) {
-      AwesomeDialog(
+      DialogUtils.showError(
         context: context,
-        dialogType: DialogType.noHeader,
-        animType: AnimType.scale,
-        width: 600,
         title:
             'MAX allowed discount percent: ${model.singlediscountMaxPercent}%',
-        desc: 'Please enter a discount percent within the allowed limit.',
-        headerAnimationLoop: false,
-        titleTextStyle: const TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 18,
-        ),
-        descTextStyle: const TextStyle(fontSize: 16, color: Color(0xFF444444)),
-        btnOk: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFF04490D),
-            foregroundColor: Colors.white,
-            minimumSize: const Size(160, 80), // big and touch-friendly
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(4), // square corners
-            ),
-            textStyle: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          child: const Text('OK'),
-        ),
-      ).show();
+        message: 'Please enter a discount percent within the allowed limit.',
+      );
     }
 
     model.notifyListeners();
@@ -1237,39 +1201,12 @@ void onChageDiscountAmount(model, val, selectedItemIndex, context) {
   if (double.parse(val) > double.parse(model.singlediscountMaxAmount)) {
     if (!_isDialogShowing) {
       _isDialogShowing = true;
-      AwesomeDialog(
+      DialogUtils.showError(
         context: context,
-        dialogType: DialogType.noHeader,
-        animType: AnimType.scale,
-        width: 600,
         title: 'MAX allowed discount amount: ${(( double.tryParse(model.singlediscountMaxAmount) ?? 0) * (int.tryParse(model.singleqtyController.text)??0)).toStringAsFixed(model.decimalPoints)}',
-        desc: 'Please enter a discount amount within the allowed limit.',
-        headerAnimationLoop: false,
-        titleTextStyle: const TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 18,
-        ),
-        descTextStyle: const TextStyle(fontSize: 16, color: Color(0xFF444444)),
-        btnOk: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Color(0xFF04490D),
-            foregroundColor: Colors.white,
-            minimumSize: const Size(160, 80), // big & touch friendly
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(4), // square corners
-            ),
-            textStyle: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          onPressed: () {
-            _isDialogShowing = false;
-            Navigator.of(context).pop();
-          },
-          child: const Text('OK'),
-        ),
-      ).show();
+        message: 'Please enter a discount amount within the allowed limit.',
+      );
+      _isDialogShowing = false;
     }
   }
 
@@ -1291,38 +1228,14 @@ void onChangeItemQTY(value, model, selectedItemIndex) {
     item.batchQty = model.cartItems[model.selectedItemIndex].batchQty;
   }
   if ((_value > item.openingStock && item.hasBatchNo != 1) || (_value > (item.batchQty ?? 0) && item.hasBatchNo == 1))  {
-    AwesomeDialog(
+    DialogUtils.showError(
       context: model.context,
-      dialogType: DialogType.noHeader,
-      animType: AnimType.scale,
-      width: 600,
       title: 'Insufficient Stock',
-      desc:
+      message:
           'You cannot set quantity greater than available stock.\nAvailable stock: ${item.hasBatchNo != 1?  item.openingStock : (item.batchQty ?? 0)}',
-      headerAnimationLoop: false,
-      titleTextStyle: const TextStyle(
-        fontWeight: FontWeight.bold,
-        fontSize: 18,
-      ),
-      descTextStyle: const TextStyle(fontSize: 16, color: Color(0xFF444444)),
-      btnOk: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Color(0xFF04490D),
-          foregroundColor: Colors.white,
-          minimumSize: const Size(160, 80), // big and touch-friendly
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(4), // square corners
-          ),
-          textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-        ),
-        onPressed: () {
-          model.singleqtyController.text =
-              model.cartItems[selectedItemIndex].qty.toString();
-          Navigator.of(model.context).pop();
-        },
-        child: const Text('OK'),
-      ),
-    ).show();
+    );
+    model.singleqtyController.text =
+        model.cartItems[selectedItemIndex].qty.toString();
     return;
   } else if (_value <= item.openingStock) {
     
