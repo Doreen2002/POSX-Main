@@ -78,6 +78,7 @@ class CartItemScreenController extends ItemScreenController {
   //closing and opening pos config
   String openingStartDate = DateTime.now().toString();
   String closingPeriodEndDate = DateTime.now().toString();
+  String currency = UserPreference.getString(PrefKeys.currency) ?? '';
   TextEditingController timecontroller = TextEditingController();
   List entries = [];
 
