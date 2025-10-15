@@ -166,9 +166,9 @@ Widget completeOrderDialog(
 Future<dynamic> createInvoice(model) async {
   try{
      
-   final match = OptimizedDataManager.getCustomerByName(
+   final match = await OptimizedDataManager.getCustomerByName(
      model.customerListController.text
-   ) ?? TempCustomerData();
+   );
      final matchSalesPerson = salesPersonList.firstWhere(
         (c) => c.fullName == model.salesListController.text,
         orElse: () => SalesPerson(name: '', fullName: '')
@@ -211,6 +211,7 @@ Future<dynamic> createInvoice(model) async {
   catch (e) {
    
     logErrorToFile("Failed to create invoice: $e");
+   
   }
  
 }

@@ -1,6 +1,7 @@
 import 'dart:async';
+import 'package:offline_pos/database_conn/dbsync.dart' as dbsync;
 import 'package:offline_pos/models/item_model.dart';
-import 'package:offline_pos/models/customer_list_model.dart';
+import 'package:offline_pos/models/customer_list_model.dart' ;
 import 'package:offline_pos/database_conn/get_item_queries.dart';
 import 'package:offline_pos/widgets_components/log_error_to_file.dart';
 
@@ -90,9 +91,18 @@ class OptimizedDataManager {
   
   /// Get customer by name - PLACEHOLDER (not yet implemented)
   static dynamic getCustomerByName(String customerName) {
-    // TODO: Implement customer lookup when customer data optimization is added
+   try{
+    TempCustomerData? match;
+    dbsync.customerDataList.map((e) {
+      if(e.customerName!.toLowerCase() == customerName.toLowerCase()){
+        match =  e;
+      }
+    }).toList();
+    return match;
+   }
+   catch(e){
     logErrorToFile('OptimizedDataManager: getCustomerByName not yet implemented for: $customerName');
-    return null;
+   }
   }
   
   /// Get batch by code - PLACEHOLDER (not yet implemented)
