@@ -18,11 +18,36 @@ class InitialScreen extends StatefulWidget {
 
 class _InitialScreenState extends State<InitialScreen> {
   final TextEditingController passWD = TextEditingController();
-  bool _obscureText = true;
+  final TextEditingController host = TextEditingController();
+  final TextEditingController port = TextEditingController();
+  final TextEditingController user = TextEditingController();
+  final TextEditingController dbName = TextEditingController();
+  bool _isChecking = false;
+
+  @override
+  void dispose() {
+    host.dispose();
+    port.dispose();
+    user.dispose();
+    dbName.dispose();
+    passWD.dispose();
+    super.dispose();
+  }
 
   @override
   void initState() {
     super.initState();
+    _init();
+  }
+
+  Future<void> _init() async {
+    await UserPreference.getInstance();
+    // initialize controllers once (avoid setState in build)
+    host.text = UserPreference.getString(PrefKeys.databaseHostUrl) ?? '';
+    port.text = UserPreference.getString(PrefKeys.databasePort) ?? '3306';
+    user.text = UserPreference.getString(PrefKeys.databaseUser) ?? '';
+    passWD.text = UserPreference.getString(PrefKeys.databasePassword) ?? '';
+    dbName.text = UserPreference.getString(PrefKeys.databaseName) ?? '';
     _checkLogin();
   }
 
@@ -49,22 +74,13 @@ class _InitialScreenState extends State<InitialScreen> {
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController host = TextEditingController();
-    TextEditingController port = TextEditingController();
-    TextEditingController user = TextEditingController();
-    TextEditingController passWD = TextEditingController();
-    TextEditingController dbName = TextEditingController();
-      setState(() {
-      host.text = UserPreference.getString(PrefKeys.databaseHostUrl) ?? '';
-      port.text = UserPreference.getString(PrefKeys.databasePort) ?? '3306';
-      user.text = UserPreference.getString(PrefKeys.databaseUser) ?? '';
-      passWD.text = UserPreference.getString(PrefKeys.databasePassword) ?? '';
-      dbName.text = UserPreference.getString(PrefKeys.databaseName) ?? '';
-      });
+    // controllers are initialized in _init()
     
     return Scaffold(
       backgroundColor: AppColors.cartListColor,
-      body: Center(
+      body: Stack(
+        children: [
+          Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -250,7 +266,7 @@ class _InitialScreenState extends State<InitialScreen> {
                       const SizedBox(height: 5),
                       TextField(
                         controller: passWD,
-                        obscureText: _obscureText,
+                        obscureText: false,
                         style: const TextStyle(fontSize: 18),
                         decoration: InputDecoration(
                           prefixIcon: const Padding(
@@ -260,19 +276,6 @@ class _InitialScreenState extends State<InitialScreen> {
                               size: 24,
                               color: Color(0xFF006A35),
                             ),
-                          ),
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              _obscureText
-                                  ? Icons.visibility_off
-                                  : Icons.visibility,
-                              color: Color(0xFF006A35),
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                _obscureText = !_obscureText;
-                              });
-                            },
                           ),
                           contentPadding: const EdgeInsets.symmetric(
                             vertical: 20,
@@ -318,20 +321,25 @@ class _InitialScreenState extends State<InitialScreen> {
                   SizedBox(height: 20.h),
                   GestureDetector(
                     onTap: () async {
-                      await UserPreference.getInstance();
-                      await checkDatabaseExists(
+                      setState((){
+                        _isChecking = true;
+                      });
+                      bool connected = await checkDatabaseExists(
                         host.text,
                         dbName.text,
                         user.text,
                         int.tryParse(port.text) ?? 3306,
                         passWD.text,
                       );
-                      if (dbExists) {
+                      setState((){
+                        _isChecking = false;
+                      });
+                      if (connected) {
                         await UserPreference.putString(
                           PrefKeys.databasePort,
                           port.text,
                         );
-                         await UserPreference.putString(
+                        await UserPreference.putString(
                           PrefKeys.databaseHostUrl,
                           host.text,
                         );
@@ -344,21 +352,15 @@ class _InitialScreenState extends State<InitialScreen> {
                           user.text,
                         );
                         await UserPreference.putString(
-                          PrefKeys.databaseName,
-                          dbName.text,
-                        );
-                        await UserPreference.putString(
                           PrefKeys.databasePassword,
                           passWD.text,
                         );
-                        
                         Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => const LoginScreen(),
                           ),
                         );
-                       
                       } else {
                         showDialog(
                           context: context,
@@ -397,14 +399,24 @@ class _InitialScreenState extends State<InitialScreen> {
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-          ],
+                  ), // end GestureDetector
+                ], // end children of inner Column
+              ), // end inner Column
+            ), // end Container
+          ], // end children of outer Column
+        ), // end outer Column
+      ), // end Center
+      // loading overlay
+      if (_isChecking)
+        Container(
+          color: Colors.black45,
+          child: const Center(
+            child: CircularProgressIndicator(),
+          ),
         ),
-      ),
-    );
+    ], // end Stack children
+  ), // end Stack
+); // end Scaffold
   }
 }
 
@@ -533,18 +545,11 @@ createDatabaseDialog(BuildContext context) {
                                     onTap: () {
                                       setState(() {});
                                     },
-                                    child:
-                                        true
-                                            ? SingleText(
-                                              text: 'Show',
-                                              fontSize: 4.sp,
-                                              color: AppColors.cartTextColor,
-                                            )
-                                            : SingleText(
-                                              text: 'Hide',
-                                              fontSize: 4.sp,
-                                              color: AppColors.cartTextColor,
-                                            ),
+                                    child: SingleText(
+                                      text: 'Show',
+                                      fontSize: 4.sp,
+                                      color: AppColors.cartTextColor,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -655,6 +660,7 @@ Future<bool> checkDatabaseExists(
   int port,
   String passwd,
 ) async {
+  MySqlConnection? conn;
   try {
     var settings = ConnectionSettings(
       host: host,
@@ -664,14 +670,18 @@ Future<bool> checkDatabaseExists(
       db: dbName,
     );
 
-    var conn = await MySqlConnection.connect(settings);
-    var results = await conn.query("SHOW DATABASES LIKE '$dbName';");
-    await conn.close();
+    // limit connect attempt to 6 seconds to keep UI responsive
+    conn = await MySqlConnection.connect(settings).timeout(const Duration(seconds: 6));
+    var results = await conn.query("SHOW DATABASES LIKE '\$dbName';");
     dbExists = results.isNotEmpty;
     return results.isNotEmpty;
   } catch (e) {
     logErrorToFile('Error: $e');
     dbExists = false;
     return false;
+  } finally {
+    try {
+      await conn?.close();
+    } catch (_) {}
   }
 }

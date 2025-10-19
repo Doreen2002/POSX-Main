@@ -33,26 +33,6 @@ class PrefKeys {
   static const String disableBeep = 'disableBeep';
   static const String delayMilliSecondsScan = 'delayMilliSecondsScan';
   static const String scanBarcodeLength = 'scanBarcodeLength';
-  
-  // Weight scale settings
-  static const String enableWeightScale = 'enableWeightScale';
-  static const String pluMaxLength = 'pluMaxLength';
-  static const String weightScalePrefix = 'weightScalePrefix';
-  static const String scalePluLength = 'scalePluLength';
-  static const String scaleValueLength = 'scaleValueLength';
-  static const String valueType = 'valueType';
-  
-  // Enhanced Weight Scale Settings (from Weight Scale Settings doctype)
-  static const String barcodeType = 'barcodeType';
-  static const String barcodeLength = 'barcodeLength';
-  static const String actualPluDigits = 'actualPluDigits';
-  static const String validateCheckDigit = 'validateCheckDigit';
-  static const String pluStartPosition = 'pluStartPosition';
-  static const String pluLength = 'pluLength';
-  static const String valueStartPosition = 'valueStartPosition';
-  static const String valueLength = 'valueLength';
-  static const String weightScalePrefixes = 'weightScalePrefixes';
-  
   static const String loginInternet = "1";
 
 
@@ -76,7 +56,6 @@ class PrefKeys {
   static const String country = "country";
   static const String applyDiscountOn = "applyDiscountOn";
   static const String maxDiscountAllowed = "maxDiscountAllowed";
-  static const String enableBelowCostValidation = "enableBelowCostValidation";
 
   static const String openingCounter = "openingCounter";
   static const String closeCounter = "closeCounter";
@@ -95,6 +74,25 @@ class PrefKeys {
   static const String endStatusMessage = "endStatusMessage";
 
   static const String batchQty = "batchQty";
+
+  // Hardware / printing / display prefs
+  static const String receiptPrinterUrl = 'receiptPrinterUrl';
+  static const String silentPrintEnabled = 'silentPrintEnabled';
+  static const String autoPrintReceipt = 'autoPrintReceipt';
+  static const String receiptPhoneNumber = 'receiptPhoneNumber';
+  static const String receiptFooterText = 'receiptFooterText';
+
+  // VFD display prefs
+  static const String vfdEnabled = 'vfdEnabled';
+  static const String vfdComPort = 'vfdComPort';
+  static const String vfdBaudRate = 'vfdBaudRate';
+  static const String vfdDataBits = 'vfdDataBits';
+  static const String vfdStopBits = 'vfdStopBits';
+  static const String vfdParity = 'vfdParity';
+
+  // Cash drawer prefs
+  static const String openCashDrawer = 'openCashDrawer';
+  static const String cashDrawerConnectionType = 'cashDrawerConnectionType';
 
   static const String paymentMode = "paymentMode";
   static const String paidAmount = "paidAmount";
@@ -144,25 +142,5 @@ class PrefKeys {
   static const String customerInterval = "customerInterval";
   static const String invoiceInterval = "invoiceInterval";
   static const String itemAndInventoryInterval = "itemAndInventoryInterval";
-
-  // Hardware Settings - Receipt Printer
-  static const String receiptPrinterUrl = "receiptPrinterUrl";
-  static const String silentPrintEnabled = "silentPrintEnabled";
-  static const String autoPrintReceipt = "autoPrintReceipt";
-  static const String receiptPhoneNumber = "receiptPhoneNumber";
-  static const String receiptFooterText = "receiptFooterText";
-
-  // Hardware Settings - VFD Customer Display
-  static const String vfdEnabled = "vfdEnabled";
-  static const String vfdComPort = "vfdComPort";
-  static const String vfdBaudRate = "vfdBaudRate";
-  static const String vfdDataBits = "vfdDataBits";
-  static const String vfdStopBits = "vfdStopBits";
-  static const String vfdParity = "vfdParity";
-  static const String vfdWelcomeText = "vfdWelcomeText";  // Synced from ERPNext custom_default_display_text
-
-  // Hardware Settings - Cash Drawer
-  static const String openCashDrawer = "openCashDrawer";
-  static const String cashDrawerConnectionType = "cashDrawerConnectionType";
 
 }

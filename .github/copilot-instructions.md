@@ -1,5 +1,8 @@
 # Copilot Instructions for PosX Codebase
 
+# Copilot Instructions for PosX Codebase
+
+## Big Picture Architecture
 ## Overview
 This workspace contains two main projects:
 - **PosX-main**: A Flutter/Dart-based POS application targeting multiple platforms (Android, iOS, macOS, Windows, Web).
