@@ -1,8 +1,24 @@
 
 class PrefKeys {
   PrefKeys._();
-
   static const String baseUrl = "baseUrl";
+  static const String enableWeightScale = "enableWeightScale";
+  static const String barcodeType = "barcodeType";
+  static const String barcodeLength = "barcodeLength";
+  static const String validateCheckDigit = "validateCheckDigit";
+  static const String valueType = "valueType";
+  static const String pluStartPosition = "pluStartPosition";
+  static const String pluLength = "pluLength";
+  static const String valueStartPosition = "valueStartPosition";
+  static const String valueLength = "valueLength";
+   static const String weightScalePrefixes = "weightScalePrefixes";
+   static const String pluMaxLength = "pluMaxLength";
+   static const String scalePluLength = "scalePluLength";
+   static const String vfdWelcomeText = "vfdWelcomeText";
+   static const String scaleValueLength = "scaleValueLength";
+   static const String enableBelowCostValidation = "enableBelowCostValidation";
+   static const String weightScalePrefix = "weightScalePrefix";
+  static const String actualPluDigits = "actualPluDigits";
   static const String databaseHostUrl = "databaseHostUrl";
  static const String httpType = "httpType";
   static const String userName = "userName";
