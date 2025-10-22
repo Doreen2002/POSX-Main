@@ -672,7 +672,7 @@ Future<bool> checkDatabaseExists(
 
     // limit connect attempt to 6 seconds to keep UI responsive
     conn = await MySqlConnection.connect(settings).timeout(const Duration(seconds: 6));
-    var results = await conn.query("SHOW DATABASES LIKE '\$dbName';");
+    var results = await conn.query("SHOW DATABASES LIKE '$dbName';");
     dbExists = results.isNotEmpty;
     return results.isNotEmpty;
   } catch (e) {
