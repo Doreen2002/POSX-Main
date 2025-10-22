@@ -50,7 +50,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<void> _handleLogin() async {
     if (!_formKey.currentState!.validate()) return; // Validate form fields
 
-    await DialogUtils.showLoginLoading(context: context);
+    DialogUtils.showLoginLoading(context: context);
 
     try {
       final success = await loginRequest(
@@ -59,10 +59,12 @@ class _LoginScreenState extends State<LoginScreen> {
         usr.text,
         pwd.text,
       );
+      
 
-      Navigator.of(context).pop(); // Dismiss progress dialog
+      Navigator.of(context).pop();
 
       if (success) {
+       
         await UserPreference.putString(PrefKeys.licenseKey, licenseKey.text);
         await UserPreference.putString(PrefKeys.deviceID, await getWindowsDeviceId());
         Navigator.push(
@@ -75,7 +77,7 @@ class _LoginScreenState extends State<LoginScreen> {
         );
       }
     } catch (e) {
-      Navigator.of(context).pop(); // Dismiss dialog if error
+      Navigator.of(context).pop(); 
       _showErrorDialog(
         'An error occurred while trying to login.\nPlease try again.',
       );
