@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'dart:async';
 import 'package:offline_pos/utils/dialog_utils.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:offline_pos/widgets_components/search_by_item_name.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:offline_pos/api_requests/license_details.dart';
 import 'package:offline_pos/api_requests/sales.dart';
@@ -263,7 +264,11 @@ class _CartItemScreenState extends State<CartItemScreen> {
                                     ],
                                   ),
 
-                                  SizedBox(height: 30.h),
+                                  SizedBox(height: 10.h),
+
+                                  Expanded(
+                                      child: SearchByItemName(),
+                                     ),
 
                                 
                                 ],

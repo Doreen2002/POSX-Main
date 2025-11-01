@@ -1,0 +1,81 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:offline_pos/database_conn/dbsync.dart';
+
+class SearchByItemName extends StatelessWidget {
+
+  final TextEditingController _controller = TextEditingController();
+  String? selectedItem;
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        TypeAheadField<String>(
+          controller: _controller,
+          builder: (context, controller, focusNode) {
+            return TextField(
+              controller: controller,
+              focusNode: focusNode,
+              autofocus: true,
+              style: TextStyle(fontSize: 3.sp, color: Colors.black),
+              decoration: InputDecoration(
+                labelText: "Search by Item Name",
+                
+                labelStyle: TextStyle(color: Color.fromRGBO(43, 54, 145, 1)),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(15.r),
+                  borderSide: const BorderSide(color: Color(0xFF2B3691)),
+                ),
+                suffixIcon: Visibility(
+                  visible: controller.text.isNotEmpty,
+                  child: InkWell(
+                    onTap: () {
+                      controller.clear();
+                      selectedItem = null;
+                    },
+                    child: Icon(
+                      Icons.clear,
+                      size: 30.r,
+                      color: Color(0xFF2B3691),
+                    ),
+                  ),
+                ),
+              ),
+            );
+          },
+          decorationBuilder:
+              (context, child) => Material(
+                elevation: 4,
+                borderRadius: BorderRadius.circular(6.r),
+                child: child,
+              ),
+          suggestionsCallback: (pattern) async {
+            if (pattern.trim().isEmpty) {
+              return []; 
+            }
+            return itemListdata
+                .where(
+                  (item) =>
+                      (item.itemName ?? "").toLowerCase().contains(
+                        pattern.toLowerCase(),
+                      )
+                )
+                .map((item) => item.itemName.toString())
+                .take(4)
+                .toList();
+          },
+
+          itemBuilder: (context, suggestion) {
+            return ListTile(
+              title: Text(suggestion, style: TextStyle(fontSize: 5.sp)),
+            );
+          },
+          onSelected: (suggestion) {
+            
+          },
+         
+        ),
+      ]);
+}}
