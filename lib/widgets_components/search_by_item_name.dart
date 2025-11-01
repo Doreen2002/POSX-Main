@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:offline_pos/database_conn/dbsync.dart';
+import 'package:offline_pos/widgets_components/all_items.dart';
 
-class SearchByItemName extends StatelessWidget {
 
   final TextEditingController _controller = TextEditingController();
+
   String? selectedItem;
-  @override
-  Widget build(BuildContext context) {
+
+
+  Widget SearchByItemName( context,  model, setState) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -72,10 +74,30 @@ class SearchByItemName extends StatelessWidget {
               title: Text(suggestion, style: TextStyle(fontSize: 5.sp)),
             );
           },
-          onSelected: (suggestion) {
+          onSelected: (suggestion) async{
+            setState(() {
+              selectedItem = suggestion;
+              _controller.text = suggestion;
+            });
+            try {
+              final item = itemListdata.firstWhere(
+                (item) => item.itemName == suggestion,
+                orElse: () => throw Exception('Item not found'),
+              );
+              
+              model.searchController.text = item.itemCode;
+              await addItemsToCartTable(model, context, item);
+              model.searchController.clear();
+              selectedItem = null;
+              _controller.clear();
+
+            } catch (e) {
+              print("Error processing selection: $e");
+            }
             
+
           },
          
         ),
       ]);
-}}
+}

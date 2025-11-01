@@ -267,7 +267,7 @@ class _CartItemScreenState extends State<CartItemScreen> {
                                   SizedBox(height: 10.h),
 
                                   Expanded(
-                                      child: SearchByItemName(),
+                                      child: SearchByItemName( context,model, setState),
                                      ),
 
                                 
