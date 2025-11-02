@@ -350,7 +350,7 @@ Future<void> addItemsToCartTable(model, context, item, {scan=false}) async {
               item.itemName,
 
               submit: () async {
-                final matchedBatch = model.batchListdata
+                final matchedBatch =batch.batchListdata
                     .firstWhere(
                       (batch) => batch.batchId.toLowerCase() == 
                           model.batchController.text.toLowerCase(),
