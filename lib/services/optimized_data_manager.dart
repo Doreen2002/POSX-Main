@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'package:offline_pos/database_conn/dbsync.dart' as dbsync;
+import 'package:offline_pos/models/batch_list_model.dart';
+import 'package:offline_pos/models/item.dart';
 import 'package:offline_pos/models/item_model.dart';
 import 'package:offline_pos/models/customer_list_model.dart' ;
 import 'package:offline_pos/database_conn/get_item_queries.dart';
@@ -105,18 +107,38 @@ class OptimizedDataManager {
    }
   }
   
-  /// Get batch by code - PLACEHOLDER (not yet implemented)
+  
   static dynamic getBatchByCode(String batchCode) {
-    // TODO: Implement batch lookup when batch data optimization is added
+   try{
+    BatchListModel? match;
+    batchListdata.map((e) {
+      if(e.name!.toLowerCase() == batchCode.toLowerCase()){
+        match =  e;
+      }
+    }).toList();
+    return match;
+   }
+   catch(e){
     logErrorToFile('OptimizedDataManager: getBatchByCode not yet implemented for: $batchCode');
     return null;
+   }
   }
   
-  /// Get batches by item - PLACEHOLDER (not yet implemented)
-  static List<dynamic> getBatchesByItem(String itemCode) {
-    // TODO: Implement batch lookup when batch data optimization is added
+
+  static dynamic getBatchesByItem(String itemCode) {
+    try{
+    BatchListModel? match ;
+      batchListdata.map((e) {
+        if((e.item ?? "").toLowerCase() == itemCode.toLowerCase()){
+          match =  e;
+        }
+      }).toList();
+    return match;
+   }
+   catch(e){
     logErrorToFile('OptimizedDataManager: getBatchesByItem not yet implemented for: $itemCode');
     return [];
+   }
   }
   
   /// Get data counts - PLACEHOLDER (not yet implemented)

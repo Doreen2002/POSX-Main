@@ -1,3 +1,4 @@
+import 'package:offline_pos/models/item_model.dart';
 import 'package:offline_pos/utils/dialog_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -289,7 +290,9 @@ Future<void> addItemsToCartTable(model, context, item, {scan=false}) async {
         ) ?? BatchListModel( batchId: '',name: '', expiryDate: '');
         final searchMatchedBatchItem = OptimizedDataManager.getBatchesByItem(
           searchedBatch
-        ).isNotEmpty ? OptimizedDataManager.getBatchesByItem(searchedBatch).first : BatchListModel( batchId: '',name: '', expiryDate: '');
+        ).item.isNotEmpty ? OptimizedDataManager.getBatchesByItem(
+          searchedBatch
+        ) : TempItem(name: '', itemCode: '', );
         if ((searchMatchedBatch.batchId ).isNotEmpty) {
           if ((searchMatchedBatch.batchQty ?? 0) > 0) {
           
@@ -319,8 +322,8 @@ Future<void> addItemsToCartTable(model, context, item, {scan=false}) async {
                 maxDiscount: item.maxDiscount,
                 vatExclusiveRate: item.vatExclusiveRate,
                 customVATInclusive: item.customVATInclusive,
-                itemTotal: item.standardRate, // Line total will be calculated later (rate × qty)
-                // ✅ NEW: Initialize pricing rule fields
+                itemTotal: item.standardRate, 
+
                 hasPricingRuleApplied: false,
                 appliedPricingRuleId: null,
                 appliedPricingRuleTitle: null,
