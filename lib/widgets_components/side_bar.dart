@@ -193,11 +193,11 @@ Widget SideBar(BuildContext context, CartItemScreenController model) {
           // ✅ Settings and Logout Section
           Column(
             children: [
-           
+              SizedBox(height: 20.h),
               MouseRegion(
                 cursor: SystemMouseCursors.click,
-                child: _menuItem('assets/ico/home.png', 'Settings', () {
-                  // Import at top of file: import 'package:offline_pos/pages/hardware_settings_page.dart';
+                child: _menuItem('assets/ico/close.png', 'Settings', () {
+                
                   Navigator.push(
                     context,
                     _noAnimationRoute(
