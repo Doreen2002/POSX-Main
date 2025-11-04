@@ -307,6 +307,7 @@ Future<void> addItemsToCartTable(model, context, item, {scan=false}) async {
                 hasBatchNo: item.hasBatchNo,
                 newNetRate: item.standardRate,
                 newRate: item.standardRate,
+                standardRate: item.standardRate,
                 itemGroup: item.itemGroup,
                 stockUom: item.stockUom,
                 batchQty: searchMatchedBatch.batchQty,
@@ -371,6 +372,7 @@ Future<void> addItemsToCartTable(model, context, item, {scan=false}) async {
                         hasExpiryDate: item.hasExpiryDate,
                         hasBatchNo: item.hasBatchNo,
                         newNetRate: item.standardRate,
+                        standardRate: item.standardRate,
                         newRate: item.standardRate,
                         itemGroup: item.itemGroup,
                         batchQty: matchedBatch.batchQty,
@@ -495,7 +497,8 @@ Future<void> addItemsToCartTable(model, context, item, {scan=false}) async {
             stockUom: item.stockUom,
             image: item.image ?? '',
             hasBatchNo: item.hasBatchNo,
-            itemTotal: item.standardRate, // Line total will be calculated (rate × qty)
+            itemTotal: item.standardRate,
+            standardRate: item.standardRate, // Line total will be calculated (rate × qty)
             totalWithVatPrev:
                 item.standardRate + item.itemvat / 100 * item.standardRate,
             singleItemDiscAmount: 0,

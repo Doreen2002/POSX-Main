@@ -218,7 +218,10 @@ Future<dynamic> createInvoice(model) async {
 
 Future<void> createInvoiceItem(model, conn, invoiceNo) async {
   ///<<<<<<--------Insert Invoice Item Data--------->>>>>>>>
-  List<Items> temp = [];
+  
+  try
+  {
+      List<Items> temp = [];
   for (var element in model.cartItems) {
   
     Items aa = Items();
@@ -266,6 +269,12 @@ Future<void> createInvoiceItem(model, conn, invoiceNo) async {
   await insertTableSalesInvoiceItem(conn, ici: temp);
   await updateItemsStockDetails(model.cartItems);
   itemListdata = await batch.fetchFromItem();
+  }
+  catch (e)
+  {
+    print("Failed to create invoice items: $e");
+  }
+
 }
 
 Future<void> createPayment(model, conn, invoiceNo) async {
