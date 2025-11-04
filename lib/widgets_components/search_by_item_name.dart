@@ -21,7 +21,7 @@ import 'package:offline_pos/widgets_components/all_items.dart';
               controller: controller,
               focusNode: focusNode,
               autofocus: true,
-              style: TextStyle(fontSize: 3.sp, color: Colors.black),
+              style: TextStyle(fontSize: 5.sp, color: Colors.black),
               decoration: InputDecoration(
                 labelText: "Search by Item Name",
                 
