@@ -51,6 +51,12 @@ class PrefKeys {
   static const String scanBarcodeLength = 'scanBarcodeLength';
   static const String loginInternet = "1";
 
+  //backupsettings 
+  static const String backupFolder = "backupFolder";
+  static const String backupRetentionDays = "backupRetentionDays";
+  static const String backupRunsPerDay = "backupRunsPerDay";
+  static const String backupFirstRunHour = "backupFirstRunHour";
+  static const String backupFirstRunMinute = "backupFirstRunMinute";
 
 
 

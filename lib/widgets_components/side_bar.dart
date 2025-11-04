@@ -193,20 +193,20 @@ Widget SideBar(BuildContext context, CartItemScreenController model) {
           // ✅ Settings and Logout Section
           Column(
             children: [
-              // ✅ Hardware Settings
-              // MouseRegion(
-              //   cursor: SystemMouseCursors.click,
-              //   child: _menuItem('assets/ico/home.png', 'Settings', () {
-              //     // Import at top of file: import 'package:offline_pos/pages/hardware_settings_page.dart';
-              //     Navigator.push(
-              //       context,
-              //       _noAnimationRoute(
-              //         const HardwareSettingsPage(),
-              //         name: 'HardwareSettingsPage',
-              //       ),
-              //     );
-              //   }),
-              // ),
+           
+              MouseRegion(
+                cursor: SystemMouseCursors.click,
+                child: _menuItem('assets/ico/home.png', 'Settings', () {
+                  // Import at top of file: import 'package:offline_pos/pages/hardware_settings_page.dart';
+                  Navigator.push(
+                    context,
+                    _noAnimationRoute(
+                      const HardwareSettingsPage(),
+                      name: 'HardwareSettingsPage',
+                    ),
+                  );
+                }),
+              ),
 
               SizedBox(height: 20.h),
 
