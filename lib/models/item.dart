@@ -45,7 +45,7 @@ class Item {
   double? newNetAmount;
   int? isScanned;
   double? maxDiscount;
-  double? valuationRate;  // Cost price from ERPNext Bin for below-cost validation (cached from TempItem)
+  double? standardRate;  // Cost price from ERPNext Bin for below-cost validation (cached from TempItem)
   dynamic customVATInclusive;
   dynamic vatExclusiveRate;
   
@@ -94,7 +94,7 @@ class Item {
     this.newNetAmount,
     this.isScanned,
     this.maxDiscount,
-    this.valuationRate,
+    this.standardRate,
     this.vatExclusiveRate,
     this.customVATInclusive,
     // PLU for barcode lookup
@@ -143,7 +143,7 @@ class Item {
     newNetAmount : json['new_net_amount'],
     isScanned : json['is_scanned'],
     maxDiscount: json['max_discount']?.toDouble() ?? 0.0,
-    valuationRate: json['valuation_rate']?.toDouble(),
+    standardRate: json['standard_rate']?.toDouble(),
     customVATInclusive: json['custom_is_vat_inclusive'].toInt() ?? 0,
     vatExclusiveRate: json['vat_exclusive_rate']?.toDouble() ?? 0,
     // PLU for barcode lookup
@@ -163,7 +163,7 @@ class Item {
     "stock_uom": stockUom,
     "image": image,
     "qty": qty,
-    "standard_rate": itemTotal / (qty > 0 ? qty : 1), // Reverse calculate unit rate from line total
+    "item_total": itemTotal / (qty > 0 ? qty : 1), // Reverse calculate unit rate from line total
     "new_rate": newRate,
     "opening_stock": openingStock,
     "has_batch_no": hasBatchNo,
@@ -192,7 +192,7 @@ class Item {
     'new_net_amount':newNetAmount,
     'is_scanned':isScanned,
     'max_discount': maxDiscount,
-    'valuation_rate': valuationRate,
+    'standard_rate': standardRate,
     'custom_is_vat_inclusive': customVATInclusive,
     'vat_exclusive_rate': vatExclusiveRate,
     // PLU for barcode lookup

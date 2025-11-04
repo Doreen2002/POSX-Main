@@ -40,7 +40,6 @@ class TempItem {
   String? endOfLife;
   String? defaultMaterialRequestType;
   String? valuationMethod;
-  double? valuationRate;  // Cost price from ERPNext Bin for below-cost validation
   String? warrantyPeriod;
   dynamic weightPerUnit;
   String? weightUom;
@@ -163,7 +162,7 @@ class TempItem {
     this.endOfLife,
     this.defaultMaterialRequestType,
     this.valuationMethod,
-    this.valuationRate,
+
     this.warrantyPeriod,
     this.weightPerUnit,
     this.weightUom,
@@ -287,7 +286,7 @@ class TempItem {
       endOfLife: json['end_of_life'] as String?,
       defaultMaterialRequestType: json['default_material_request_type'] as String?,
       valuationMethod: json['valuation_method'] as String?,
-      valuationRate: json['valuation_rate']?.toDouble(),
+      // standardRate: json['valuation_rate']?.toDouble(),
       warrantyPeriod: json['warranty_period'] as String?,
       weightPerUnit: json['weight_per_unit'],
       weightUom: json['weight_uom'] as String?,
@@ -418,7 +417,7 @@ class TempItem {
     data['end_of_life'] = endOfLife;
     data['default_material_request_type'] = defaultMaterialRequestType;
     data['valuation_method'] = valuationMethod;
-    data['valuation_rate'] = valuationRate;
+    data['standard_rate'] = standardRate;
     data['warranty_period'] = warrantyPeriod;
     data['weight_per_unit'] = weightPerUnit;
     data['weight_uom'] = weightUom;

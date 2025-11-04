@@ -859,7 +859,7 @@ Widget singleItemDiscountScreen(
                             if (isValidationEnabled) {
                               final finalPrice = (item.newNetRate ?? 0) - enteredAmount;
                               // FAST: O(1) lookup from cached item data
-                              final costPrice = item.valuationRate ?? 0.0;
+                              final costPrice = item.standardRate ?? 0.0;
                               
                               if (costPrice > 0 && BelowCostValidator.isBelowCost(
                                 sellingPrice: finalPrice,
