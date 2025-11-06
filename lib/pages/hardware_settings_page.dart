@@ -15,14 +15,32 @@ class HardwareSettingsPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.grey.shade50,
       appBar: AppBar(
-        title: Row(
+        title: 
+            Container(
+              decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Color(0xFF018644), Color(0xFF033D20)],
+              ),
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(8),
+                bottomRight: Radius.circular(8),
+              ),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              
           children: [
-            Icon(Icons.settings, size: 24.sp, color: Colors.white),
+            
+            Icon(Icons.settings, size: 20.sp, color: Colors.white),
             SizedBox(width: 8.w),
-            const Text('Hardware Settings')
+            const Text('Hardware Settings', style: TextStyle(color: Colors.white),),
+        
           ]
+          
         ),
-        backgroundColor: AppColors.appbarGreen,
+            )
+            
+         
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.w),
