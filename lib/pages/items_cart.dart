@@ -386,22 +386,25 @@ class _CartItemScreenState extends State<CartItemScreen> {
                                                  
                                                   case 'Clear Cart':
                                                     () async {
-                                                      bool shouldClear = false;
+                                                      
                                                       await DialogUtils.showConfirm(
                                                         context: context,
                                                         title: 'Are you sure?',
                                                         message: '',
                                                         confirmText: 'Yes, Clear',
                                                         cancelText: 'Cancel',
-                                                        onConfirm: () {
-                                                          shouldClear = true;
+                                                        onConfirm: () async{
+                                                         model.cartItems.clear();
+                                                         model.refresh();
+                                                        Navigator.pop(context);
                                                         },
+                                                        onCancel: (){
+                                                          Navigator.pop(context);
+                                                        }
+                                                        
                                                       );
 
-                                                      if (shouldClear) {
-                                                        model.cartItems.clear();
-                                                        model.refresh();
-                                                      }
+                                                      
                                                     }();
                                                     break;
 
