@@ -323,7 +323,7 @@ Future<TempItem?> parseWeightScaleBarcode(String barcode, dynamic model) async {
     final barcodeLength = UserPreference.getInt(PrefKeys.barcodeLength) ?? 13;
     final actualPluDigits = UserPreference.getInt(PrefKeys.actualPluDigits) ?? 4;
     final validateCheckDigit = UserPreference.getBool(PrefKeys.validateCheckDigit) ?? false;
-    final currency = UserPreference.getString(PrefKeys.currency) ?? "USD";
+    final currency = UserPreference.getString(PrefKeys.currency) ;
     final currencyPrecision = UserPreference.getInt(PrefKeys.currencyPrecision) ?? 2;
     final valueType = UserPreference.getString(PrefKeys.valueType) ?? "price";
     final pluStartPosition = UserPreference.getInt(PrefKeys.pluStartPosition) ?? 3;
