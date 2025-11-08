@@ -86,7 +86,7 @@ class HardwareSettingsPage extends StatelessWidget {
             style: TextStyle(
               fontSize: 18.sp,
               fontWeight: FontWeight.bold,
-              color: AppColors.appbarGreen
+              color: Color(0xFF033D20)
             )
           ),
           SizedBox(height: 6.h),

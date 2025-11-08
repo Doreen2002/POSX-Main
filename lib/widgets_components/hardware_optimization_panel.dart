@@ -132,14 +132,14 @@ class _HardwareOptimizationPanelState extends State<HardwareOptimizationPanel> {
             // Header
             Row(
               children: [
-                Icon(Icons.tune, size: 24.sp, color: AppColors.appbarGreen),
+                Icon(Icons.tune, size: 24.sp, color: Color(0xFF033D20)),
                 SizedBox(width: 8.w),
                 Text(
                   'Hardware Optimization',
                   style: TextStyle(
                     fontSize: 20.sp,
                     fontWeight: FontWeight.bold,
-                    color: AppColors.appbarGreen,
+                    color: Color(0xFF033D20),
                   ),
                 ),
                 const Spacer(),
@@ -291,7 +291,7 @@ class _HardwareOptimizationPanelState extends State<HardwareOptimizationPanel> {
               style: TextStyle(fontSize: 16.sp),
             ),
             style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.appbarGreen,
+              backgroundColor: Color(0xFF2B3691),
               foregroundColor: Colors.white,
               padding: EdgeInsets.symmetric(vertical: 12.h),
             ),
@@ -300,8 +300,8 @@ class _HardwareOptimizationPanelState extends State<HardwareOptimizationPanel> {
         SizedBox(width: 12.w),
         OutlinedButton.icon(
           onPressed: _isLoading ? null : _loadHardwareInfo,
-          icon: Icon(Icons.refresh, size: 18.sp),
-          label: Text('Refresh', style: TextStyle(fontSize: 16.sp)),
+          icon: Icon(Icons.refresh, size: 18.sp, color: Color(0xFF2B3691),),
+          label: Text('Refresh', style: TextStyle(fontSize: 16.sp, color: Color(0xFF2B3691),)),
           style: OutlinedButton.styleFrom(
             padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 16.w),
           ),
@@ -323,14 +323,14 @@ class _HardwareOptimizationPanelState extends State<HardwareOptimizationPanel> {
         children: [
           Row(
             children: [
-              Icon(icon, size: 18.sp, color: AppColors.appbarGreen),
+              Icon(icon, size: 18.sp, color: Color(0xFF033D20)),
               SizedBox(width: 8.w),
               Text(
                 title,
                 style: TextStyle(
                   fontSize: 16.sp,
                   fontWeight: FontWeight.w600,
-                  color: AppColors.appbarGreen,
+                  color: Color(0xFF033D20),
                 ),
               ),
             ],
