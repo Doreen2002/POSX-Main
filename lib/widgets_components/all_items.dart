@@ -261,9 +261,12 @@ Future<void> showOpeningPOSDialog(context, model, item) async {
     confirmText: 'Create POS Opening',
     cancelText: 'Cancel',
     onConfirm: () async {
+      Navigator.of(context).pop();
+
       await showDialog(
         context: context,
         builder: (BuildContext context) {
+         
           return openingEntryDialog(context, model);
         },
       );
@@ -271,6 +274,7 @@ Future<void> showOpeningPOSDialog(context, model, item) async {
       if (posOpeningList.isNotEmpty) {
         addItemsToCartTable(model, context, item);
       }
+      
     },
   );
 

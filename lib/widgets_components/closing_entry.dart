@@ -578,6 +578,7 @@ Widget closingEntryDialog(BuildContext context, model) {
         confirmText: "Create POS Opening",
         cancelText: "Cancel",
         onConfirm: () {
+          Navigator.of(context).pop();
           showDialog(
             context: context,
             builder:
