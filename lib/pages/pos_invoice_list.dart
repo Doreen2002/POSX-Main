@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:offline_pos/database_conn/mysql_conn.dart';
 import 'package:printing/printing.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -670,7 +671,7 @@ class _InvoiceListPageState extends State<InvoiceListPage> {
                                                         ),
                                                         SizedBox(
                                                           width:
-                                                              140, // Matches header width
+                                                              250, // Matches header width
                                                           child: Row(
                                                             mainAxisAlignment:
                                                                 MainAxisAlignment
@@ -756,6 +757,21 @@ class _InvoiceListPageState extends State<InvoiceListPage> {
                                                                   },
                                                                   tooltip:
                                                                       'Retry Sync',
+                                                                ),
+                                                                IconButton(
+                                                                  icon: const Icon(
+                                                                    Icons
+                                                                        .undo,
+                                                                    color: Color(
+                                                                      0xFF2B3691,
+                                                                    ),
+                                                                  ),
+                                                                  onPressed: () async {
+                                                                   returnInvoice (invoice.name);
+                                                                    _loadInvoices();
+                                                                  },
+                                                                  tooltip:
+                                                                      'Return Invoice',
                                                                 ),
                                                             ],
                                                           ),
@@ -845,4 +861,38 @@ class _InvoiceListPageState extends State<InvoiceListPage> {
       ),
     );
   }
+}
+
+
+Future<dynamic>  returnInvoice (String invoice)
+async{
+  dynamic invoiceDetails = await fetchSalesInvoiceDetails(invoice);
+   int timestamp = DateTime.now().millisecondsSinceEpoch ~/ 1000;
+  final conn = await getDatabase();
+  final invoiceNo = 'Return-INV-${UserPreference.getString(PrefKeys.branchID)}-${timestamp}';
+ 
+  return await insertTableSalesInvoice(
+    id: invoiceNo ,
+    name: invoiceNo,
+    customer: invoiceDetails['customer'],
+    customerName : invoiceDetails['customer_name'],
+    posProfile: invoiceDetails['pos_profile'],
+    company: invoiceDetails['company'],
+    postingDate: invoiceDetails['posx_date'],
+    postingTime: invoiceDetails['posx_date'],
+    paymentDueDate: invoiceDetails['posx_date'],
+    netTotal: invoiceDetails['net_total'] * -1,
+    grandTotal: invoiceDetails['grand_total'] * -1,
+    grossTotal: invoiceDetails['gross_total'] * -1,
+    changeAmount: invoiceDetails['change_amount'] * -1,
+    status: invoiceDetails['status'],
+    invoiceStatus: "Submitted",
+    salesPerson: invoiceDetails['sales_person'], 
+    vat: invoiceDetails['vat'] * -1,
+    openingName: invoiceDetails['opening_name'],
+    additionalDiscountPer: invoiceDetails['additional_discount_percentage'],
+    discount: invoiceDetails['discount'] * -1,
+    isReturn: "Yes",
+    returnAgainst: invoiceDetails['name'],
+  );
 }

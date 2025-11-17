@@ -15,12 +15,13 @@ import 'package:offline_pos/widgets_components/log_error_to_file.dart';
 Future<bool> createSalesInvoiceTable() async {
  bool isCreatedDB = false;
   try {
+    print("Creating Sales Invoice Table");
     final conn = await getDatabase();
-    await conn.query("CREATE TABLE IF NOT EXISTS SalesInvoice (id varchar(255), name varchar(255) PRIMARY KEY,erpnext_id varchar(255),customer varchar(255), customer_name varchar(255),pos_profile varchar(255),company varchar(255),posx_date varchar(255),erpnext_si_date varchar(255),due_date varchar(255),net_total FLOAT,additional_discount_percentage FLOAT,grand_total FLOAT,gross_total FLOAT, change_amount FLOAT,status varchar(255),messageStatus varchar(255),vat FLOAT,discount FLOAT,opening_name varchar(255),invoice_status varchar(255),sales_person varchar(255),submitted_at varchar(255), background_job_id varchar(255), is_return binary(1))");
+    await conn.query("CREATE TABLE IF NOT EXISTS SalesInvoice (id varchar(255), name varchar(255) PRIMARY KEY,erpnext_id varchar(255),customer varchar(255), customer_name varchar(255),pos_profile varchar(255),company varchar(255),posx_date varchar(255),erpnext_si_date varchar(255),due_date varchar(255),net_total FLOAT,additional_discount_percentage FLOAT,grand_total FLOAT,gross_total FLOAT, change_amount FLOAT,status varchar(255),messageStatus varchar(255),vat FLOAT,discount FLOAT,opening_name varchar(255),invoice_status varchar(255),sales_person varchar(255),submitted_at varchar(255),background_job_id varchar(255), is_return varchar(255), return_against varchar(255))");
     isCreatedDB = true;
     await conn.close();
   } catch (e) {
-    logErrorToFile("Error creating sales invoice table $e");
+    print("Error creating sales invoice table $e");
     isCreatedDB = false;
   }
 
@@ -176,12 +177,12 @@ Future<List<Map<String, dynamic>>> fetchGroupedInvoiceData() async {
 
 
 Future<dynamic> insertTableSalesInvoice({String? id, String? name, String? customer, String? customerName, String? posProfile,String? company,String? postingDate,
-    String? postingTime,String? paymentDueDate,double? netTotal,double? additionalDiscountPer,double? grandTotal, double? grossTotal, double? changeAmount, String? status,String? messageStatus,double? vat,double? discount,String? setWarehouse,String? openingName, String? invoiceStatus, String? salesPerson}) async {
+    String? postingTime,String? paymentDueDate,double? netTotal,double? additionalDiscountPer,double? grandTotal, double? grossTotal, double? changeAmount, String? status,String? messageStatus,double? vat,double? discount,String? setWarehouse,String? openingName, String? invoiceStatus, String? salesPerson,  String? returnAgainst, String? isReturn}) async {
   try {
     final conn = await getDatabase();
     dynamic res;
-     var insertItemQuery = 'INSERT INTO SalesInvoice (id, name,customer,customer_name, pos_profile,company,posx_date,erpnext_si_date,due_date,net_total,additional_discount_percentage,grand_total,gross_total, change_amount, status,messageStatus,vat,discount,opening_name,invoice_status, sales_person) ';
-      res = await conn.query('''$insertItemQuery VALUES('$id','$name','$customer', '$customerName', '$posProfile','$company','$postingDate','$postingTime','$paymentDueDate','$netTotal','$additionalDiscountPer','$grandTotal', '$grossTotal', '$changeAmount', '$status','$messageStatus','$vat','$discount','$openingName','$invoiceStatus','$salesPerson' )''');
+     var insertItemQuery = 'INSERT INTO SalesInvoice (id, name,customer,customer_name, pos_profile,company,posx_date,erpnext_si_date,due_date,net_total,additional_discount_percentage,grand_total,gross_total, change_amount, status,messageStatus,vat,discount,opening_name,invoice_status, sales_person, is_return, return_against) ';
+      res = await conn.query('''$insertItemQuery VALUES('$id','$name','$customer', '$customerName', '$posProfile','$company','$postingDate','$postingTime','$paymentDueDate','$netTotal','$additionalDiscountPer','$grandTotal', '$grossTotal', '$changeAmount', '$status','$messageStatus','$vat','$discount','$openingName','$invoiceStatus','$salesPerson' , '$isReturn', '$returnAgainst')''');
      
       await closeDatabase(conn);
     return res;
@@ -446,6 +447,27 @@ Future<dynamic> fetchSalesInvoicePaymentByNameClose(String name) async {
     logErrorToFile("Error fetching data from payment closing data $e");
     return [];
   } 
+}
+//return invoice details
+Future<Map<String, dynamic>> fetchSalesInvoiceDetails(String name) async {
+  final conn = await getDatabase();
+  try {
+    final invoiceResult = await conn.query(
+      "SELECT * FROM SalesInvoice WHERE name = ?",
+      [name],
+    );
+    if (invoiceResult.isEmpty) {
+      await conn.close();
+      return {};
+    }
+    final invoice = invoiceResult.first.fields;
+    await conn.close();
+    return invoice;
+  }  catch (e) {
+    logErrorToFile("Error fetching invoice details: $e");
+    await conn.close();
+    return {};
+  }
 }
 
 

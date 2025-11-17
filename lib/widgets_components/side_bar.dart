@@ -61,7 +61,7 @@ Widget SideBar(BuildContext context, CartItemScreenController model) {
                 }),
               ),
 
-              SizedBox(height: 10.h),
+              SizedBox(height: 5.h),
               MouseRegion(
                 cursor: SystemMouseCursors.click,
                 child: _menuItem('assets/ico/open.png', 'Open POS', () async {
@@ -76,7 +76,7 @@ Widget SideBar(BuildContext context, CartItemScreenController model) {
                 }),
               ),
 
-              SizedBox(height: 10.h),
+              SizedBox(height: 5.h),
               // ✅ Close POS
               MouseRegion(
                 cursor: SystemMouseCursors.click,
@@ -99,7 +99,7 @@ Widget SideBar(BuildContext context, CartItemScreenController model) {
                 }),
               ),
 
-              SizedBox(height: 10.h),
+              SizedBox(height: 5.h),
               // ✅ Sync Data
               MouseRegion(
                 cursor: SystemMouseCursors.click,
@@ -114,7 +114,7 @@ Widget SideBar(BuildContext context, CartItemScreenController model) {
                 }),
               ),
 
-              SizedBox(height: 10.h),
+              SizedBox(height: 5.h),
               // ✅ Customer
               MouseRegion(
                 cursor: SystemMouseCursors.click,
@@ -129,7 +129,7 @@ Widget SideBar(BuildContext context, CartItemScreenController model) {
                 }),
               ),
 
-              SizedBox(height: 10.h),
+              SizedBox(height: 5.h),
               // ✅ Invoices
               MouseRegion(
                 cursor: SystemMouseCursors.click,
@@ -150,7 +150,7 @@ Widget SideBar(BuildContext context, CartItemScreenController model) {
                 }),
               ),
 
-              SizedBox(height: 10.h),
+              SizedBox(height: 5.h),
               // ✅ Opening Vouchers
               MouseRegion(
                 cursor: SystemMouseCursors.click,
@@ -169,7 +169,7 @@ Widget SideBar(BuildContext context, CartItemScreenController model) {
                 ),
               ),
 
-              SizedBox(height: 10.h),
+              SizedBox(height: 5.h),
             
               MouseRegion(
                 cursor: SystemMouseCursors.click,
@@ -189,7 +189,7 @@ Widget SideBar(BuildContext context, CartItemScreenController model) {
               ),
             ],
           ),
-           SizedBox(height: 10.h),
+           SizedBox(height: 5.h),
               MouseRegion(
                 cursor: SystemMouseCursors.click,
                 child: _menuItem('assets/ico/close.png', 'Settings', () {
@@ -208,7 +208,7 @@ Widget SideBar(BuildContext context, CartItemScreenController model) {
             children: [
              
 
-              SizedBox(height: 10.h),
+              SizedBox(height: 5.h),
 
               // Version Number
               Padding(

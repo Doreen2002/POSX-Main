@@ -201,7 +201,9 @@ Future<dynamic> createInvoice(model) async {
     vat: model.vatTotal,
     openingName: UserPreference.getString(PrefKeys.openingEntry),
     additionalDiscountPer: model.allItemsDiscountPercent.text.isNotEmpty ?  double.parse( model.allItemsDiscountPercent.text ) : 0.00,
-    discount: model.allItemsDiscountAmount.text.isNotEmpty ?  double.parse( model.allItemsDiscountAmount.text ) : 0.00
+    discount: model.allItemsDiscountAmount.text.isNotEmpty ?  double.parse( model.allItemsDiscountAmount.text ) : 0.00,
+    isReturn: "No",
+    returnAgainst: "",
   );
   await createInvoiceItem(model, conn, invoiceNo);
   await createPayment(model, conn, invoiceNo);

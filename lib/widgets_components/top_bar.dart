@@ -485,7 +485,7 @@ Widget buildTopBarContent(
                         children: [
                           SingleText(
                             text: "Loyalty Points",
-                            fontSize: 4.sp,
+                            fontSize: 3.sp,
                             color: Color(0xFF006A35),
                             fontWeight: FontWeight.bold,
                           ),
@@ -493,7 +493,7 @@ Widget buildTopBarContent(
                             text:
                                 "  ${UserPreference.getString(PrefKeys.currency).toString()}  ${(model.customerData.loyaltyPointsAmount == null || model.customerData.loyaltyPointsAmount!.isNaN) ? "0.00" : model.customerData.loyaltyPointsAmount!.toStringAsFixed(model.decimalPoints)}",
 
-                            fontSize: 4.sp,
+                            fontSize: 3.sp,
                             color: Color.fromARGB(255, 14, 15, 14),
                             fontWeight: FontWeight.bold,
                           ),
@@ -510,7 +510,7 @@ Widget buildTopBarContent(
                         children: [
                           SingleText(
                             text: "Loyalty Points",
-                            fontSize: 4.sp,
+                            fontSize: 3.sp,
                             color: Color(0xFF006A35),
                             fontWeight: FontWeight.bold,
                           ),
@@ -521,7 +521,7 @@ Widget buildTopBarContent(
                                     ? "0"
                                     : model.customerData.loyaltyPoints!
                                         .toString(),
-                            fontSize: 4.sp,
+                            fontSize: 3.sp,
                             color: Color.fromARGB(255, 14, 15, 14),
                             fontWeight: FontWeight.bold,
                           ),
