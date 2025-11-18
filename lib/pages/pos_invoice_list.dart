@@ -758,6 +758,7 @@ class _InvoiceListPageState extends State<InvoiceListPage> {
                                                                   tooltip:
                                                                       'Retry Sync',
                                                                 ),
+                                                                if(invoice.isReturn != "Yes")
                                                                 IconButton(
                                                                   icon: const Icon(
                                                                     Icons

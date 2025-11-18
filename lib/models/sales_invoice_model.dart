@@ -17,7 +17,8 @@ class TempSalesInvoiceModel {
   final String openingName;
   final String? erpnextID;
   final String? invoiceStatus;
-
+  final String? isReturn;
+  final String? returnAgainst;
   TempSalesInvoiceModel({
     this.id,
     required this.name,
@@ -36,7 +37,9 @@ class TempSalesInvoiceModel {
     required this.discount,
     required this.openingName,
     this.erpnextID,
-    this.invoiceStatus
+    this.invoiceStatus,
+    this.isReturn,
+    this.returnAgainst,
   });
 
  factory TempSalesInvoiceModel.fromJson(Map<String, dynamic> json) {
@@ -67,6 +70,8 @@ class TempSalesInvoiceModel {
     openingName: json['opening_name'],
     erpnextID : json['erpnext_id'],
     invoiceStatus: json['invoice_status'] ?? "Submitted", 
+    isReturn: json['is_return'],
+    returnAgainst: json['return_against'],
   );
 }
 
@@ -91,6 +96,8 @@ class TempSalesInvoiceModel {
       'opening_name': openingName,
       'erpnext_id': erpnextID,
       'invoice_status': invoiceStatus ?? "Submitted",
+      'is_return': isReturn,  
+      'return_against': returnAgainst,
     };
   }
 }
