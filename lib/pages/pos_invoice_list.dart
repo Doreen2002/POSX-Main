@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:offline_pos/database_conn/mysql_conn.dart';
+import 'package:offline_pos/models/item.dart';
+import 'package:offline_pos/pages/items_cart.dart';
 import 'package:printing/printing.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -18,6 +20,7 @@ import 'package:offline_pos/widgets_components/side_bar.dart';
 import 'package:offline_pos/widgets_components/single_item_discount.dart';
 import 'package:offline_pos/widgets_components/top_bar.dart';
 import 'package:pdf/pdf.dart';
+import 'package:provider/provider.dart';
 
 class InvoiceListPage extends StatefulWidget {
   const InvoiceListPage({super.key});
@@ -33,6 +36,14 @@ class _InvoiceListPageState extends State<InvoiceListPage> {
   bool _isRefreshing = false;
   Timer? _refreshTimer;
 
+late BuildContext savedContext;
+
+@override
+void didChangeDependencies() {
+  super.didChangeDependencies();
+  savedContext = context;
+}
+
   @override
   void initState() {
     super.initState();
@@ -42,7 +53,9 @@ class _InvoiceListPageState extends State<InvoiceListPage> {
 
   @override
   void dispose() {
+       if (mounted) {
     _refreshTimer?.cancel();
+       }
     super.dispose();
   }
 
@@ -768,7 +781,7 @@ class _InvoiceListPageState extends State<InvoiceListPage> {
                                                                     ),
                                                                   ),
                                                                   onPressed: () async {
-                                                                   returnInvoice (invoice.name);
+                                                                   returnInvoice ( savedContext,invoice.name);
                                                                     _loadInvoices();
                                                                   },
                                                                   tooltip:
@@ -865,35 +878,40 @@ class _InvoiceListPageState extends State<InvoiceListPage> {
 }
 
 
-Future<dynamic>  returnInvoice (String invoice)
+Future<dynamic>  returnInvoice (BuildContext context,String invoice)
 async{
-  dynamic invoiceDetails = await fetchSalesInvoiceDetails(invoice);
+  dynamic invoiceDetails = await fetchSalesInvoiceDetailsToReturn(invoice);
+  List<Item> invoiceItemDetails = await fetchSalesInvoiceItemDetailsToReturn(invoice);
    int timestamp = DateTime.now().millisecondsSinceEpoch ~/ 1000;
   final conn = await getDatabase();
   final invoiceNo = 'Return-INV-${UserPreference.getString(PrefKeys.branchID)}-${timestamp}';
- 
-  return await insertTableSalesInvoice(
-    id: invoiceNo ,
-    name: invoiceNo,
-    customer: invoiceDetails['customer'],
-    customerName : invoiceDetails['customer_name'],
-    posProfile: invoiceDetails['pos_profile'],
-    company: invoiceDetails['company'],
-    postingDate: DateTime.now().toString(),
-    postingTime: DateTime.now().toString(),
-    paymentDueDate: DateTime.now().toString(),
-    netTotal: invoiceDetails['net_total'] * -1,
-    grandTotal: invoiceDetails['grand_total'] * -1,
-    grossTotal: invoiceDetails['gross_total'] * -1,
-    changeAmount: invoiceDetails['change_amount'] * -1,
-    status: invoiceDetails['status'],
-    invoiceStatus: "Submitted",
-    salesPerson: invoiceDetails['sales_person'], 
-    vat: invoiceDetails['vat'] * -1,
-    openingName: invoiceDetails['opening_name'],
-    additionalDiscountPer: invoiceDetails['additional_discount_percentage'],
-    discount: invoiceDetails['discount'] * -1,
-    isReturn: "Yes",
-    returnAgainst: invoiceDetails['name'],
+  print("${invoiceItemDetails}");
+    Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => CartItemScreen(runInit: false, cartItems: invoiceItemDetails)),
   );
+  // return await insertTableSalesInvoice(
+  //   id: invoiceNo ,
+  //   name: invoiceNo,
+  //   customer: invoiceDetails['customer'],
+  //   customerName : invoiceDetails['customer_name'],
+  //   posProfile: invoiceDetails['pos_profile'],
+  //   company: invoiceDetails['company'],
+  //   postingDate: DateTime.now().toString(),
+  //   postingTime: DateTime.now().toString(),
+  //   paymentDueDate: DateTime.now().toString(),
+  //   netTotal: invoiceDetails['net_total'] * -1,
+  //   grandTotal: invoiceDetails['grand_total'] * -1,
+  //   grossTotal: invoiceDetails['gross_total'] * -1,
+  //   changeAmount: invoiceDetails['change_amount'] * -1,
+  //   status: invoiceDetails['status'],
+  //   invoiceStatus: "Submitted",
+  //   salesPerson: invoiceDetails['sales_person'], 
+  //   vat: invoiceDetails['vat'] * -1,
+  //   openingName: invoiceDetails['opening_name'],
+  //   additionalDiscountPer: invoiceDetails['additional_discount_percentage'],
+  //   discount: invoiceDetails['discount'] * -1,
+  //   isReturn: "Yes",
+  //   returnAgainst: invoiceDetails['name'],
+  // );
 }

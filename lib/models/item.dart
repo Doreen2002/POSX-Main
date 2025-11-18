@@ -14,7 +14,7 @@ class Item {
   String itemName;
   String itemGroup;
   String stockUom;
-  String image;
+  String? image;
   int qty;
   double itemTotal; // Line total (qty × rate), not unit cost
   double newRate;

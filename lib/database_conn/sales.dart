@@ -6,6 +6,7 @@ import 'package:offline_pos/data_source/local/user_preference.dart';
 import 'package:offline_pos/database_conn/create_pos_table.dart';
 
 import 'package:offline_pos/database_conn/mysql_conn.dart';
+import 'package:offline_pos/models/item.dart';
 import 'package:offline_pos/models/sales_invoice_model.dart';
 import 'package:offline_pos/models/single_invoice_data.dart';
 import 'package:offline_pos/widgets_components/log_error_to_file.dart';
@@ -449,7 +450,7 @@ Future<dynamic> fetchSalesInvoicePaymentByNameClose(String name) async {
   } 
 }
 //return invoice details
-Future<Map<String, dynamic>> fetchSalesInvoiceDetails(String name) async {
+Future<Map<String, dynamic>> fetchSalesInvoiceDetailsToReturn(String name) async {
   final conn = await getDatabase();
   try {
     final invoiceResult = await conn.query(
@@ -467,6 +468,52 @@ Future<Map<String, dynamic>> fetchSalesInvoiceDetails(String name) async {
     logErrorToFile("Error fetching invoice details: $e");
     await conn.close();
     return {};
+  }
+}
+
+Future<List<Item>> fetchSalesInvoiceItemDetailsToReturn(String name) async {
+  final conn = await getDatabase();
+  try {
+    final invoiceResult = await conn.query(
+      "SELECT * FROM SalesInvoiceItem WHERE name = ?",
+      [name],
+    );
+    if (invoiceResult.isEmpty) {
+      await conn.close();
+      return [];
+    }
+    final List<Item> invoice = invoiceResult.map<Item>((row) {
+      
+      final Map<String, dynamic> fields =
+          Map<String, dynamic>.from(row.fields);
+
+    
+      if (fields.containsKey('rate')) {
+        fields['new_net_rate'] = fields['rate'];
+        fields['new_rate'] = fields['rate'];
+        fields['standard_rate'] = fields['rate'];
+        fields['vat_value'] = int.tryParse(fields['item_tax_rate']) ;
+        fields['item_total'] = fields['net_amount'];
+        fields['total_with_vat_prev'] = fields['net_amount'];
+      
+      }
+      if (fields.containsKey('qty')) {
+        fields['qty'] = fields['qty'] * -1;
+      }
+
+  return Item.fromJson(fields);
+}).toList();
+
+
+    print("Invoice Items: ${invoice[0]}");
+    await conn.close();
+   
+    return invoice;
+  }  catch (e) {
+    logErrorToFile("Error fetching invoice details: $e");
+    print("Error fetching invoice details: $e");
+    await conn.close();
+    return [];
   }
 }
 
