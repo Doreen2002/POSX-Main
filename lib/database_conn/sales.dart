@@ -252,6 +252,24 @@ Future<List<TempSalesInvoiceModel>> fetchFromSalesInvoice() async {
   } 
 }
 
+List<TempSalesInvoiceItemModel> salesInvoiceItemModelList =[];
+Future <List<TempSalesInvoiceItemModel>> fetchFromSalesInvoiceItem() async {
+  try {
+    final conn = await getDatabase();
+    final queryResult = await conn.query("""
+      SELECT * FROM SalesInvoiceItem;
+    """);
+      salesInvoiceItemModelList = queryResult.map((row) => TempSalesInvoiceItemModel.fromJson(row.fields))
+          .toList().cast<TempSalesInvoiceItemModel>();
+  
+    await closeDatabase(conn);
+    return salesInvoiceItemModelList;
+  } catch (e) {
+    logErrorToFile("Error fetching data from SalesInvoice Table $e");
+     print("Error fetching data from SalesInvoice Table $e");
+    return [];
+  } 
+}
 
 List<TempSalesInvoiceModel> salesInvoiceInProgressData = [];
 

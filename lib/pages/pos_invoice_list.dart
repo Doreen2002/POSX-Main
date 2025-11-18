@@ -36,6 +36,7 @@ class _InvoiceListPageState extends State<InvoiceListPage> {
   bool _isRefreshing = false;
   Timer? _refreshTimer;
 
+
 late BuildContext savedContext;
 
 @override
@@ -75,11 +76,13 @@ void didChangeDependencies() {
 
     try {
       await fetchFromSalesInvoice();
+      await fetchFromSalesInvoiceItem();
       setState(() {
         salesInvoiceData =
             salesInvoiceData
                 .where((invoice) => invoice.invoiceStatus != "Cancelled")
                 .toList();
+        
       });
     } catch (e) {
  
@@ -121,13 +124,20 @@ void didChangeDependencies() {
 
     // Apply search filter
     if (searchQuery.isNotEmpty) {
+      final invoiceNames = salesInvoiceItemModelList
+    .where((invoiceitem) => invoiceitem.itemCode.toLowerCase().contains(searchQuery.toLowerCase()))
+    .map((invoiceitem) => invoiceitem.name.toLowerCase()) 
+    .toList();
       filteredList =
           filteredList.where((invoice) {
             return (invoice.id?.toLowerCase().contains(searchQuery) ?? false) ||
+            ( invoiceNames.contains(invoice.id?.toLowerCase())) ||
                 (invoice.erpnextID?.toLowerCase().contains(searchQuery) ??
                     false) ||
                 (invoice.customer.toLowerCase().contains(searchQuery));
+                
           }).toList();
+      
     }
 
     // Apply status filter

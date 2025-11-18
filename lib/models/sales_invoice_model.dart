@@ -101,3 +101,60 @@ class TempSalesInvoiceModel {
     };
   }
 }
+
+
+class TempSalesInvoiceItemModel {
+  final int id;
+  final String name;
+  final String itemName;
+  final String itemCode;
+  final String? image;
+  final String stockUOM;
+  final double rate;
+
+
+  TempSalesInvoiceItemModel({
+    required this.id,
+    required this.name,
+    required this.itemCode,
+    required this.itemName,
+    this.image,
+    required this.stockUOM,
+    required this.rate
+
+  });
+
+
+  factory TempSalesInvoiceItemModel.fromJson(Map<String, dynamic> json) {
+  double parseDouble(dynamic value) {
+    if (value == null) return 0.0;
+    if (value is double) return value;
+    if (value is int) return value.toDouble();
+    if (value is String) return double.tryParse(value) ?? 0.0;
+    return 0.0;
+  }
+
+  return TempSalesInvoiceItemModel(
+    id: json['id'],
+    name: json['name'],
+    itemCode: json['item_code'],
+    itemName: json['item_name'],
+    stockUOM: json['stock_uom'],
+    rate:json['rate']
+   
+  );
+}
+
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'item_code':itemCode,
+      'item_name':itemName,
+      'stock_uom':stockUOM,
+      'rate':rate
+    };
+  }
+
+}
