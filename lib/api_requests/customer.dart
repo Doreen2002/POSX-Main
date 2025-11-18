@@ -7,13 +7,13 @@ import 'package:offline_pos/data_source/local/pref_keys.dart';
 import 'package:offline_pos/data_source/local/user_preference.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:offline_pos/widgets_components/log_error_to_file.dart';
-
+import 'package:offline_pos/globals/global_values.dart';
 
   final storage = FlutterSecureStorage();
 Future<List<TempCustomerData>> customerRequest( String httpType, String frappeInstance) async {
   try {
     final response = await http.get(
-      Uri.parse('https://${UserPreference.getString(PrefKeys.baseUrl)}/api/method/offline_pos_erpnext.API.customer.get_cutomers'),
+      Uri.parse('$transferProtocol://${UserPreference.getString(PrefKeys.baseUrl)}/api/method/offline_pos_erpnext.API.customer.get_cutomers'),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
@@ -52,7 +52,7 @@ Future<void> updateCustomerRequest( String httpType, String frappeInstance) asyn
     {
       try{
         final response = await http.post(
-      Uri.parse('https://$frappeInstance/api/method/offline_pos_erpnext.API.customer.update_customer'),
+      Uri.parse('$transferProtocol://$frappeInstance/api/method/offline_pos_erpnext.API.customer.update_customer'),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
@@ -117,7 +117,7 @@ Future<void> createCustomerRequest( String httpType, String frappeInstance) asyn
     {
       try{
         final response = await http.post(
-      Uri.parse('https://$frappeInstance/api/method/offline_pos_erpnext.API.customer.create_customer'),
+      Uri.parse('$transferProtocol://$frappeInstance/api/method/offline_pos_erpnext.API.customer.create_customer'),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',

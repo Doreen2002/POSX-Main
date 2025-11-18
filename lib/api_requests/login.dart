@@ -19,7 +19,7 @@ import 'package:offline_pos/database_conn/users.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:offline_pos/database_conn/mysql_conn.dart';
 import 'package:offline_pos/widgets_components/log_error_to_file.dart';
-
+import 'package:offline_pos/globals/global_values.dart';
 Future<bool> loginRequest(
   String httpType,
   String frappeInstance,
@@ -54,7 +54,7 @@ Future<bool> loginRequest(
     }
   }
   final response = await http.post(
-    Uri.parse('https://${frappeInstance}/api/method/login'),
+    Uri.parse('$transferProtocol://${frappeInstance}/api/method/login'),
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
     },
@@ -105,7 +105,7 @@ Future<bool> loginRequest(
       // await deleteAllUser();
       // await deleteAllPOSProfile();
       await posProfileRequest(
-        "https",
+        "$transferProtocol",
         UserPreference.getString(PrefKeys.baseUrl)!,
         UserPreference.getString(PrefKeys.userName)!,
       );
@@ -119,13 +119,13 @@ Future<bool> loginRequest(
       Future.delayed(Duration(seconds: 10), ()async{
         await itemRequest(
       
-      "https",
+      "$transferProtocol",
       UserPreference.getString(PrefKeys.baseUrl)!,
       UserPreference.getString(PrefKeys.userName)!,
     );
     await customerRequest(
       
-      "https",
+      "$transferProtocol",
       UserPreference.getString(PrefKeys.baseUrl)!,
     );
       });

@@ -1,0 +1,2 @@
+
+String transferProtocol = 'http';

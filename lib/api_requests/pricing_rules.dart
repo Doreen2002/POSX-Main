@@ -6,14 +6,14 @@ import 'package:offline_pos/data_source/local/pref_keys.dart';
 import 'package:offline_pos/data_source/local/user_preference.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:offline_pos/widgets_components/log_error_to_file.dart';
-
+import 'package:offline_pos/globals/global_values.dart';
 final storage = FlutterSecureStorage();
 
 Future<List<PricingRuleModel>> pricingRulesRequest(
     String httpType, String frappeInstance, String user) async {
   try {
     final response = await http.get(
-      Uri.parse('https://$frappeInstance/api/method/offline_pos_erpnext.API.pricing_rules.get_pricing_rules_for_pos?user=$user'),
+      Uri.parse('$transferProtocol://$frappeInstance/api/method/offline_pos_erpnext.API.pricing_rules.get_pricing_rules_for_pos?user=$user'),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
@@ -83,7 +83,7 @@ Future<List<PricingRuleModel>> pricingRulesIncrementalRequest(
     String httpType, String frappeInstance, String user, String lastSyncTime) async {
   try {
     final response = await http.get(
-      Uri.parse('https://$frappeInstance/api/method/offline_pos_erpnext.API.pricing_rules.get_pricing_rules_incremental?user=$user&last_sync_time=$lastSyncTime'),
+      Uri.parse('$transferProtocol://$frappeInstance/api/method/offline_pos_erpnext.API.pricing_rules.get_pricing_rules_incremental?user=$user&last_sync_time=$lastSyncTime'),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',

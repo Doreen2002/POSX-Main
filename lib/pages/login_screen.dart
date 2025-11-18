@@ -8,7 +8,7 @@ import 'package:offline_pos/widgets_components/log_error_to_file.dart';
 import 'items_cart.dart';
 import 'package:offline_pos/utils/dialog_utils.dart';
 import 'package:device_info_plus/device_info_plus.dart';
-
+import 'package:offline_pos/globals/global_values.dart';
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -31,7 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     super.initState();
-    httpType.text = 'https';
+    httpType.text = '$transferProtocol';
     frappeInstance.text = UserPreference.getString(PrefKeys.baseUrl) ?? '';
     usr.text = UserPreference.getString(PrefKeys.userName) ?? '';
     licenseKey.text = UserPreference.getString(PrefKeys.licenseKey) ?? '';
@@ -54,7 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     try {
       final success = await loginRequest(
-        'https',
+        '$transferProtocol',
         frappeInstance.text,
         usr.text,
         pwd.text,

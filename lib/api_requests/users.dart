@@ -7,14 +7,14 @@ import 'package:offline_pos/database_conn/users.dart';
 import 'package:offline_pos/models/sales_person.dart';
 import 'package:offline_pos/database_conn/mysql_conn.dart';
 import 'package:offline_pos/widgets_components/log_error_to_file.dart';
-
+import 'package:offline_pos/globals/global_values.dart';
   final storage = FlutterSecureStorage();
 Future<List<SalesPerson>> salesPersonRequest(String httpType, String frappeInstance) async {
   try {
 
 
     final response = await http.get(
-      Uri.parse('https://$frappeInstance/api/method/offline_pos_erpnext.API.sales.get_Sales_person'),
+      Uri.parse('$transferProtocol://$frappeInstance/api/method/offline_pos_erpnext.API.sales.get_Sales_person'),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',

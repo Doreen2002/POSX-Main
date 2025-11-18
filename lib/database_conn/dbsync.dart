@@ -28,7 +28,7 @@ import 'create_item_tables.dart';
 import 'mysql_conn.dart';
 import 'package:offline_pos/models/user.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
-
+import 'package:offline_pos/globals/global_values.dart';
 List itemGroupdata = [];
 List customerDataList = [];
 List modeOfPaymentList = [];
@@ -337,7 +337,7 @@ Future<dynamic> reloadItems() async {
 //sync function
 Future <void> sync() async {
    await activateLicenseRequest(
-     "https",
+     "$transferProtocol",
     UserPreference.getString(PrefKeys.baseUrl)!,
     UserPreference.getString(PrefKeys.deviceID)!,
     UserPreference.getString(PrefKeys.licenseKey)!,
@@ -346,7 +346,7 @@ Future <void> sync() async {
   await createTablePosProfile();
   await createTableUser();
   await posProfileRequest(
-    "https",
+    "$transferProtocol",
     UserPreference.getString(PrefKeys.baseUrl)!,
     UserPreference.getString(PrefKeys.userName)!,
   );
@@ -368,21 +368,21 @@ Future <void> sync() async {
   await createPricingRuleItemGroupsTable();
   await createPricingRuleBrandsTable();
   await itemRequest(
-    "https",
+    "$transferProtocol",
     UserPreference.getString(PrefKeys.baseUrl)!,
     UserPreference.getString(PrefKeys.userName)!,
   );
-  await customerRequest("https", UserPreference.getString(PrefKeys.baseUrl)!);
+  await customerRequest("$transferProtocol", UserPreference.getString(PrefKeys.baseUrl)!);
   await batchRequest(
-    "https",
+    "$transferProtocol",
     UserPreference.getString(PrefKeys.baseUrl)!,
     UserPreference.getString(PrefKeys.userName)!,
   );
-  await barcodeRequest(  "https",
+  await barcodeRequest(  "$transferProtocol",
     UserPreference.getString(PrefKeys.baseUrl)!,
     UserPreference.getString(PrefKeys.userName)!);
   await pricingRulesRequest(
-    "https",
+    "$transferProtocol",
     UserPreference.getString(PrefKeys.baseUrl)!,
     UserPreference.getString(PrefKeys.userName)!,
   );
@@ -397,7 +397,7 @@ Future <void> sync() async {
     ],
   );
   await salesPersonRequest(
-    "https",
+    "$transferProtocol",
     UserPreference.getString(PrefKeys.baseUrl)!,
   );
   customerDataList = await fetchFromCustomer();
@@ -441,38 +441,38 @@ Future<void> syncData(context, model) async {
     {   
         await createopeningEntry();
         await createCustomerRequest(
-          "https",
+          "$transferProtocol",
           UserPreference.getString(PrefKeys.baseUrl)!,
         );
         await updateCustomerRequest(
-          "https",
+          "$transferProtocol",
           UserPreference.getString(PrefKeys.baseUrl)!,
         );
         await  createInvoiceRequest();
         await  closePOSTOERPnext();
         await posProfileRequest(
-          "https",
+          "$transferProtocol",
           UserPreference.getString(PrefKeys.baseUrl)!,
           UserPreference.getString(PrefKeys.userName)!,
         );
         await batchRequest(
-          "https",
+          "$transferProtocol",
           UserPreference.getString(PrefKeys.baseUrl)!,
           UserPreference.getString(PrefKeys.userName)!,
         );
           batchListdata = await fetchFromBatch();
         await itemRequest(
-          "https",
+          "$transferProtocol",
           UserPreference.getString(PrefKeys.baseUrl)!,
           UserPreference.getString(PrefKeys.userName)!,
         );
-        await customerRequest("https", UserPreference.getString(PrefKeys.baseUrl)!);
+        await customerRequest("$transferProtocol", UserPreference.getString(PrefKeys.baseUrl)!);
         
-          await barcodeRequest(  "https",
+          await barcodeRequest(  "$transferProtocol",
     UserPreference.getString(PrefKeys.baseUrl)!,
     UserPreference.getString(PrefKeys.userName)!);
         await salesPersonRequest(
-        "https",
+        "$transferProtocol",
         UserPreference.getString(PrefKeys.baseUrl)!,
       );
     }

@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'package:offline_pos/globals/global_values.dart';
 import 'package:offline_pos/utils/dialog_utils.dart';
 import 'package:offline_pos/api_requests/customer.dart';
 import 'package:offline_pos/api_requests/items.dart';
@@ -870,21 +870,21 @@ Future<void> repeatSync(context) async {
       await createopeningEntry();
       await fetchFromPosOpening();
         await createCustomerRequest(
-      "https",
+      "$transferProtocol",
       UserPreference.getString(PrefKeys.baseUrl)!,
     );
       await createInvoiceRequest();
      await  closePOSTOERPnext();
       await submitInvoiceRequest() ;
       await errorInvoiceRequest();
-      await itemRequest("https",
+      await itemRequest("$transferProtocol",
       UserPreference.getString(PrefKeys.baseUrl)!,
       UserPreference.getString(PrefKeys.userName)!);
-      await batchRequest("https",
+      await batchRequest("$transferProtocol",
       UserPreference.getString(PrefKeys.baseUrl)!,
       UserPreference.getString(PrefKeys.userName)!);
       await pricingRulesRequest(
-      "https", 
+      "$transferProtocol", 
       UserPreference.getString(PrefKeys.baseUrl)!,
       UserPreference.getString(PrefKeys.userName)!);
       await fetchItemQueries.fetchFromItem();

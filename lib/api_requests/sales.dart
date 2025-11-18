@@ -7,17 +7,17 @@ import 'package:offline_pos/data_source/local/pref_keys.dart';
 import 'package:offline_pos/data_source/local/user_preference.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:offline_pos/widgets_components/log_error_to_file.dart';
-
+import 'package:offline_pos/globals/global_values.dart';
 
   final storage = FlutterSecureStorage();
 Future<dynamic> getPrint() async {
-  String httpType = "https";
+  String httpType = "$transferProtocol";
    String frappeInstance = UserPreference.getString(PrefKeys.baseUrl) ?? "";
   try {
    
     // Send GET request to fetch items
     final response = await http.get(
-      Uri.parse('https://$frappeInstance/api/method/offline_pos_erpnext.API.sales.get_sales_print?print_format=POS%20Invoice'),
+      Uri.parse('$transferProtocol://$frappeInstance/api/method/offline_pos_erpnext.API.sales.get_sales_print?print_format=POS%20Invoice'),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
@@ -79,7 +79,7 @@ Future<bool> createInvoiceRequest() async {
         if (invoiceSentToERP.isNotEmpty)
         {
           final posSessionResponse = await http.post(
-              Uri.parse('https://${UserPreference.getString(PrefKeys.baseUrl)}/api/method/offline_pos_erpnext.API.sales.create_pos_invoice'),
+              Uri.parse('$transferProtocol://${UserPreference.getString(PrefKeys.baseUrl)}/api/method/offline_pos_erpnext.API.sales.create_pos_invoice'),
               headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
@@ -126,7 +126,7 @@ if (invoices.isNotEmpty) {
   List<String> invoiceNames = invoices.map((invoice) => invoice.name.toString()).toList();
 bool allSucceeded = true;
 final posSessionResponse = await http.post(
-Uri.parse('https://${UserPreference.getString(PrefKeys.baseUrl)}/api/method/offline_pos_erpnext.API.sales.get_submitted_invoices'),
+Uri.parse('$transferProtocol://${UserPreference.getString(PrefKeys.baseUrl)}/api/method/offline_pos_erpnext.API.sales.get_submitted_invoices'),
 headers: {
   'Content-Type': 'application/json',
   'Accept': 'application/json',
@@ -172,7 +172,7 @@ if (invoices.isNotEmpty) {
   List<String> invoiceNames = invoices.map((invoice) => invoice.name.toString()).toList();
 bool allSucceeded = true;
 final posSessionResponse = await http.post(
-Uri.parse('https://${UserPreference.getString(PrefKeys.baseUrl)}/api/method/offline_pos_erpnext.API.sales.get_error_invoices'),
+Uri.parse('$transferProtocol://${UserPreference.getString(PrefKeys.baseUrl)}/api/method/offline_pos_erpnext.API.sales.get_error_invoices'),
 headers: {
   'Content-Type': 'application/json',
   'Accept': 'application/json',

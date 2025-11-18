@@ -4,13 +4,13 @@ import 'package:offline_pos/data_source/local/pref_keys.dart';
 import 'package:offline_pos/data_source/local/user_preference.dart';
 import 'package:offline_pos/database_conn/licence_db.dart';
 import 'package:offline_pos/widgets_components/log_error_to_file.dart';
-
+import 'package:offline_pos/globals/global_values.dart';
 Future<bool> activateLicenseRequest(String httpType, String frappeInstance, String deviceID, String licenseKey) async {
   try {
   
 
     final response = await http.post(
-      Uri.parse('https://$frappeInstance/api/method/offline_pos_erpnext.API.login.activate_license'),
+      Uri.parse('$transferProtocol://$frappeInstance/api/method/offline_pos_erpnext.API.login.activate_license'),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',

@@ -8,7 +8,7 @@ import 'package:offline_pos/database_conn/create_pos_table.dart';
 import 'package:offline_pos/database_conn/dbsync.dart';
 import 'package:offline_pos/database_conn/insert_pos.dart';
 import 'package:offline_pos/widgets_components/log_error_to_file.dart';
-
+import 'package:offline_pos/globals/global_values.dart';
 Future<bool> openPosRequest(String httpType, String frappeInstance, bool insertIndb, dynamic posOpeningEntry) async {
 
 
@@ -20,7 +20,7 @@ Future<bool> openPosRequest(String httpType, String frappeInstance, bool insertI
     }
     
     final posSessionResponse = await http.post(
-      Uri.parse('https://$frappeInstance/api/resource/POS Opening Entry'),
+      Uri.parse('$transferProtocol://$frappeInstance/api/resource/POS Opening Entry'),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
@@ -69,7 +69,7 @@ Future<bool> closePosRequest( dynamic posClosing) async {
   try {
     
     final posSessionResponse = await http.post(
-      Uri.parse('https://$frappeInstance/api/method/offline_pos_erpnext.API.sales.create_pos_closing_entry'),
+      Uri.parse('$transferProtocol://$frappeInstance/api/method/offline_pos_erpnext.API.sales.create_pos_closing_entry'),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',

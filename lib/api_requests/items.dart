@@ -10,13 +10,13 @@ import 'package:offline_pos/data_source/local/user_preference.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:offline_pos/database_conn/mysql_conn.dart';
 import 'package:offline_pos/widgets_components/log_error_to_file.dart';
-
+import 'package:offline_pos/globals/global_values.dart';
 final storage = FlutterSecureStorage();
 Future<List<TempItem>> itemRequest( String httpType, String frappeInstance, String user) async {
   try {
 
     final response = await http.get(
-      Uri.parse('https://$frappeInstance/api/method/offline_pos_erpnext.API.item_list.get_all_pos_items?user=$user'),
+      Uri.parse('$transferProtocol://$frappeInstance/api/method/offline_pos_erpnext.API.item_list.get_all_pos_items?user=$user'),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
@@ -59,7 +59,7 @@ Future<List<BatchListModel>> batchRequest( String httpType, String frappeInstanc
     await UserPreference.getInstance();
 
     final response = await http.get(
-      Uri.parse('https://$frappeInstance/api/method/offline_pos_erpnext.API.item_list.get_batch?warehouse=${UserPreference.getString(PrefKeys.posProfileWarehouse)}'),
+      Uri.parse('$transferProtocol://$frappeInstance/api/method/offline_pos_erpnext.API.item_list.get_batch?warehouse=${UserPreference.getString(PrefKeys.posProfileWarehouse)}'),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
@@ -101,7 +101,7 @@ Future<List<BarcodeModel>> barcodeRequest( String httpType, String frappeInstanc
     
 
     final response = await http.get(
-      Uri.parse('https://$frappeInstance/api/method/offline_pos_erpnext.API.item_list.get_barcode'),
+      Uri.parse('$transferProtocol://$frappeInstance/api/method/offline_pos_erpnext.API.item_list.get_barcode'),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
@@ -143,7 +143,7 @@ Future<List<TempItem>> updateItems( String httpType, String frappeInstance) asyn
     
     // Send GET request to fetch items
     final response = await http.get(
-      Uri.parse('https://$frappeInstance/api/method/offline_pos_erpnext.API.item_list.get_vat_details'),
+      Uri.parse('$transferProtocol://$frappeInstance/api/method/offline_pos_erpnext.API.item_list.get_vat_details'),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
@@ -186,7 +186,7 @@ Future<List<TempItem>> updateItemsDetails( String httpType, String frappeInstanc
    
     // Send GET request to fetch items
     final response = await http.get(
-      Uri.parse('https://$frappeInstance/api/method/offline_pos_erpnext.API.item_list.get_all_pos_items?user=$user'),
+      Uri.parse('$transferProtocol://$frappeInstance/api/method/offline_pos_erpnext.API.item_list.get_all_pos_items?user=$user'),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
@@ -274,7 +274,7 @@ Future<List<TempItemGroup>> itemGroupRequest( String httpType, String frappeInst
    
 
     final response = await http.get(
-      Uri.parse('https://$frappeInstance/api/resource/Item Group?limit_page_length=100&limit_start=0&fields=["name"]'),
+      Uri.parse('$transferProtocol://$frappeInstance/api/resource/Item Group?limit_page_length=100&limit_start=0&fields=["name"]'),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',

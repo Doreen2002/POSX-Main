@@ -12,14 +12,14 @@ import 'package:offline_pos/models/mode_of_payment.dart';
 import 'package:offline_pos/models/pos_profile_model.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:offline_pos/widgets_components/log_error_to_file.dart';
-
+import 'package:offline_pos/globals/global_values.dart';
 Future<List<TempPOSProfileModel>> posProfileRequest(String httpType, String frappeInstance, String user) async {
   try {
 
     
 
     final response = await http.get(
-      Uri.parse('https://$frappeInstance/api/method/offline_pos_erpnext.API.login.get_user_details?user=$user'),
+      Uri.parse('$transferProtocol://$frappeInstance/api/method/offline_pos_erpnext.API.login.get_user_details?user=$user'),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
