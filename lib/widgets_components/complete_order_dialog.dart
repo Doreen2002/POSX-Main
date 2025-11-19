@@ -179,7 +179,7 @@ Future<dynamic> createInvoice(model) async {
    
   int timestamp = DateTime.now().millisecondsSinceEpoch ~/ 1000;
   final conn = await getDatabase();
-  final invoiceNo = model.isSalesReturn ?'RE-INV-${UserPreference.getString(PrefKeys.branchID)}-${timestamp}' : 'INV-${UserPreference.getString(PrefKeys.branchID)}-${timestamp}';
+  final invoiceNo = model.isSalesReturn ?'RT-INV-${UserPreference.getString(PrefKeys.branchID)}-${timestamp}' : 'INV-${UserPreference.getString(PrefKeys.branchID)}-${timestamp}';
   await fetchFromSalesPerson();
   await insertTableSalesInvoice(
     id: invoiceNo,
