@@ -317,10 +317,11 @@ class _CartItemScreenState extends State<CartItemScreen> {
                                             'Clear Cart',
                                             'Retrieve Cart',
                                             'Calculator',
+                                            
                                             model.cashDrawerEnabled
                                                 ? 'Cash Drawer\nEnabled'
                                                 : 'Cash Drawer\nDisabled',
-                                            '',
+                                            'Return Sale',
                                             '',
                                           ];
                                           return Container(

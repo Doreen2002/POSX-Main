@@ -516,7 +516,7 @@ Future<List<Item>> fetchSalesInvoiceItemDetailsToReturn(String name) async {
       
       }
       if (fields.containsKey('qty')) {
-        fields['qty'] = fields['qty'] * -1;
+        fields['qty'] = fields['qty'] ;
       }
 
   return Item.fromJson(fields);
