@@ -325,7 +325,7 @@ class _CartItemScreenState extends State<CartItemScreen> {
                                             model.cashDrawerEnabled
                                                 ? 'Cash Drawer\nEnabled'
                                                 : 'Cash Drawer\nDisabled',
-                                            'Return Invoice',
+                                            '',
                                             '',
                                           ];
                                           return Container(
@@ -551,9 +551,7 @@ class _CartItemScreenState extends State<CartItemScreen> {
                                                           ),
                                                     );
                                                     break;
-                                                  case 'Return Invoice':
-                                                    sumbitPaymentFnine(model, context, isSalesReturn: true);
-                                                    break;
+                                                  
 
                                                   default:
                                                     break;
