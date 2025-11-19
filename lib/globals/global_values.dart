@@ -1,2 +1,2 @@
 
-String transferProtocol = 'http';
+String transferProtocol = 'https';

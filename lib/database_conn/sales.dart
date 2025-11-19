@@ -116,7 +116,7 @@ Future<List<Map<String, dynamic>>> fetchGroupedInvoiceData() async {
   try {
     // Step 1: Fetch all invoices
     var invoiceRows = await conn.query("SELECT * FROM SalesInvoice WHERE (status = 'Created' OR status = 'In Progress'  OR status = 'Sent' );");
-
+  
     for (final row in invoiceRows) {
       final invoiceName = row['name'];
 
@@ -137,6 +137,7 @@ Future<List<Map<String, dynamic>>> fetchGroupedInvoiceData() async {
         "additional_discount_percentage": row['additional_discount_percentage'] ?? 0,
         'discount_amount': row['discount'] ?? 0,
         "invoice_status":row['invoice_status'] ?? "Submitted",
+        'is_return':row['is_return'] ?? "No",
         "name":row['name'],
         "sales_person":row["sales_person"],
         'posting_date': row['posx_date'],
@@ -146,7 +147,7 @@ Future<List<Map<String, dynamic>>> fetchGroupedInvoiceData() async {
     'item_code': fields['item_code'],
     'item_name': fields['item_name'],
     'warehouse':UserPreference.getString(PrefKeys.posProfileWarehouse),
-    'qty': fields['qty'],
+    'qty':row['is_return'] =="Yes" ?  fields['qty'] * -1 : fields['qty'] ,
     'rate': fields['rate'],
     'amount':fields['price_list_rate'],
     'discount_percentage': fields['discount_percentage'] ,
@@ -541,7 +542,7 @@ Future<Map<String, dynamic>> fetchSalesInvoiceToPrint(String name) async {
   try {
    
     final invoiceResult = await conn.query(
-      "SELECT name AS invoice_no, change_amount, sales_person,  gross_total AS grossTotal, customer_name,   discount AS discountAmount , vat as vatTotal, net_total AS netTotal,  grand_total AS grandTotal, posx_date AS postingDate, customer FROM SalesInvoice WHERE name = ?",
+      "SELECT name AS invoice_no, is_return, change_amount, sales_person,  gross_total AS grossTotal, customer_name,   discount AS discountAmount , vat as vatTotal, net_total AS netTotal,  grand_total AS grandTotal, posx_date AS postingDate, customer FROM SalesInvoice WHERE name = ?",
       [name],
     );
     if (invoiceResult.isEmpty) {

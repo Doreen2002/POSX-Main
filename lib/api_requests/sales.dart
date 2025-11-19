@@ -72,6 +72,8 @@ Future<bool> createInvoiceRequest() async {
         'pos_invoice_id':invoice['name'],
         'pos_invoice_name':invoice['name'],
         'update_stock': 1,
+        'is_return': invoice['is_return'],
+        'return_against': invoice['is_return'] == "Yes" ? invoice['name'] : null,
         "invoice_status":invoice["invoice_status"],
         'docstatus': 0
         });
