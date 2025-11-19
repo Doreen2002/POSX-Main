@@ -155,7 +155,12 @@ class _NumberPadState extends State<NumberPad> {
                 onPressed: () async {
                   if(widget.isSalesReturn)
                   {
-                    return;
+                    return DialogUtils.showError(
+                      context: context,
+                      title: "Not Allowed",
+                      message: "Submit Payment is not allowed in Sales Return.",
+                      width: MediaQuery.of(context).size.width * 0.4,
+                    );
                   }
                   sumbitPaymentFnine(model, context);
                 },

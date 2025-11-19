@@ -42,8 +42,12 @@ class _TopBarState extends State<TopBar> {
     super.initState();
     _focusNode = FocusNode();
     widget.model.customerListController.addListener(_onCustomerTextChanged);
-    widget.model.salesListController.text =
-        UserPreference.getString(PrefKeys.salesPerson) ?? "";
+    if(widget.model.salesListController.text.isEmpty)
+    {
+
+      widget.model.salesListController.text =  UserPreference.getString(PrefKeys.salesPerson) ?? "";
+    }
+    
     if (widget.model.salesListController.text.isNotEmpty) {
       widget.model.setSalesPerson = true;
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -352,12 +356,15 @@ Widget buildTopBarContent(
                     child: SizedBox(
                       height: 40.h,
                       child: TypeAheadField(
+                    
                         controller: model.customerListController,
                         builder:
                             (context, controller, focusNode) => TextField(
                               controller: controller,
                               focusNode: focusNode,
                               autofocus: false,
+                              
+                              
                               style: TextStyle(
                                 fontSize: 5.sp,
                                 fontWeight: FontWeight.w500,
@@ -485,7 +492,7 @@ Widget buildTopBarContent(
                         children: [
                           SingleText(
                             text: "Loyalty Points",
-                            fontSize: 3.sp,
+                            fontSize:3.5.sp,
                             color: Color(0xFF006A35),
                             fontWeight: FontWeight.bold,
                           ),
@@ -493,7 +500,7 @@ Widget buildTopBarContent(
                             text:
                                 "  ${UserPreference.getString(PrefKeys.currency).toString()}  ${(model.customerData.loyaltyPointsAmount == null || model.customerData.loyaltyPointsAmount!.isNaN) ? "0.00" : model.customerData.loyaltyPointsAmount!.toStringAsFixed(model.decimalPoints)}",
 
-                            fontSize: 3.sp,
+                            fontSize:3.5.sp,
                             color: Color.fromARGB(255, 14, 15, 14),
                             fontWeight: FontWeight.bold,
                           ),
@@ -510,7 +517,7 @@ Widget buildTopBarContent(
                         children: [
                           SingleText(
                             text: "Loyalty Points",
-                            fontSize: 3.sp,
+                            fontSize: 3.5.sp,
                             color: Color(0xFF006A35),
                             fontWeight: FontWeight.bold,
                           ),
@@ -521,7 +528,7 @@ Widget buildTopBarContent(
                                     ? "0"
                                     : model.customerData.loyaltyPoints!
                                         .toString(),
-                            fontSize: 3.sp,
+                            fontSize: 3.5.sp,
                             color: Color.fromARGB(255, 14, 15, 14),
                             fontWeight: FontWeight.bold,
                           ),
@@ -529,7 +536,7 @@ Widget buildTopBarContent(
                       ),
                     ),
                   ),
-                  SizedBox(width: 10.w),
+                  SizedBox(width: 15.w),
                   Expanded(
                     flex: 1,
                     child: SizedBox(
@@ -554,7 +561,7 @@ Widget buildTopBarContent(
                                 ),
                                 label: SingleText(
                                   text: "Set Sales Person",
-                                  fontSize: 4.sp,
+                                  fontSize: 3.5.sp,
                                   color: Color(0xFF006A35),
                                 ),
                                 suffixIcon: Visibility(

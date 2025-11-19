@@ -898,7 +898,7 @@ async{
     final invoiceNo = 'Return-INV-${UserPreference.getString(PrefKeys.branchID)}-${timestamp}';
     Navigator.push(
     context,
-    MaterialPageRoute(builder: (context) => CartItemScreen(runInit: false, cartItems: invoiceItemDetails, isSalesReturn: true,)),
+    MaterialPageRoute(builder: (context) => CartItemScreen(salesPersonID:invoiceDetails['sales_person'], customer:invoiceDetails['customer_name'], runInit: false, cartItems: invoiceItemDetails, isSalesReturn: true,)),
   );
   
   // return await insertTableSalesInvoice(
@@ -925,7 +925,7 @@ async{
   //   isReturn: "Yes",
   //   returnAgainst: invoiceDetails['name'],
   // );
-  print("Return invoice processed ${model.isSalesReturn}");
+
   }
   catch(e){
     print("Error in returning invoice: $e");

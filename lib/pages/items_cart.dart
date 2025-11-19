@@ -38,6 +38,7 @@ import '../models/item.dart';
 class CartItemScreen extends StatefulWidget {
   final bool runInit;
   final String customer;
+  final String salesPersonID;
   final List<Item> cartItems;
   final String discountAmount;
   final String discountPercent;
@@ -47,6 +48,7 @@ class CartItemScreen extends StatefulWidget {
     this.runInit = true,
     this.isSalesReturn = false,
     this.customer = '',
+    this.salesPersonID = '',
     this.cartItems = const [],
     this.discountAmount = '',
     this.discountPercent = '',
@@ -95,13 +97,14 @@ class _CartItemScreenState extends State<CartItemScreen> {
           }
           viewModel.allItemsDiscountAmount.text = widget.discountAmount;
           viewModel.allItemsDiscountPercent.text = widget.discountPercent;
+          viewModel.salesListController.text = widget.salesPersonID;
           viewModel.discountCalculation(
             viewModel.allItemsDiscountAmount.text,
             viewModel.allItemsDiscountPercent.text,
           );
           widget.cartItems.clear();
         }
-
+        viewModel.isSalesReturn = widget.isSalesReturn;
         viewModel.initialise(widget.runInit, widget.customer, widget.cartItems);
       },
       onDispose: (viewModel) => viewModel.dispose(),
@@ -271,7 +274,7 @@ class _CartItemScreenState extends State<CartItemScreen> {
                                   SizedBox(height: 10.h),
 
                                   Expanded(
-                                      child: searchByItemName( context,model, setState,widget.isSalesReturn),
+                                      child: searchByItemName( context,model, setState,model.isSalesReturn),
                                      ),
 
                                 
