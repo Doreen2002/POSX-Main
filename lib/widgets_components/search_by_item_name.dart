@@ -12,7 +12,7 @@ import 'package:offline_pos/widgets_components/all_items.dart';
   String? selectedItem;
 
 
-  Widget SearchByItemName( context,  model, setState) {
+  Widget searchByItemName( context,  model, setState, readonly) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -23,6 +23,7 @@ import 'package:offline_pos/widgets_components/all_items.dart';
               controller: controller,
               focusNode: focusNode,
               autofocus: true,
+              readOnly: readonly,
               style: TextStyle(fontSize: 5.sp, color: Colors.black),
               decoration: InputDecoration(
                 labelText: "Search by Item Name",

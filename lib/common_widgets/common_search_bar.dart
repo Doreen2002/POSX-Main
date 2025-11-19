@@ -12,6 +12,7 @@ class CommonSearchBar extends StatelessWidget {
   final Widget? suffix;
   final FocusNode? focusNode; // <-- Add focusNode
   final bool autofocus; // <-- Add autofocus
+  final bool readonly;
 
   const CommonSearchBar({
     super.key,
@@ -21,6 +22,7 @@ class CommonSearchBar extends StatelessWidget {
     this.suffix,
     this.focusNode, // <-- Accept focusNode
     this.autofocus = false, // <-- Accept autofocus
+    this.readonly = false,
   });
 
   @override
@@ -37,6 +39,7 @@ class CommonSearchBar extends StatelessWidget {
           autofocus: autofocus, // <-- Pass to TextField
           onSubmitted: onSubmitted,
           onChanged: onChanged,
+          readOnly: readonly,
           cursorHeight: 25.h,
           cursorColor: const Color(0xFF2B3691),
           style: TextStyle(

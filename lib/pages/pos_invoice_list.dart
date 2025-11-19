@@ -791,7 +791,7 @@ void didChangeDependencies() {
                                                                     ),
                                                                   ),
                                                                   onPressed: () async {
-                                                                   returnInvoice ( savedContext,invoice.name);
+                                                                   returnInvoice ( savedContext,invoice.name, model);
                                                                     _loadInvoices();
                                                                   },
                                                                   tooltip:
@@ -888,18 +888,19 @@ void didChangeDependencies() {
 }
 
 
-Future<dynamic>  returnInvoice (BuildContext context,String invoice)
+Future<dynamic>  returnInvoice (BuildContext context,String invoice, model)
 async{
-  dynamic invoiceDetails = await fetchSalesInvoiceDetailsToReturn(invoice);
-  List<Item> invoiceItemDetails = await fetchSalesInvoiceItemDetailsToReturn(invoice);
-   int timestamp = DateTime.now().millisecondsSinceEpoch ~/ 1000;
-  final conn = await getDatabase();
-  final invoiceNo = 'Return-INV-${UserPreference.getString(PrefKeys.branchID)}-${timestamp}';
-  print("${invoiceItemDetails}");
+  try{
+    dynamic invoiceDetails = await fetchSalesInvoiceDetailsToReturn(invoice);
+    List<Item> invoiceItemDetails = await fetchSalesInvoiceItemDetailsToReturn(invoice);
+    int timestamp = DateTime.now().millisecondsSinceEpoch ~/ 1000;
+    final conn = await getDatabase();
+    final invoiceNo = 'Return-INV-${UserPreference.getString(PrefKeys.branchID)}-${timestamp}';
     Navigator.push(
     context,
-    MaterialPageRoute(builder: (context) => CartItemScreen(runInit: false, cartItems: invoiceItemDetails)),
+    MaterialPageRoute(builder: (context) => CartItemScreen(runInit: false, cartItems: invoiceItemDetails, isSalesReturn: true,)),
   );
+  
   // return await insertTableSalesInvoice(
   //   id: invoiceNo ,
   //   name: invoiceNo,
@@ -924,4 +925,10 @@ async{
   //   isReturn: "Yes",
   //   returnAgainst: invoiceDetails['name'],
   // );
+  print("Return invoice processed ${model.isSalesReturn}");
+  }
+  catch(e){
+    print("Error in returning invoice: $e");
+  }
+
 }

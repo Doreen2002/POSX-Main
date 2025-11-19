@@ -61,6 +61,9 @@ class CartItemScreenController extends ItemScreenController {
   }
 }
 
+  //is sales invoice return 
+  bool isSalesReturn = false;
+
   //keboardshortcuts
    bool isProcessingKey = false;
   //key pad

@@ -41,9 +41,11 @@ class CartItemScreen extends StatefulWidget {
   final List<Item> cartItems;
   final String discountAmount;
   final String discountPercent;
+  final bool isSalesReturn ;
   const CartItemScreen({
     Key? key,
     this.runInit = true,
+    this.isSalesReturn = false,
     this.customer = '',
     this.cartItems = const [],
     this.discountAmount = '',
@@ -80,6 +82,7 @@ class _CartItemScreenState extends State<CartItemScreen> {
       onViewModelReady: (viewModel) {
         viewModel.initialise(widget.runInit, widget.customer, widget.cartItems);
         WidgetsBinding.instance.addPostFrameCallback((_) {});
+       
         if (widget.cartItems.isNotEmpty) {
           viewModel.cartItems = List<Item>.from(widget.cartItems);
           for (var cartItem in viewModel.cartItems) {
@@ -212,6 +215,7 @@ class _CartItemScreenState extends State<CartItemScreen> {
                                           controller: model.searchController,
                                           focusNode: model.searchFocusNode,
                                           autofocus: model.autoFocusSearchItem,
+                                          readonly: widget.isSalesReturn,
                                           onSubmitted: (value) async {
                                             try {
                                               
@@ -267,7 +271,7 @@ class _CartItemScreenState extends State<CartItemScreen> {
                                   SizedBox(height: 10.h),
 
                                   Expanded(
-                                      child: SearchByItemName( context,model, setState),
+                                      child: searchByItemName( context,model, setState,widget.isSalesReturn),
                                      ),
 
                                 
