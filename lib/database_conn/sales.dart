@@ -162,7 +162,8 @@ Future<List<Map<String, dynamic>>> fetchGroupedInvoiceData() async {
     }).toList(),
         'payments': paymentRows.map((p) {
         final payment = Map<String, dynamic>.from(p.fields);
-        payment['base_amount'] = payment['amount'];
+        payment['base_amount'] = row['is_return'] == 'Yes'? payment['amount'] * -1 : payment['amount']  ;
+        payment['amount'] = row['is_return'] == 'Yes'? payment['amount'] * -1 : payment['amount']  ;
         return payment;
       }).toList(),
       });
