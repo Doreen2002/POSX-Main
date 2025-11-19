@@ -125,7 +125,7 @@ void didChangeDependencies() {
     // Apply search filter
     if (searchQuery.isNotEmpty) {
       final invoiceNames = salesInvoiceItemModelList
-    .where((invoiceitem) => invoiceitem.itemCode.toLowerCase().contains(searchQuery.toLowerCase()))
+    .where((invoiceitem) => invoiceitem.itemCode.toLowerCase().contains(searchQuery.toLowerCase()) ||invoiceitem.itemName.toLowerCase().contains(searchQuery.toLowerCase()) )
     .map((invoiceitem) => invoiceitem.name.toLowerCase()) 
     .toList();
       filteredList =

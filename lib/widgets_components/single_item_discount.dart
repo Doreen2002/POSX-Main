@@ -215,6 +215,7 @@ Widget singleItemDiscountScreen(
                                       focusNode:
                                           model.singlediscountAmountfocusNode,
                                       hintText: '',
+                                       readOnly: model.isSalesReturn,
                                       keyboardType: TextInputType.number,
                                       inputFormatters: [
                                         DecimalTextInputFormatter(
@@ -308,6 +309,7 @@ Widget singleItemDiscountScreen(
                                       focusNode:
                                           model.singleItemdiscountAmountfocusNode,
                                       hintText: '',
+                                      readOnly: model.isSalesReturn,
                                       keyboardType: TextInputType.number,
                                       inputFormatters: [
                                         DecimalTextInputFormatter(
@@ -402,6 +404,7 @@ Widget singleItemDiscountScreen(
                                       focusNode:
                                           model.singlediscountPercentfocusNode,
                                       hintText: '',
+                                        readOnly: model.isSalesReturn,
                                       keyboardType: TextInputType.number,
                                       inputFormatters: [
                                         DecimalTextInputFormatter(
