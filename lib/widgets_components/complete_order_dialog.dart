@@ -203,7 +203,7 @@ Future<dynamic> createInvoice(model) async {
     additionalDiscountPer: model.allItemsDiscountPercent.text.isNotEmpty ?  double.parse( model.allItemsDiscountPercent.text ) : 0.00,
     discount: model.allItemsDiscountAmount.text.isNotEmpty ?  double.parse( model.allItemsDiscountAmount.text ) : 0.00,
     isReturn: model.isSalesReturn ? "Yes": "No",
-    returnAgainst: "",
+    returnAgainst: model.returnAgainst
   );
   await createInvoiceItem(model, conn, invoiceNo);
   await createPayment(model, conn, invoiceNo);

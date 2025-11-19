@@ -896,9 +896,10 @@ async{
     int timestamp = DateTime.now().millisecondsSinceEpoch ~/ 1000;
     final conn = await getDatabase();
     final invoiceNo = 'Return-INV-${UserPreference.getString(PrefKeys.branchID)}-${timestamp}';
+    
     Navigator.push(
     context,
-    MaterialPageRoute(builder: (context) => CartItemScreen(salesPersonID:invoiceDetails['sales_person'], customer:invoiceDetails['customer_name'], runInit: false, cartItems: invoiceItemDetails, isSalesReturn: true,)),
+    MaterialPageRoute(builder: (context) => CartItemScreen(returnAgainst:invoiceDetails['name'],salesPersonID:invoiceDetails['sales_person'], customer:invoiceDetails['customer_name'], runInit: false, cartItems: invoiceItemDetails, isSalesReturn: true,)),
   );
   
   // return await insertTableSalesInvoice(

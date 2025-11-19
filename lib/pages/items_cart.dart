@@ -44,6 +44,7 @@ class CartItemScreen extends StatefulWidget {
   final String discountAmount;
   final String discountPercent;
   final bool isSalesReturn ;
+  final String returnAgainst;
   const CartItemScreen({
     Key? key,
     this.runInit = true,
@@ -53,6 +54,7 @@ class CartItemScreen extends StatefulWidget {
     this.cartItems = const [],
     this.discountAmount = '',
     this.discountPercent = '',
+    this.returnAgainst = '',
   }) : super(key: key);
 
   @override
@@ -106,6 +108,7 @@ class _CartItemScreenState extends State<CartItemScreen> {
           widget.cartItems.clear();
         }
         viewModel.isSalesReturn = widget.isSalesReturn;
+        viewModel.returnAgainst = widget.returnAgainst;
         viewModel.initialise(widget.runInit, widget.customer, widget.cartItems);
       },
       onDispose: (viewModel) => viewModel.dispose(),

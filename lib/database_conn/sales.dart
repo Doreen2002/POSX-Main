@@ -138,6 +138,7 @@ Future<List<Map<String, dynamic>>> fetchGroupedInvoiceData() async {
         'discount_amount': row['discount'] ?? 0,
         "invoice_status":row['invoice_status'] ?? "Submitted",
         'is_return':row['is_return'] ?? "No",
+        'return_against':row['return_against'] ?? "",
         "name":row['name'],
         "sales_person":row["sales_person"],
         'posting_date': row['posx_date'],
