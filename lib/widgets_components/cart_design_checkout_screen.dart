@@ -15,5 +15,5 @@ Widget cartDesignCheckOutScreen(BuildContext context, CartItemScreenController m
         
       });
     }
-    return cartDesign(context, model);
+    return cartDesign(context, model, false);
   }

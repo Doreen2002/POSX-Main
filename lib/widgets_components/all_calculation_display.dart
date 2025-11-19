@@ -10,6 +10,7 @@ import '../common_widgets/single_text.dart';
 Widget allCalculationDisplay(
   BuildContext context,
   CartItemScreenController model,
+  isSalesReturn,
 ) {
   return Row(
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -86,7 +87,7 @@ Widget allCalculationDisplay(
       // Right: Number Pad
       Expanded(
         flex: 3, // fixed width for number pad
-        child: NumberPad(),
+        child: NumberPad(isSalesReturn),
       ),
     ],
   );

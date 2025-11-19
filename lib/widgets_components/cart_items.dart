@@ -12,7 +12,7 @@ import '../common_widgets/single_text.dart';
 import '../common_widgets/common_message_print.dart';
 import '../widgets_components/additional_discount.dart';
 
-Widget cartDesign(BuildContext context, CartItemScreenController model) {
+Widget cartDesign(BuildContext context, CartItemScreenController model, isSalesReturn) {
   model.selectedItemIndex =
       model.cartItems.isEmpty ? -1 : model.selectedItemIndex;
   final currencyPrecision = 3;
@@ -612,7 +612,7 @@ Widget cartDesign(BuildContext context, CartItemScreenController model) {
                 child: Container(
                   child: Column(
                     children: [
-                      allCalculationDisplay(context, model),
+                      allCalculationDisplay(context, model,isSalesReturn),
                       SizedBox(height: 10.h),
                       // Shortcuts(
                       //   shortcuts: <LogicalKeySet, Intent>{

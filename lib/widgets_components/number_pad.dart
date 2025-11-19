@@ -18,6 +18,9 @@ import 'package:provider/provider.dart';
 class NumberPad extends StatefulWidget {
   @override
   State<NumberPad> createState() => _NumberPadState();
+
+  final bool isSalesReturn;
+  NumberPad(this.isSalesReturn);
 }
 
 class _NumberPadState extends State<NumberPad> {
@@ -150,6 +153,10 @@ class _NumberPadState extends State<NumberPad> {
                 bgColor: const Color(0xFF006A35),
                 textColor: Colors.white,
                 onPressed: () async {
+                  if(widget.isSalesReturn)
+                  {
+                    return;
+                  }
                   sumbitPaymentFnine(model, context);
                 },
               ),

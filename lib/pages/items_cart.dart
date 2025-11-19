@@ -596,7 +596,7 @@ class _CartItemScreenState extends State<CartItemScreen> {
                           
                             Visibility(
                            
-                              child: cartDesign(context, model),
+                              child: cartDesign(context, model, widget.isSalesReturn),
                             ),
                           ],
                         ),
