@@ -507,7 +507,7 @@ Widget checkOutRightSide(context, CartItemScreenController model) {
                                     ),
                                     child: Center(
                                       child: SingleText(
-                                        text: 'Submit & Print Receipt ',
+                                        text: model.isSalesReturn ?'Submit & Print Return Receipt ' : 'Submit & Print Receipt ',
                                         fontWeight: FontWeight.bold,
                                         fontSize: 4.5.sp,
                                         color: Colors.white,
@@ -560,7 +560,7 @@ Widget checkOutRightSide(context, CartItemScreenController model) {
                                     ),
                                     child: Center(
                                       child: SingleText(
-                                        text: 'Submit - No Receipt Print',
+                                        text:model.isSalesReturn ? 'Submit - No Return Receipt Print': 'Submit - No Receipt Print',
                                         fontWeight: FontWeight.bold,
                                         fontSize: 4.5.sp,
                                         color: Colors.white,

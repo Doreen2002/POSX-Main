@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'dart:async';
 import 'package:offline_pos/utils/dialog_utils.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:offline_pos/widgets_components/number_pad.dart';
 import 'package:offline_pos/widgets_components/search_by_item_name.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:offline_pos/api_requests/license_details.dart';
@@ -324,7 +325,7 @@ class _CartItemScreenState extends State<CartItemScreen> {
                                             model.cashDrawerEnabled
                                                 ? 'Cash Drawer\nEnabled'
                                                 : 'Cash Drawer\nDisabled',
-                                            'Return Sale',
+                                            'Return Invoice',
                                             '',
                                           ];
                                           return Container(
@@ -549,6 +550,9 @@ class _CartItemScreenState extends State<CartItemScreen> {
                                                             ),
                                                           ),
                                                     );
+                                                    break;
+                                                  case 'Return Invoice':
+                                                    sumbitPaymentFnine(model, context, isSalesReturn: true);
                                                     break;
 
                                                   default:

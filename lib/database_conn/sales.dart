@@ -592,6 +592,7 @@ Future<Map<String, dynamic>> fetchSalesInvoiceToPrint(String name) async {
       "grandTotal": invoice['grandTotal'],
       "postingDate": invoice['postingDate'],
       'served_by':invoice['sales_person'],
+      "isReturn": invoice['is_return'] ?? "No",
       "customer": invoice['customer'],
       "invoice_no": invoice['invoice_no'],
       "vatTotal": invoice['vatTotal'] ?? 0.0,

@@ -449,7 +449,7 @@ void clear(model, context) {
   }
 }
 
-void sumbitPaymentFnine(model, context) async {
+void sumbitPaymentFnine(model, context, {isSalesReturn=false}) async {
   try {
     await UserPreference.getInstance();
 
