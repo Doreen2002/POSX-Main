@@ -418,6 +418,16 @@ class _CartItemScreenState extends State<CartItemScreen> {
                                                     break;
 
                                                   case 'Hold Cart':
+                                                  if(model.isSalesReturn)
+                                                  {
+                                                   DialogUtils.showError(
+                                                      context: context,
+                                                      title: "Not Allowed",
+                                                      message: "Hold Cart is not allowed in Sales Return.",
+                                                      width: MediaQuery.of(context).size.width * 0.4,
+                                                    );
+                                                    break;
+                                                  }
                                                     if (model
                                                             .cartItems
                                                             .isNotEmpty &&

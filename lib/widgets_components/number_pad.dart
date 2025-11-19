@@ -148,20 +148,12 @@ class _NumberPadState extends State<NumberPad> {
                 },
               ),
               buildButton(
-                "Submit\nPayment",
+               model.isSalesReturn? "Submit\nReturn": "Submit\nPayment",
                 fontSize: 14,
                 bgColor: const Color(0xFF006A35),
                 textColor: Colors.white,
                 onPressed: () async {
-                  if(widget.isSalesReturn)
-                  {
-                    return DialogUtils.showError(
-                      context: context,
-                      title: "Not Allowed",
-                      message: "Submit Payment is not allowed in Sales Return.",
-                      width: MediaQuery.of(context).size.width * 0.4,
-                    );
-                  }
+                 
                   sumbitPaymentFnine(model, context);
                 },
               ),
