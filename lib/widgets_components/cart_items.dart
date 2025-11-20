@@ -320,7 +320,7 @@ Widget cartDesign(BuildContext context, CartItemScreenController model, isSalesR
 
                                         // Quantity Text
                                         SingleText(
-                                          text: cartitem.qty.toString(),
+                                          text:"${model.isSalesReturn ? '-':''} ${cartitem.qty.toString()}",
                                           fontWeight: FontWeight.w800,
                                           fontSize: 13,
                                         ),
@@ -449,8 +449,8 @@ Widget cartDesign(BuildContext context, CartItemScreenController model, isSalesR
                                 SizedBox(
                                   width: 20.w,
                                   child: SingleText(
-                                    text: (cartitem.itemTotal ?? 0.0)
-                                        .toStringAsFixed(currencyPrecision),
+                                    text:"${model.isSalesReturn ? '-':''} ${(cartitem.itemTotal ?? 0.0)
+                                        .toStringAsFixed(currencyPrecision)}",
                                     fontWeight: FontWeight.bold,
                                     fontSize: 13,
                                   ),
@@ -468,10 +468,10 @@ Widget cartDesign(BuildContext context, CartItemScreenController model, isSalesR
                                   width: 25.w,
 
                                   child: SingleText(
-                                    text: (model.roundToDecimals(
+                                    text:"${model.isSalesReturn ? '-':''} ${(model.roundToDecimals(
                                       (cartitem.totalWithVatPrev ?? 0),
                                       model.decimalPoints,
-                                    )).toStringAsFixed(currencyPrecision),
+                                    )).toStringAsFixed(currencyPrecision)}",
                                     fontWeight: FontWeight.bold,
                                     fontSize: 13,
                                   ),

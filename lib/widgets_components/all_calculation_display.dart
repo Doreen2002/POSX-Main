@@ -26,7 +26,7 @@ Widget allCalculationDisplay(
               _buildRow(
                 "Gross Total",
                 UserPreference.getString(PrefKeys.currency)! +
-                    " " +
+                    " " + (model.isSalesReturn ? '-':'').toString() +
                     model
                         .roundToDecimals(model.grossTotal, model.decimalPoints)
                         .toStringAsFixed(model.decimalPoints),
@@ -48,27 +48,27 @@ Widget allCalculationDisplay(
               _buildRow(
                 "Net Total",
                 UserPreference.getString(PrefKeys.currency)! +
-                    " " +
+                    " " + (model.isSalesReturn ? '-':'').toString()+
                     model.netTotal.toStringAsFixed(model.decimalPoints),
               ),
 
               _buildRow(
                 "VAT Total",
                 UserPreference.getString(PrefKeys.currency)! +
-                    " " +
-                    model.vatTotal.toStringAsFixed(model.decimalPoints),
+                    " " + (model.isSalesReturn ? '-':'').toString()+
+                   model.vatTotal.toStringAsFixed(model.decimalPoints),
               ),
 
               _buildRow(
                 "Grand Total",
                 UserPreference.getString(PrefKeys.currency)! +
-                    " " +
+                    " " + (model.isSalesReturn ? '-':'').toString() +
                     model
                         .roundToDecimals(model.grandTotal, model.decimalPoints)
                         .toStringAsFixed(model.decimalPoints),
               ),
 
-              _buildRow("Total Quantity", model.totalQTy.toString()),
+              _buildRow("Total Quantity", (model.isSalesReturn ? '-':'').toString()+ model.totalQTy.toString()),
               Visibility(
                 visible:
                     model.allItemsDiscountPercent.text.isNotEmpty &&

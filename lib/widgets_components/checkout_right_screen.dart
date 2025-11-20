@@ -379,7 +379,7 @@ Widget checkOutRightSide(context, CartItemScreenController model) {
                                   color: const Color(0xFF009124),
                                 ),
                                 SingleText(
-                                  text: model
+                                  text:(model.isSalesReturn ? '-':'').toString()+ model
                                       .roundToDecimals(
                                         model.paidAmount,
                                         model.decimalPoints,
