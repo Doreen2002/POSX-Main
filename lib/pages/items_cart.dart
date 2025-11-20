@@ -222,7 +222,7 @@ class _CartItemScreenState extends State<CartItemScreen> {
                                           controller: model.searchController,
                                           focusNode: model.searchFocusNode,
                                           autofocus: model.autoFocusSearchItem,
-                                          readonly: widget.isSalesReturn,
+                                          readonly: model.isSalesReturn,
                                           onSubmitted: (value) async {
                                             try {
                                               
@@ -406,8 +406,12 @@ class _CartItemScreenState extends State<CartItemScreen> {
                                                         confirmText: 'Yes, Clear',
                                                         cancelText: 'Cancel',
                                                         onConfirm: () async{
+                                                          model.isSalesReturn = false;
+                                                          model.returnAgainst = '';
+                                                          model.autoFocusSearchItem = true;
                                                          model.cartItems.clear();
                                                          model.refresh();
+                                                         model.notifyListeners();
                                                         Navigator.pop(context);
                                                         },
                                                         onCancel: (){
