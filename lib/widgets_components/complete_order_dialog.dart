@@ -318,6 +318,8 @@ void resetCalculations(CartItemScreenController model) {
   model.showAddDiscount = false;
   model.allItemsDiscountAmount.text = '';
   model.allItemsDiscountPercent.text = '';
+  model.isSalesReturn = false;
+  model.returnAgainst = '';
 
   model.notifyListeners();
   }
