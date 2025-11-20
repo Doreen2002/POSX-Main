@@ -516,10 +516,12 @@ Future<List<Item>> fetchSalesInvoiceItemDetailsToReturn(String name) async {
         fields['vat_value'] = int.tryParse(fields['item_tax_rate']) ;
         fields['item_total'] = fields['net_amount'];
         fields['total_with_vat_prev'] = fields['net_amount'];
+        fields['name'] = fields['item_code'];
       
       }
       if (fields.containsKey('qty')) {
         fields['qty'] = fields['qty'] ;
+        fields['validate_qty'] = fields['qty'] ;
       }
 
   return Item.fromJson(fields);

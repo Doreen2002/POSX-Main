@@ -16,6 +16,7 @@ class Item {
   String stockUom;
   String? image;
   int qty;
+  int? validateQty;
   double itemTotal; // Line total (qty × rate), not unit cost
   double newRate;
   int? openingStock;
@@ -65,6 +66,7 @@ class Item {
     required this.stockUom,
     required this.image,
     required this.qty,
+    this.validateQty,
     required this.itemTotal,
     required this.newRate,
     this.openingStock,
@@ -114,6 +116,7 @@ class Item {
     stockUom: json["stock_uom"],
     image: json["image"],
     qty: json["qty"],
+    validateQty: json["validate_qty"],
     itemTotal: (json["standard_rate"]?.toDouble() ?? 0.0) * (json["qty"] ?? 1), // Line total = selling price × quantity
     newRate: json["new_rate"]?.toDouble() ?? json["standard_rate"]?.toDouble() ?? 0.0,
     openingStock: json["opening_stock"]?.toDouble(),
@@ -163,6 +166,7 @@ class Item {
     "stock_uom": stockUom,
     "image": image,
     "qty": qty,
+    "validate_qty": validateQty,
     "item_total": itemTotal / (qty > 0 ? qty : 1), // Reverse calculate unit rate from line total
     "new_rate": newRate,
     "opening_stock": openingStock,

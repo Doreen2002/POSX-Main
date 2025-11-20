@@ -508,6 +508,7 @@ Widget singleItemDiscountScreen(
                                       model.notifyListeners();
                                     },
                                     onChanged: (value) {
+                                     
                                       if (value.isEmpty) {
                                         // Update model qty to 1 immediately but don't change UI here
                                         onChangeItemQTY(
@@ -1288,10 +1289,25 @@ void onChageDiscountAmount(model, val, selectedItemIndex, context) {
 void onChangeItemQTY(value, model, selectedItemIndex) {
   final selectedItemModel = model.cartItems[selectedItemIndex];
   int _value = int.tryParse(value.isNotEmpty ? value : "0") ?? 0;
-
   TempItem? item = OptimizedDataManager.getItemByCode(
     model.cartItems[model.selectedItemIndex].itemCode
   );
+   if(model.isSalesReturn)
+  {
+    print("sakes return");
+    if(_value > model.cartItems[selectedItemIndex].validateQty)
+    {
+      DialogUtils.showError(
+        context: model.context,
+        title: 'Invalid Quantity',
+        message:
+            'You cannot set quantity greater than the original sold quantity.\nOriginal sold quantity: ${model.cartItems[selectedItemIndex].validateQty}',
+      );
+      model.singleqtyController.text =
+          model.cartItems[selectedItemIndex].validateQty.toString();
+      return;
+    }
+  }
   if (item == null) {
     return; // Item not found, skip processing
   }
