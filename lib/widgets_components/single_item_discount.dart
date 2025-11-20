@@ -678,6 +678,7 @@ Widget singleItemDiscountScreen(
                                 model.isCheckOutScreen
                                     ? null
                                     : () async {
+                                     
                                       final item =
                                           model.cartItems[selectedItemIndex];
 
@@ -731,6 +732,23 @@ Widget singleItemDiscountScreen(
                                               'You cannot set quantity greater than available stock.\nAvailable stock: ${item.hasBatchNo != 1 ? item.openingStock : item.batchQty}',
                                         );
                                       }
+
+                                       if(model.isSalesReturn)
+                          {
+                          if(model.cartItems[selectedItemIndex].qty > (model.cartItems[selectedItemIndex].validateQty ?? 0))
+                          {
+                            DialogUtils.showError(
+                              context: context,
+                              title: 'Invalid Quantity',
+                              message:
+                                  'You cannot set quantity greater than the original sold quantity.\nOriginal sold quantity: ${model.cartItems[selectedItemIndex].validateQty}',
+                            );
+                            model.singleqtyController.text =
+                                model.cartItems[selectedItemIndex].validateQty.toString();
+                            model.cartItems[selectedItemIndex].qty = model.cartItems[selectedItemIndex].validateQty ?? 0;
+                            return;
+                          }
+                          }
                                     },
                             child: Container(
                               width: 150,
@@ -784,10 +802,6 @@ Widget singleItemDiscountScreen(
                       child: ElevatedButton(
                         onPressed: () async{
                           final item = model.cartItems[selectedItemIndex];
-
-                          // PERFORMANCE OPTIMIZATION: Early exit pattern for below-cost validation
-                          
-                          // FAST PATH 1: Check if discount exists (cheapest check)
                           final hasDiscountAmount = model.singlediscountAmountController.text.isNotEmpty;
                           final hasDiscountPercent = model.singlediscountPercentController.text.isNotEmpty;
                           final hasAnyDiscount = hasDiscountAmount || hasDiscountPercent;
@@ -795,6 +809,22 @@ Widget singleItemDiscountScreen(
                           // FAST PATH 2: Check if below-cost validation is enabled (fast)
                           final isValidationEnabled = hasAnyDiscount && BelowCostValidator.isValidationEnabled();
 
+                          if(model.isSalesReturn)
+                          {
+                          if(model.cartItems[selectedItemIndex].qty > (model.cartItems[selectedItemIndex].validateQty ?? 0))
+                          {
+                            DialogUtils.showError(
+                              context: context,
+                              title: 'Invalid Quantity',
+                              message:
+                                  'You cannot set quantity greater than the original sold quantity.\nOriginal sold quantity: ${model.cartItems[selectedItemIndex].validateQty}',
+                            );
+                            model.singleqtyController.text =
+                                model.cartItems[selectedItemIndex].validateQty.toString();
+                            model.cartItems[selectedItemIndex].qty = model.cartItems[selectedItemIndex].validateQty ?? 0;
+                            return;
+                          }
+                          }
                           // Case 1: No discount entered
                           if (model
                                   .singlediscountAmountController
@@ -905,7 +935,6 @@ Widget singleItemDiscountScreen(
                               }
                             }
 
-                            //  If validation passes, apply the discount
                             item.singleItemDiscAmount = enteredAmount;
                             
                             item.singleItemDiscPer = enteredPercent;
@@ -928,17 +957,14 @@ Widget singleItemDiscountScreen(
                           );
                           model.itemDiscountVisible = false;
                           model.hasFocus = '';
-                          
-                          // Focus search field for next item after successful discount application
                           Future.delayed(Duration(milliseconds: 100), () {
                             if (model.searchController.text.isEmpty) {
-                              // Only focus if search is empty (ready for next scan)
                               FocusScope.of(context).requestFocus(FocusNode());
-                              // Note: Actual focus will be handled by the main screen's search field
                             }
                           });
                           
                           model.notifyListeners();
+                          
 
                           if (model.cartItems[selectedItemIndex].qty == 0) {
                             model.cartItems.remove(
@@ -1292,21 +1318,20 @@ void onChangeItemQTY(value, model, selectedItemIndex) {
   TempItem? item = OptimizedDataManager.getItemByCode(
     model.cartItems[model.selectedItemIndex].itemCode
   );
-   if(model.isSalesReturn)
+  if(model.isSalesReturn)
   {
-    print("sakes return");
-    if(_value > model.cartItems[selectedItemIndex].validateQty)
-    {
-      DialogUtils.showError(
-        context: model.context,
-        title: 'Invalid Quantity',
-        message:
-            'You cannot set quantity greater than the original sold quantity.\nOriginal sold quantity: ${model.cartItems[selectedItemIndex].validateQty}',
-      );
-      model.singleqtyController.text =
-          model.cartItems[selectedItemIndex].validateQty.toString();
-      return;
-    }
+  if(_value > model.cartItems[selectedItemIndex].validateQty)
+  {
+    DialogUtils.showError(
+      context: model.context,
+      title: 'Invalid Quantity',
+      message:
+          'You cannot set quantity greater than the original sold quantity.\nOriginal sold quantity: ${model.cartItems[selectedItemIndex].validateQty}',
+    );
+    model.singleqtyController.text =
+        model.cartItems[selectedItemIndex].validateQty.toString();
+    return;
+  }
   }
   if (item == null) {
     return; // Item not found, skip processing
