@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:offline_pos/data_source/local/pref_keys.dart';
 import 'package:offline_pos/data_source/local/user_preference.dart';
 // ignore: unused_import
@@ -9,6 +10,7 @@ import 'package:offline_pos/database_conn/mysql_conn.dart';
 import 'package:offline_pos/models/item.dart';
 import 'package:offline_pos/models/sales_invoice_model.dart';
 import 'package:offline_pos/models/single_invoice_data.dart';
+import 'package:offline_pos/models/type_ahead_model.dart';
 import 'package:offline_pos/widgets_components/log_error_to_file.dart';
 
 
@@ -535,6 +537,37 @@ Future<List<Item>> fetchSalesInvoiceItemDetailsToReturn(String name) async {
   }  catch (e) {
     logErrorToFile("Error fetching invoice details: $e");
     print("Error fetching invoice details: $e");
+    await conn.close();
+    return [];
+  }
+}
+
+Future<List<PaymentModeTypeAheadModel>> fetchSalesInvoicePaymentDetailsToReturn(String name) async {
+  final conn = await getDatabase();
+    try {
+    final invoicePaymentsResult = await conn.query(
+      "SELECT * FROM SalesInvoicePayment WHERE id = ?",
+      [name],
+    );
+    if (invoicePaymentsResult.isEmpty) {
+      await conn.close();
+      return [];
+    }
+    final List<PaymentModeTypeAheadModel> payments = invoicePaymentsResult.map<PaymentModeTypeAheadModel>((row) {
+      
+      final Map<String, dynamic> fields =
+          Map<String, dynamic>.from(row.fields);
+      if (fields.containsKey('amount')) {
+        final controller = TextEditingController(text: fields['amount'].toString());
+        fields['controller'] = controller;
+        fields['name'] = fields['mode_of_payment'] ;
+      }
+    return PaymentModeTypeAheadModel.fromJson(fields);
+    }).toList();
+    await conn.close();
+    return payments;
+  }  catch (e) {
+    logErrorToFile("Error fetching payments details: $e");
     await conn.close();
     return [];
   }

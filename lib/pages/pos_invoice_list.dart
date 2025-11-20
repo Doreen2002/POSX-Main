@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:offline_pos/database_conn/mysql_conn.dart';
 import 'package:offline_pos/models/item.dart';
+import 'package:offline_pos/models/type_ahead_model.dart';
 import 'package:offline_pos/pages/items_cart.dart';
 import 'package:printing/printing.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -893,39 +894,11 @@ async{
   try{
     dynamic invoiceDetails = await fetchSalesInvoiceDetailsToReturn(invoice);
     List<Item> invoiceItemDetails = await fetchSalesInvoiceItemDetailsToReturn(invoice);
-    int timestamp = DateTime.now().millisecondsSinceEpoch ~/ 1000;
-    final conn = await getDatabase();
-    final invoiceNo = 'Return-INV-${UserPreference.getString(PrefKeys.branchID)}-${timestamp}';
-    
+   List<PaymentModeTypeAheadModel> payments =  await fetchSalesInvoicePaymentDetailsToReturn(invoice);
     Navigator.push(
     context,
     MaterialPageRoute(builder: (context) => CartItemScreen(returnAgainst:invoiceDetails['name'],salesPersonID:invoiceDetails['sales_person'], customer:invoiceDetails['customer_name'], runInit: false, cartItems: invoiceItemDetails, isSalesReturn: true,)),
   );
-  
-  // return await insertTableSalesInvoice(
-  //   id: invoiceNo ,
-  //   name: invoiceNo,
-  //   customer: invoiceDetails['customer'],
-  //   customerName : invoiceDetails['customer_name'],
-  //   posProfile: invoiceDetails['pos_profile'],
-  //   company: invoiceDetails['company'],
-  //   postingDate: DateTime.now().toString(),
-  //   postingTime: DateTime.now().toString(),
-  //   paymentDueDate: DateTime.now().toString(),
-  //   netTotal: invoiceDetails['net_total'] * -1,
-  //   grandTotal: invoiceDetails['grand_total'] * -1,
-  //   grossTotal: invoiceDetails['gross_total'] * -1,
-  //   changeAmount: invoiceDetails['change_amount'] * -1,
-  //   status: invoiceDetails['status'],
-  //   invoiceStatus: "Submitted",
-  //   salesPerson: invoiceDetails['sales_person'], 
-  //   vat: invoiceDetails['vat'] * -1,
-  //   openingName: invoiceDetails['opening_name'],
-  //   additionalDiscountPer: invoiceDetails['additional_discount_percentage'],
-  //   discount: invoiceDetails['discount'] * -1,
-  //   isReturn: "Yes",
-  //   returnAgainst: invoiceDetails['name'],
-  // );
 
   }
   catch(e){
