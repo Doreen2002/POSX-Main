@@ -525,18 +525,23 @@ Future<List<Item>> fetchSalesInvoiceItemDetailsToReturn(String name) async {
         fields['qty'] = fields['qty'] ;
         fields['validate_qty'] = fields['qty'] ;
       }
+      if(fields.containsKey('batch_no')){
+      
+        fields['has_batch_no'] = fields['batch_no'] != null && fields['batch_no'] != "" ? 1 : 0 ;
+        fields['batch_number_seres'] = fields['batch_no'];
+        fields['batch_qty'] = fields['qty'] ;
+       
+      }
 
   return Item.fromJson(fields);
 }).toList();
 
-
-    print("Invoice Items: ${invoice[0]}");
     await conn.close();
    
     return invoice;
   }  catch (e) {
     logErrorToFile("Error fetching invoice details: $e");
-    print("Error fetching invoice details: $e");
+   
     await conn.close();
     return [];
   }
