@@ -693,7 +693,23 @@ Widget singleItemDiscountScreen(
                                               item.qty <
                                                   (item.batchQty ?? 0))) {
                                         item.qty += 1;
-
+                                        if(model.isSalesReturn)
+                                      {
+                                      if(model.cartItems[selectedItemIndex].qty > (model.cartItems[selectedItemIndex].validateQty ?? 0))
+                                      {
+                                        DialogUtils.showError(
+                                          context: context,
+                                          title: 'Invalid Quantity',
+                                          message:
+                                              'You cannot set quantity greater than the original sold quantity.\nOriginal sold quantity: ${model.cartItems[selectedItemIndex].validateQty}',
+                                        );
+                                        model.singleqtyController.text =
+                                        model.cartItems[selectedItemIndex].validateQty.toString();
+                                        model.cartItems[selectedItemIndex].qty = model.cartItems[selectedItemIndex].validateQty ?? 0;
+                                        model.notifyListeners();
+                                        return;
+                                      }
+                                      }
                                         item.singleItemDiscAmount =
                                             (item.singleItemDiscAmount ?? 0);
                                         item.newRate =
@@ -733,22 +749,7 @@ Widget singleItemDiscountScreen(
                                         );
                                       }
 
-                                       if(model.isSalesReturn)
-                          {
-                          if(model.cartItems[selectedItemIndex].qty > (model.cartItems[selectedItemIndex].validateQty ?? 0))
-                          {
-                            DialogUtils.showError(
-                              context: context,
-                              title: 'Invalid Quantity',
-                              message:
-                                  'You cannot set quantity greater than the original sold quantity.\nOriginal sold quantity: ${model.cartItems[selectedItemIndex].validateQty}',
-                            );
-                            model.singleqtyController.text =
-                                model.cartItems[selectedItemIndex].validateQty.toString();
-                            model.cartItems[selectedItemIndex].qty = model.cartItems[selectedItemIndex].validateQty ?? 0;
-                            return;
-                          }
-                          }
+                                       
                                     },
                             child: Container(
                               width: 150,
