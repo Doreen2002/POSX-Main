@@ -897,7 +897,7 @@ async{
    List<PaymentModeTypeAheadModel> payments =  await fetchSalesInvoicePaymentDetailsToReturn(invoice);
     Navigator.push(
     context,
-    MaterialPageRoute(builder: (context) => CartItemScreen(returnAgainst:invoiceDetails['name'],salesPersonID:invoiceDetails['sales_person'], customer:invoiceDetails['customer_name'], runInit: false, cartItems: invoiceItemDetails, isSalesReturn: true,)),
+    MaterialPageRoute(builder: (context) => CartItemScreen( discountPercent:invoiceDetails['additional_discount_percentage'].toString(), returnAgainst:invoiceDetails['name'],salesPersonID:invoiceDetails['sales_person'], customer:invoiceDetails['customer_name'], runInit: false, cartItems: invoiceItemDetails, isSalesReturn: true,)),
   );
 
   }

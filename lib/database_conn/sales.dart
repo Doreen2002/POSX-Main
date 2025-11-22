@@ -532,7 +532,12 @@ Future<List<Item>> fetchSalesInvoiceItemDetailsToReturn(String name) async {
         fields['batch_qty'] = fields['qty'] ;
        
       }
-
+      if(fields.containsKey('discount_amount')){
+        fields['single_item_disc_amount'] = fields['discount_amount'];
+      }
+      if(fields.containsKey('discount_percentage')){
+        fields['single_item_disc_per'] = fields['discount_percentage'];
+      }
   return Item.fromJson(fields);
 }).toList();
 
