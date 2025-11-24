@@ -150,7 +150,7 @@ Future<List<Map<String, dynamic>>> fetchGroupedInvoiceData() async {
     'item_code': fields['item_code'],
     'item_name': fields['item_name'],
     'warehouse':UserPreference.getString(PrefKeys.posProfileWarehouse),
-    'qty':row['is_return'] =="Yes" ?  fields['qty'] * -1 : fields['qty'] ,
+    'qty': fields['qty'] ,
     'rate': fields['rate'],
     'amount':fields['price_list_rate'],
     'discount_percentage': fields['discount_percentage'] ,
@@ -165,8 +165,8 @@ Future<List<Map<String, dynamic>>> fetchGroupedInvoiceData() async {
     }).toList(),
         'payments': paymentRows.map((p) {
         final payment = Map<String, dynamic>.from(p.fields);
-        payment['base_amount'] = row['is_return'] == 'Yes'? payment['amount'] * -1 : payment['amount']  ;
-        payment['amount'] = row['is_return'] == 'Yes'? payment['amount'] * -1 : payment['amount']  ;
+        payment['base_amount'] =  payment['amount']  ;
+    
         return payment;
       }).toList(),
       });

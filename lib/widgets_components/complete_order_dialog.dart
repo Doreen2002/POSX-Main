@@ -205,8 +205,8 @@ Future<dynamic> createInvoice(model) async {
     isReturn: model.isSalesReturn ? "Yes": "No",
     returnAgainst: model.returnAgainst
   );
-  await createInvoiceItem(model, conn, invoiceNo);
-  await createPayment(model, conn, invoiceNo);
+  await createInvoiceItem(model, conn, invoiceNo, isReturn: model.isSalesReturn);
+  await createPayment(model, conn, invoiceNo , isReturn: model.isSalesReturn);
   await closeDatabase(conn);
   return invoiceNo;
   }
@@ -218,7 +218,7 @@ Future<dynamic> createInvoice(model) async {
  
 }
 
-Future<void> createInvoiceItem(model, conn, invoiceNo) async {
+Future<void> createInvoiceItem(model, conn, invoiceNo, {isReturn=0}) async {
   ///<<<<<<--------Insert Invoice Item Data--------->>>>>>>>
   
   try
@@ -233,7 +233,7 @@ Future<void> createInvoiceItem(model, conn, invoiceNo) async {
     aa.stockUom = element.stockUom;
     aa.rate =  element.newRate;
     aa.itemGroup = element.itemGroup;
-    aa.qty = element.qty;
+    aa.qty = element.qty * (isReturn  ? -1 : 1);
     aa.batchNo = element.batchNumberSeries ?? "";
     aa.serialNo = element.serialNo ?? "";
     aa.itemTaxRate = "${element.vatValue}";
@@ -279,7 +279,7 @@ Future<void> createInvoiceItem(model, conn, invoiceNo) async {
 
 }
 
-Future<void> createPayment(model, conn, invoiceNo) async {
+Future<void> createPayment(model, conn, invoiceNo, {isReturn=0}) async {
   List<Payments> temp2 = [];
   for (var element in model.paymentModes) {
     if (element.controller.text == null ||
@@ -291,6 +291,7 @@ Future<void> createPayment(model, conn, invoiceNo) async {
     pm.name = invoiceNo;
     pm.modeOfPayment = element.name ?? "";
     pm.amount = double.parse(double.parse(element.controller.text ?? '0.000').toStringAsFixed(model.decimalPoints));
+    pm.amount = isReturn  ? (pm.amount ?? 0) * -1 : pm.amount;
     pm.openingEntry = UserPreference.getString(PrefKeys.openingEntry);
     temp2.add(pm);
     if (pm.modeOfPayment == "Loyalty Points")

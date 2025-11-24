@@ -57,7 +57,7 @@ Future<bool> createInvoiceRequest() async {
     .fold(0.0, (prev, amount) => prev + amount);
     await updateSalesInvoiceSynced(invoice["name"], "Sent", "", "");
     invoiceSentToERP.add({
-          'customer': invoice['customer'],
+        'customer': invoice['customer'],
         'posting_date': invoice['posting_date'],
         'pos_profile':  UserPreference.getString(PrefKeys.posProfileName),
         'is_pos': 1,
