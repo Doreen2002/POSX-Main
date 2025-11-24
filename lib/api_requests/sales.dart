@@ -51,10 +51,6 @@ Future<bool> createInvoiceRequest() async {
   await UserPreference.getInstance();
   List invoiceSentToERP = [];
   for (var invoice in invoices) {
-  
-    double paidAmount = invoice["payments"]
-    .map((p) => (p["amount"] ?? 0) as num)
-    .fold(0.0, (prev, amount) => prev + amount);
     await updateSalesInvoiceSynced(invoice["name"], "Sent", "", "");
     invoiceSentToERP.add({
         'customer': invoice['customer'],
@@ -66,7 +62,6 @@ Future<bool> createInvoiceRequest() async {
         'apply_discount_on': UserPreference.getString(PrefKeys.applyDiscountOn),
         'additional_discount_percentage':invoice['additional_discount_percentage'],
         'discount_amount': invoice['discount_amount'],
-        "paid_amount": paidAmount,
         'items': invoice['items'],
         'payments': invoice['payments'],
         'pos_invoice_id':invoice['name'],
