@@ -84,7 +84,7 @@ class _CartItemScreenState extends State<CartItemScreen> {
   Widget build(BuildContext context) {
     return ViewModelBuilder<CartItemScreenController>.reactive(
       viewModelBuilder: () => CartItemScreenController(context),
-      onViewModelReady: (viewModel) {
+      onViewModelReady: (viewModel) async{
         viewModel.initialise(widget.runInit, widget.customer, widget.cartItems);
         WidgetsBinding.instance.addPostFrameCallback((_) {});
        
@@ -101,15 +101,19 @@ class _CartItemScreenState extends State<CartItemScreen> {
           viewModel.allItemsDiscountAmount.text = widget.discountAmount;
           viewModel.allItemsDiscountPercent.text = widget.discountPercent;
           viewModel.salesListController.text = widget.salesPersonID;
-          viewModel.discountCalculation(
+      
+          await viewModel.discountCalculation(
             viewModel.allItemsDiscountAmount.text,
             viewModel.allItemsDiscountPercent.text,
           );
+          viewModel.notifyListeners();
           widget.cartItems.clear();
         }
         viewModel.isSalesReturn = widget.isSalesReturn;
         viewModel.returnAgainst = widget.returnAgainst;
+       
         viewModel.initialise(widget.runInit, widget.customer, widget.cartItems);
+       
       },
       onDispose: (viewModel) => viewModel.dispose(),
       builder: (context, viewModel, child) {
