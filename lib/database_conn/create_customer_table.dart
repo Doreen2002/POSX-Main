@@ -30,7 +30,8 @@ Future<bool> createTableCustomer() async {
         sync_status varchar(255),
         custom_qr_code_data varchar(255),
         modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-        INDEX idx_customer_qr (custom_qr_code_data)
+        INDEX idx_customer_qr (custom_qr_code_data),
+        default_price_list varchar(255)
     );
 """);
 

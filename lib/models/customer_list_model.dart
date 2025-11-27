@@ -689,6 +689,7 @@ class TempCustomerData {
   // String? state;
   // String? zipCode;
   String? syncStatus;
+  String? defaultPriceList;
   String? country;
   double? loyaltyPoints;
   double? loyaltyPointsAmount;
@@ -715,6 +716,7 @@ class TempCustomerData {
     this.loyaltyPoints,
     this.loyaltyPointsAmount,
     this.conversionRate,
+    this.defaultPriceList,
     this.gender,
     this.nationalId,
     this.syncStatus,
@@ -750,6 +752,7 @@ String? parseBlob(dynamic value) {
   nationalId = parseBlob(json['national_id']);
   syncStatus = json['sync_status']?.toString() ?? 'Synced';
   qrCodeData = json['custom_qr_code_data']?.toString(); // NEW: Parse QR code data
+  defaultPriceList = json['default_price_list']?.toString();
 }
 
   Map<String, dynamic> toJson() {
@@ -774,6 +777,7 @@ String? parseBlob(dynamic value) {
     data['conversion_rate'] = conversionRate;
     data['sync_status'] = syncStatus;
     data['custom_qr_code_data'] = qrCodeData; // NEW: Include QR code data
+    data['default_price_list'] = defaultPriceList;
     return data;
   }
 }
