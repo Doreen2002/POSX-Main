@@ -64,6 +64,10 @@ Future<bool> loginRequest(
     final body = jsonDecode(response.body);
     if (body is Map && body['message'] == 'Logged In') {
       await UserPreference.getInstance();
+      UserPreference.putString(
+        PrefKeys.cookies,
+        response.headers['set-cookie'] ?? '',
+      );
       UserPreference.putString(PrefKeys.userName, usr);
       UserPreference.putString(PrefKeys.password, pwd);
       UserPreference.putString(PrefKeys.baseUrl, frappeInstance);
@@ -114,10 +118,7 @@ Future<bool> loginRequest(
       );
         modeOfPaymentList.modeOfPaymentList = await fetchFromModeofPayment();
     
-      UserPreference.putString(
-        PrefKeys.cookies,
-        response.headers['set-cookie'] ?? '',
-      );
+      
      
       Future.delayed(Duration(seconds: 10), ()async{
         await itemRequest(
