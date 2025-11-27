@@ -326,14 +326,14 @@ Future<List<ItemPrice>> itemPriceRequest( String httpType, String frappeInstance
     if (response.statusCode == 200) {
       final body = jsonDecode(response.body);
 
-      if (body is Map && body['message'] != null) {
-        List<ItemPrice> items = [];
-        for (var item in body['message']) {
+      if (body is Map && body['data'] != null) {
+        List<ItemPrice> itemPrice = [];
+        for (var item in body['data']) {
           ItemPrice price = ItemPrice.fromJson(item);
-          items.add(price);
+          itemPrice.add(price);
           await insertTableItemPrice( d: [price]);
         }
-        return items;
+        return itemPrice;
       } else {
         logErrorToFile("⚠️ No item price entries found: $body");
         return [];
@@ -364,14 +364,14 @@ Future<List<UOM>> uomRequest( String httpType, String frappeInstance) async {
     if (response.statusCode == 200) {
       final body = jsonDecode(response.body);
 
-      if (body is Map && body['message'] != null) {
-        List<UOM> items = [];
-        for (var item in body['message']) {
-          UOM price = UOM.fromJson(item);
-          items.add(price);
+      if (body is Map && body['data'] != null) {
+        List<UOM> uoms = [];
+        for (var uom in body['data']) {
+          UOM price = UOM.fromJson(uom);
+          uoms.add(price);
           await insertTableUOM( d: [price]);
         }
-        return items;
+        return uoms;
       } else {
         logErrorToFile("⚠️ No uom entries found: $body");
         return [];
