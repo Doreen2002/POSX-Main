@@ -97,3 +97,33 @@ Future<bool> createTableSerial() async {
 
   return isCreatedDB;
 }
+
+Future<bool> createTableItemPrice() async {
+  bool isCreatedDB = false;
+  try {
+    final conn = await getDatabase();
+    await conn.query( "CREATE TABLE IF NOT EXISTS ItemPrice (name varchar(255) PRIMARY KEY,item_code varchar(255),batch_no varchar(255),uom varchar(255),price_list varchar(255),customer varchar(255),valid_from varchar(255),valid_to varchar(255),price_list_rate FLOAT)");
+    isCreatedDB = true;
+    await conn.close();
+  } catch (e) {
+    logErrorToFile("Error creating Item Price table $e");
+    isCreatedDB = false;
+  }
+
+  return isCreatedDB;
+}
+
+Future<bool> createTableUOM() async {
+  bool isCreatedDB = false;
+  try {
+    final conn = await getDatabase();
+    await conn.query( "CREATE TABLE IF NOT EXISTS UOM (name varchar(255) PRIMARY KEY)");
+    isCreatedDB = true;
+    await conn.close();
+  } catch (e) {
+    logErrorToFile("Error creating UOM table $e");
+    isCreatedDB = false;
+  }
+
+  return isCreatedDB;
+}
