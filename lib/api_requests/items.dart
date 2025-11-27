@@ -315,7 +315,7 @@ Future<List<ItemPrice>> itemPriceRequest( String httpType, String frappeInstance
    
 
     final response = await http.get(
-      Uri.parse('$transferProtocol://$frappeInstance/api/resource/Item Price?fields=["*"]'),
+      Uri.parse('$transferProtocol://$frappeInstance/api/method/offline_pos_erpnext.API.item_list.get_item_price'),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
@@ -326,9 +326,9 @@ Future<List<ItemPrice>> itemPriceRequest( String httpType, String frappeInstance
     if (response.statusCode == 200) {
       final body = jsonDecode(response.body);
 
-      if (body is Map && body['data'] != null) {
+      if (body is Map && body['message'] != null) {
         List<ItemPrice> itemPrice = [];
-        for (var item in body['data']) {
+        for (var item in body['message']) {
           ItemPrice price = ItemPrice.fromJson(item);
           itemPrice.add(price);
           await insertTableItemPrice( d: [price]);
@@ -353,7 +353,7 @@ Future<List<UOM>> uomRequest( String httpType, String frappeInstance) async {
    
 
     final response = await http.get(
-      Uri.parse('$transferProtocol://$frappeInstance/api/resource/UOM?fields=["*"]'),
+      Uri.parse('$transferProtocol://$frappeInstance/api/method/offline_pos_erpnext.API.item_list.get_uom'),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
@@ -364,9 +364,9 @@ Future<List<UOM>> uomRequest( String httpType, String frappeInstance) async {
     if (response.statusCode == 200) {
       final body = jsonDecode(response.body);
 
-      if (body is Map && body['data'] != null) {
+      if (body is Map && body['message'] != null) {
         List<UOM> uoms = [];
-        for (var uom in body['data']) {
+        for (var uom in body['message']) {
           UOM price = UOM.fromJson(uom);
           uoms.add(price);
           await insertTableUOM( d: [price]);
