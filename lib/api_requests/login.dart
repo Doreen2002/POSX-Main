@@ -83,12 +83,15 @@ Future<bool> loginRequest(
       await createSalesInvoiceItemTable();
       await createSalesInvoiceTable();
       await createSalesInvoicePayment();
+      await createTableItemPrice();
+      await createTableUOM();
       await createTableBatch();
       await createTableBarcode();
       await createTableSerial();
       await createHoldCartTable();
       await createHoldCartItemTable();
       await createLicenseTable();
+      
       final newDB = await  isNewDatabase();
       if ( newDB == true)
       {
