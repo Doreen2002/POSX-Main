@@ -37,8 +37,7 @@ Future<List<TempItem>> itemRequest( String httpType, String frappeInstance, Stri
           items.add(TempItem.fromJson(item));
           await insertTableItem( d: [TempItem.fromJson(item)]);
         }
-        // updateItems(  httpType,  frappeInstance);
-        // updateItemsDetails(  httpType,  frappeInstance,  user);
+       
         return items;
       } else {
         logErrorToFile("⚠️ No items found: $body");
