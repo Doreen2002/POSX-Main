@@ -11,6 +11,9 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:offline_pos/database_conn/mysql_conn.dart';
 import 'package:offline_pos/widgets_components/log_error_to_file.dart';
 import 'package:offline_pos/globals/global_values.dart';
+import 'package:offline_pos/models/uom.dart';
+import 'package:offline_pos/models/item_price.dart';
+
 final storage = FlutterSecureStorage();
 Future<List<TempItem>> itemRequest( String httpType, String frappeInstance, String user) async {
   try {
@@ -298,6 +301,83 @@ Future<List<TempItemGroup>> itemGroupRequest( String httpType, String frappeInst
       }
     } else {
       logErrorToFile("❌ Failed to fetch items: ${response.statusCode}, body: ${response.body}");
+      return [];
+    }
+  } catch (e) {
+    logErrorToFile("❌ Error: $e");
+    return [];
+  }
+}
+
+
+Future<List<ItemPrice>> itemPriceRequest( String httpType, String frappeInstance) async {
+  try {
+   
+
+    final response = await http.get(
+      Uri.parse('$transferProtocol://$frappeInstance/api/resource/Item Price?fields=["*"]'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Cookie': UserPreference.getString(PrefKeys.cookies) ?? "",
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final body = jsonDecode(response.body);
+
+      if (body is Map && body['message'] != null) {
+        List<ItemPrice> items = [];
+        for (var item in body['message']) {
+          ItemPrice price = ItemPrice.fromJson(item);
+          items.add(price);
+          await insertTableItemPrice( d: [price]);
+        }
+        return items;
+      } else {
+        logErrorToFile("⚠️ No item price entries found: $body");
+        return [];
+      }
+    } else {
+      logErrorToFile("❌ Failed to fetch item Price: ${response.statusCode}, body: ${response.body}");
+      return [];
+    }
+  } catch (e) {
+    logErrorToFile("❌ Error: $e");
+    return [];
+  }
+}
+
+Future<List<UOM>> uomRequest( String httpType, String frappeInstance) async {
+  try {
+   
+
+    final response = await http.get(
+      Uri.parse('$transferProtocol://$frappeInstance/api/resource/UOM?fields=["*"]'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Cookie': UserPreference.getString(PrefKeys.cookies) ?? "",
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final body = jsonDecode(response.body);
+
+      if (body is Map && body['message'] != null) {
+        List<UOM> items = [];
+        for (var item in body['message']) {
+          UOM price = UOM.fromJson(item);
+          items.add(price);
+          await insertTableUOM( d: [price]);
+        }
+        return items;
+      } else {
+        logErrorToFile("⚠️ No uom entries found: $body");
+        return [];
+      }
+    } else {
+      logErrorToFile("❌ Failed to fetch uom: ${response.statusCode}, body: ${response.body}");
       return [];
     }
   } catch (e) {

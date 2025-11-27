@@ -2,8 +2,10 @@ import 'dart:async';
 import 'package:offline_pos/models/barcode.dart';
 import 'package:offline_pos/models/batch_list_model.dart';
 import 'package:offline_pos/models/item_group_model.dart';
+import 'package:offline_pos/models/item_price.dart';
 import 'package:offline_pos/widgets_components/log_error_to_file.dart';
 import '../models/item_model.dart';
+import 'package:offline_pos/models/uom.dart';
 import 'package:offline_pos/database_conn/mysql_conn.dart';
 
 Future<dynamic> insertTableItem({required List<TempItem> d}) async { 
@@ -126,7 +128,7 @@ Future<dynamic> insertTableBarcode( {required List<BarcodeModel> d}) async {
 }
 
 
-Future<dynamic> insertTableItemGroup({List<TempItemGroup>? d}) async {
+Future <dynamic> insertTableItemGroup({List<TempItemGroup>? d}) async {
   try {
     final conn = await getDatabase();
     dynamic res;
@@ -138,5 +140,58 @@ Future<dynamic> insertTableItemGroup({List<TempItemGroup>? d}) async {
     return res;
   } catch (e) {
     logErrorToFile("Error inserting data into Item Table $e");
+  }
+}
+
+
+Future<dynamic> insertTableItemPrice({List <ItemPrice>? d}) async {
+  try {
+    final conn = await getDatabase();
+    dynamic res;
+    for (var element in d!) {
+       var insertItemPriceQuery = '''
+       INSERT INTO ItemPrice (
+         name, item_code, uom, price_list, price_list_rate, customer, batch_no, valid_from, valid_to
+       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+       ON DUPLICATE KEY UPDATE
+         uom = VALUES(uom),
+         price_list = VALUES(price_list),
+         price_list_rate = VALUES(price_list_rate),
+         customer = VALUES(customer),
+         batch_no = VALUES(batch_no),
+         valid_from = VALUES(valid_from),
+         valid_to = VALUES(valid_to)
+       ''';
+      res = await conn.query(insertItemPriceQuery, [
+        element.name,
+        element.itemCode,
+        element.UOM,
+        element.priceList,
+        element.priceListRate,
+        element.customer,
+        element.batchNo,
+        element.validFrom,
+        element.validTo,
+      ]);
+    }
+    await conn.close();
+    return res;
+  } catch (e) {
+    logErrorToFile("Error inserting data into Item Price Table $e");
+  }
+}
+
+Future<dynamic> insertTableUOM({List <UOM>? d}) async {
+  try {
+    final conn = await getDatabase();
+    dynamic res;
+    for (var element in d!) {
+       var insertUOMQuery = 'INSERT INTO UOM (name)';
+      res = await conn.query('''$insertUOMQuery VALUE('${element.name}');''');
+    }
+    await conn.close();
+    return res;
+  } catch (e) {
+    logErrorToFile("Error inserting data into UOM Table $e");
   }
 }

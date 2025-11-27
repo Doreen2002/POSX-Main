@@ -386,6 +386,14 @@ Future <void> sync() async {
     UserPreference.getString(PrefKeys.baseUrl)!,
     UserPreference.getString(PrefKeys.userName)!,
   );
+  await itemPriceRequest(
+    "$transferProtocol",
+    UserPreference.getString(PrefKeys.baseUrl)!,
+  );
+  await uomRequest(
+    "$transferProtocol",
+    UserPreference.getString(PrefKeys.baseUrl)!,
+  );
   await insertUserTable(
     d: [
       User(
@@ -471,6 +479,14 @@ Future<void> syncData(context, model) async {
           await barcodeRequest(  "$transferProtocol",
     UserPreference.getString(PrefKeys.baseUrl)!,
     UserPreference.getString(PrefKeys.userName)!);
+     await itemPriceRequest(
+    "$transferProtocol",
+    UserPreference.getString(PrefKeys.baseUrl)!,
+  );
+  await uomRequest(
+    "$transferProtocol",
+    UserPreference.getString(PrefKeys.baseUrl)!,
+  );
         await salesPersonRequest(
         "$transferProtocol",
         UserPreference.getString(PrefKeys.baseUrl)!,
