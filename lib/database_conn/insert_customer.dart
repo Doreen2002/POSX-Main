@@ -23,6 +23,7 @@ Future<dynamic> insertTableCustomer({required List<TempCustomerData> d}) async {
       address_line2       = IF(sync_status  != 'Edited', VALUES(address_line2), address_line2),
       city                = IF(sync_status  != 'Edited', VALUES(city), city),
       country             = IF(sync_status  != 'Edited', VALUES(country), country),
+      deafault_price_list             = IF(sync_status  != 'Edited', VALUES(deafault_price_list), deafault_price_list),
       loyalty_points      = IF(sync_status  != 'Edited', VALUES(loyalty_points), loyalty_points),
       loyalty_points_amount = IF(sync_status  != 'Edited', VALUES(loyalty_points_amount), loyalty_points_amount),
       conversion_rate     = IF(sync_status  != 'Edited', VALUES(conversion_rate), conversion_rate),
@@ -48,6 +49,7 @@ Future<dynamic> insertTableCustomer({required List<TempCustomerData> d}) async {
         element.conversionRate,
         element.syncStatus ?? "Synced",
         element.posxID ??  "",
+        element.defaultPriceList
       ]);
     }
 
