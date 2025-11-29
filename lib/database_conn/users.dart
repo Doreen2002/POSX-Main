@@ -159,7 +159,7 @@ Future<List<SalesPerson>> fetchFromSalesPerson() async {
     await conn.close();
     return salesPersonList ;
   } catch (e) {
-   logErrorToFile("Error fetching data from SalesInvoice Table $e");
+   logErrorToFile("Error fetching data from SalesPerson Table $e");
     return [];
   } 
 }
@@ -180,7 +180,7 @@ Future<List<CurrencyDenomination>> fetchFromCurrencyDenomination() async {
     await conn.close();
     return currencyDenominationList ;
   } catch (e) {
-   logErrorToFile("Error fetching data from SalesInvoice Table $e");
+   logErrorToFile("Error fetching data from CurrencyDenomination Table $e");
     return [];
   } 
 }
@@ -200,7 +200,7 @@ Future<List<User>> fetchFromUser() async {
     await conn.close();
     return salesPersonList ;
   } catch (e) {
-   logErrorToFile("Error fetching data from SalesInvoice Table $e");
+   logErrorToFile("Error fetching data from User Table $e");
     return [];
   } 
 }

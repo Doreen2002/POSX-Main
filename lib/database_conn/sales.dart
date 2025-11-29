@@ -18,7 +18,6 @@ import 'package:offline_pos/widgets_components/log_error_to_file.dart';
 Future<bool> createSalesInvoiceTable() async {
  bool isCreatedDB = false;
   try {
-    print("Creating Sales Invoice Table");
     final conn = await getDatabase();
     await conn.query("CREATE TABLE IF NOT EXISTS SalesInvoice (id varchar(255), name varchar(255) PRIMARY KEY,erpnext_id varchar(255),customer varchar(255), customer_name varchar(255),pos_profile varchar(255),company varchar(255),posx_date varchar(255),erpnext_si_date varchar(255),due_date varchar(255),net_total FLOAT,additional_discount_percentage FLOAT,grand_total FLOAT,gross_total FLOAT, change_amount FLOAT,status varchar(255),messageStatus varchar(255),vat FLOAT,discount FLOAT,opening_name varchar(255),invoice_status varchar(255),sales_person varchar(255),submitted_at varchar(255),background_job_id varchar(255), is_return varchar(255), return_against varchar(255))");
     isCreatedDB = true;
@@ -271,7 +270,7 @@ Future <List<TempSalesInvoiceItemModel>> fetchFromSalesInvoiceItem() async {
     await closeDatabase(conn);
     return salesInvoiceItemModelList;
   } catch (e) {
-    logErrorToFile("Error fetching data from SalesInvoice Table $e");
+    logErrorToFile("Error fetching data from SalesInvoiceItem Table $e");
      print("Error fetching data from SalesInvoice Table $e");
     return [];
   } 
@@ -423,7 +422,7 @@ Future<List<Payments>> fetchSalesInvoicePaymentByName(String name) async {
     await closeDatabase(conn);
     return salesInvoicePaymentData ;
   } catch (e) {
-    logErrorToFile("Error fetching data from SalesInvoice Table $e");
+    logErrorToFile("Error fetching data from SalesInvoicePayment Table $e");
     return [];
   } 
 }

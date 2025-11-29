@@ -1,3 +1,4 @@
+import 'package:offline_pos/database_conn/get_item_queries.dart' as fetchQueries;
 import 'package:offline_pos/utils/dialog_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -421,7 +422,7 @@ Widget buildTopBarContent(
                             ),
                           );
                         },
-                        onSelected: (suggestion) {
+                        onSelected: (suggestion) async{
                           
                           TempCustomerData value =
                               suggestion as TempCustomerData;
@@ -432,6 +433,16 @@ Widget buildTopBarContent(
                             modeOfPaymentListData.modeOfPaymentList,
                           );
                           model.searchFocusNode.requestFocus();
+                           if(model.customerData.defaultPriceList != null){
+                            print("Fetching Item Price List for ${model.customerData.defaultPriceList}");
+                              await fetchQueries.fetchFromItemPrice();
+                              fetchQueries.itemListdata.map((item)=>{
+                                item.standardRate = fetchQueries.itemPriceListdata.firstWhere(
+                                  (price) => price.itemCode == item.itemCode && price.priceList == model.customerData.defaultPriceList,
+                              
+                                ).priceListRate ?? item.standardRate
+                              });
+                            }
                           model.notifyListeners();
                         },
                         suggestionsCallback: (pattern) async {

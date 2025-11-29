@@ -7,6 +7,8 @@ import 'package:offline_pos/widgets_components/log_error_to_file.dart';
 import '../models/item_model.dart';
 import '../models/item_group_model.dart';
 import 'package:offline_pos/database_conn/mysql_conn.dart';
+import 'package:offline_pos/models/item_price.dart';
+
 List <TempItem> itemListdata = [];
 
 List <BatchListModel> batchListdata = [];
@@ -121,4 +123,21 @@ Future<List<TempItem>> searchItemsByPLU(String pluPattern) async {
 
 
 
+List <ItemPrice> itemPriceListdata = [];
 
+Future<List<ItemPrice>> fetchFromItemPrice() async {
+  try {
+     final conn = await getDatabase();
+    final queryResult = await conn.query("SELECT * FROM ItemPrice;");
+
+    itemPriceListdata = queryResult
+      .map((row) => ItemPrice.fromJson(row.fields))
+      .toList()
+      .cast<ItemPrice>();
+    await conn.close();
+    return itemPriceListdata;
+  } catch (e) {
+    logErrorToFile("Error fetching data from Item Price Table: $e");
+    return [];
+  }
+}

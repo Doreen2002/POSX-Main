@@ -17,6 +17,7 @@ import 'package:offline_pos/models/customer_list_model.dart';
 import 'package:offline_pos/models/hold_cart.dart';
 import 'package:offline_pos/models/hold_cart_item.dart';
 import 'package:offline_pos/models/item_model.dart';
+import 'package:offline_pos/models/item_price.dart';
 import 'package:offline_pos/services/optimized_data_manager.dart';
 
 import 'package:offline_pos/widgets_components/all_items.dart';
@@ -246,6 +247,7 @@ Future<void> scanItems(model, context, value) async {
 }
 
 Future<void> searchItems(model, val) async {
+ 
   final searchVal = val.toLowerCase();
 
   // **NEW: Weight Scale Barcode Detection**
