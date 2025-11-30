@@ -62,8 +62,8 @@ void didChangeDependencies() {
   }
 
   void _startAutoRefresh() {
-    // Refresh every 10 seconds
-    _refreshTimer = Timer.periodic(Duration(seconds: 5), (timer) {
+ 
+    _refreshTimer = Timer.periodic(Duration(seconds: 500), (timer) {
       if (mounted) {
         _loadInvoices();
       }
