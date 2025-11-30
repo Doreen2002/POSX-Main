@@ -231,14 +231,7 @@ List<TempSalesInvoiceModel> salesInvoiceData = [];
 
 Future<List<TempSalesInvoiceModel>> fetchFromSalesInvoice() async {
   try {
-    // query the query
     final conn = await getDatabase();
-    // final queryResult = await conn.query("""
-    //   SELECT * FROM SalesInvoice
-    //   WHERE opening_name = '${posOpeningList.isNotEmpty ? posOpeningList[0].name : null}'
-    //   ORDER BY posting_date DESC;
-    // """);
-
     final queryResult = await conn.query("""
       SELECT * FROM SalesInvoice
      
@@ -271,7 +264,7 @@ Future <List<TempSalesInvoiceItemModel>> fetchFromSalesInvoiceItem() async {
     return salesInvoiceItemModelList;
   } catch (e) {
     logErrorToFile("Error fetching data from SalesInvoiceItem Table $e");
-     print("Error fetching data from SalesInvoice Table $e");
+
     return [];
   } 
 }

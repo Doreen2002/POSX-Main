@@ -413,7 +413,7 @@ Future <void> sync() async {
   salesPersonList = await fetchFromSalesPerson();
   modeOfPaymentList = await fetchFromModeofPayment();
   posProfileList = await fetchFromPosProfile();
-  await fetchFromItemPrice();
+  itemPriceListdata = await  fetchFromItemPrice();
    batchListdata = await fetchFromBatch();
    barcodeListdata = await fetchFromBarcode();
   await fetchFromBatch();
@@ -512,7 +512,7 @@ Future<void> syncData(context, model) async {
   posProfileList = await fetchFromPosProfile();
    batchListdata = await fetchFromBatch();
    barcodeListdata = await fetchFromBarcode();
-   await fetchFromItemPrice();
+   itemPriceListdata = await  fetchFromItemPrice();
   await fetchFromBatch();
   await fetchFromPosOpening();
   await submitInvoiceRequest();

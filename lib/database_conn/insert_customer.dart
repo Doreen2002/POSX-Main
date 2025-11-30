@@ -11,8 +11,8 @@ Future<dynamic> insertTableCustomer({required List<TempCustomerData> d}) async {
       INSERT INTO Customer 
       (name, customer_name, email_id, mobile_no, gender, national_id, 
         address_line1, address_line2, city, country, 
-        loyalty_points, loyalty_points_amount,conversion_rate , sync_status, posx_id) 
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?) 
+        loyalty_points, loyalty_points_amount,conversion_rate , sync_status, posx_id,default_price_list) 
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?,?) 
       ON DUPLICATE KEY UPDATE
       customer_name       = IF(sync_status  != 'Edited', VALUES(customer_name), customer_name),
       email_id            = IF(sync_status  != 'Edited', VALUES(email_id), email_id),
@@ -23,7 +23,7 @@ Future<dynamic> insertTableCustomer({required List<TempCustomerData> d}) async {
       address_line2       = IF(sync_status  != 'Edited', VALUES(address_line2), address_line2),
       city                = IF(sync_status  != 'Edited', VALUES(city), city),
       country             = IF(sync_status  != 'Edited', VALUES(country), country),
-      deafault_price_list             = IF(sync_status  != 'Edited', VALUES(deafault_price_list), deafault_price_list),
+      default_price_list             = IF(sync_status  != 'Edited', VALUES(default_price_list), default_price_list),
       loyalty_points      = IF(sync_status  != 'Edited', VALUES(loyalty_points), loyalty_points),
       loyalty_points_amount = IF(sync_status  != 'Edited', VALUES(loyalty_points_amount), loyalty_points_amount),
       conversion_rate     = IF(sync_status  != 'Edited', VALUES(conversion_rate), conversion_rate),
@@ -56,6 +56,7 @@ Future<dynamic> insertTableCustomer({required List<TempCustomerData> d}) async {
     return true;
   } catch (e) {
     logErrorToFile("Error inserting data into Customer table: $e");
+
   
     return null;
   } finally {
