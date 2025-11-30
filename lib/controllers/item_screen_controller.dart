@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:offline_pos/globals/global_values.dart';
+import 'package:offline_pos/models/item_price.dart';
 import 'package:offline_pos/utils/dialog_utils.dart';
 import 'package:offline_pos/api_requests/customer.dart';
 import 'package:offline_pos/api_requests/items.dart';
@@ -64,6 +65,9 @@ class CartItemScreenController extends ItemScreenController {
   //is sales invoice return 
   bool isSalesReturn = false;
   String returnAgainst = '';
+
+  //pricing rule
+  String pricingRuleName = '';
   //keboardshortcuts
    bool isProcessingKey = false;
   //key pad
@@ -266,8 +270,20 @@ Future<void>  initializePaymentModes(List<PaymentModeTypeAheadModel> jsonData) a
       }
       item.singleItemDiscAmount = (item.newNetRate ?? 0) * (item.singleItemDiscPer ?? 0)/100 ;
       item.ItemDiscAmount = (item.singleItemDiscAmount ?? 0) * item.qty;
+      
       for (var cartItem in cartItems) {
-        
+        if(customerData.defaultPriceList != null)
+      {
+      
+        await fetchItemQueries.fetchFromItemPrice();
+        final itemPricingRuleRate = fetchItemQueries.itemPriceListdata.firstWhere(
+          (price) => price.itemCode == cartItem.itemCode && price.priceList == customerData.defaultPriceList,
+          orElse: () => ItemPrice(itemCode: cartItem.itemCode,name: cartItem.itemCode, UOM:cartItem.stockUom, priceList: customerData.defaultPriceList!, priceListRate: cartItem.standardRate ?? 0.0)
+        ).priceListRate;
+         cartItem.standardRate = itemPricingRuleRate;
+         cartItem.newRate = itemPricingRuleRate;
+         cartItem.newNetRate = itemPricingRuleRate;
+      }
         if ((cartItem.itemCode == item.itemCode && cartItem.hasBatchNo == 0 && cartItem.qty < (item.openingStock ?? 0)) || (cartItem.itemCode == item.itemCode && cartItem.hasBatchNo == 1 && cartItem.batchNumberSeries == item.batchNumberSeries && cartItem.qty < (item.batchQty ?? 0))) {
          
           if(cartItem.hasBatchNo != 1)
@@ -325,6 +341,18 @@ Future<void>  initializePaymentModes(List<PaymentModeTypeAheadModel> jsonData) a
 
 
       if (!itemExists) {
+        if(customerData.defaultPriceList != null)
+      {
+      
+        await fetchItemQueries.fetchFromItemPrice();
+        final itemPricingRuleRate = fetchItemQueries.itemPriceListdata.firstWhere(
+          (price) => price.itemCode == item.itemCode && price.priceList == customerData.defaultPriceList,
+          orElse: () => ItemPrice(itemCode: item.itemCode,name: item.itemCode, UOM:item.stockUom, priceList: customerData.defaultPriceList!, priceListRate: item.standardRate ?? 0.0)
+        ).priceListRate;
+         item.standardRate = itemPricingRuleRate;
+         item.newRate = itemPricingRuleRate;
+         item.newNetRate = itemPricingRuleRate;
+      }
         if (from_hold)
         {
           cartItems.add(item);
