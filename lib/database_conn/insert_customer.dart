@@ -49,13 +49,13 @@ Future<dynamic> insertTableCustomer({required List<TempCustomerData> d}) async {
         element.conversionRate,
         element.syncStatus ?? "Synced",
         element.posxID ??  "",
-        element.defaultPriceList
+        element.defaultPriceList ?? ""
       ]);
     }
 
     return true;
   } catch (e) {
-    logErrorToFile("Error inserting data into Customer table: $e");
+    print("Error inserting data into Customer table: $e");
 
   
     return null;

@@ -153,7 +153,8 @@ class _CustomerCreateFormState extends State<CustomerCreateForm> {
                                       ),
                                     ),
                                     onPressed: () async {
-                                      if (widget.isEdit == true) {
+                                      try{
+                                        if (widget.isEdit == true) {
                                         await updateCustomerStatus(
                                           TempCustomerData(
                                             name: widget.customer!.name,
@@ -237,6 +238,7 @@ class _CustomerCreateFormState extends State<CustomerCreateForm> {
                                                 syncStatus: "Created",
                                                 loyaltyPoints: 0,
                                                 loyaltyPointsAmount: 0,
+                                                  defaultPriceList: "",
                                               ),
                                             ],
                                           );
@@ -253,6 +255,12 @@ class _CustomerCreateFormState extends State<CustomerCreateForm> {
                                           );
                                         }
                                       }
+                                      print("Customer Created/Edited Successfully");
+                                      }
+                                      catch(e){
+                                        print("$e");
+                                      }
+                                      
                                     },
                                     child: const Text("Save & Close"),
                                   ),
@@ -385,6 +393,7 @@ class _CustomerCreateFormState extends State<CustomerCreateForm> {
                                                   syncStatus: "Created",
                                                   loyaltyPoints: 0,
                                                   loyaltyPointsAmount: 0,
+                                                  defaultPriceList: "",
                                                 ),
                                               ],
                                             );
