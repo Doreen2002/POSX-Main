@@ -8,6 +8,7 @@ import '../models/item_model.dart';
 import '../models/item_group_model.dart';
 import 'package:offline_pos/database_conn/mysql_conn.dart';
 import 'package:offline_pos/models/item_price.dart';
+import 'package:offline_pos/models/uom.dart';
 
 List <TempItem> itemListdata = [];
 
@@ -136,6 +137,25 @@ Future<List<ItemPrice>> fetchFromItemPrice() async {
       .cast<ItemPrice>();
     await conn.close();
     return itemPriceListdata;
+  } catch (e) {
+    logErrorToFile("Error fetching data from Item Price Table: $e");
+    return [];
+  }
+}
+
+List <UOM> UOMListdata = [];
+
+Future<List<UOM>> fetchFromUOM() async {
+  try {
+     final conn = await getDatabase();
+    final queryResult = await conn.query("SELECT * FROM UOM;");
+
+    UOMListdata = queryResult
+      .map((row) => UOM.fromJson(row.fields))
+      .toList()
+      .cast<UOM>();
+    await conn.close();
+    return UOMListdata;
   } catch (e) {
     logErrorToFile("Error fetching data from Item Price Table: $e");
     return [];
