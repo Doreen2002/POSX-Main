@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:offline_pos/globals/global_values.dart';
 import 'package:offline_pos/models/item_price.dart';
 import 'package:offline_pos/utils/dialog_utils.dart';
@@ -885,18 +886,16 @@ Future <void> getPosOpening() async {
 
 Future<void> repeatSync(context) async {
   try{
-    
+    bool hasInternet = await InternetConnection().hasInternetAccess;
     final List<ConnectivityResult> connectivityResult =
       await (Connectivity().checkConnectivity());
     Timer.periodic(Duration(minutes: 20), (Timer timer) async{
-    if (connectivityResult.contains(ConnectivityResult.mobile) ||
-        connectivityResult.contains(ConnectivityResult.wifi) || connectivityResult.contains(ConnectivityResult.ethernet)) {
+    if (hasInternet) {
           await submitInvoiceRequest() ;
           await errorInvoiceRequest();
         }});
   Timer.periodic(Duration(minutes: 20), (Timer timer) async{
-    if (connectivityResult.contains(ConnectivityResult.mobile) ||
-        connectivityResult.contains(ConnectivityResult.wifi) || connectivityResult.contains(ConnectivityResult.ethernet)) {
+    if (hasInternet) {
       if (isSyncing) return; 
       isSyncing = true;
       

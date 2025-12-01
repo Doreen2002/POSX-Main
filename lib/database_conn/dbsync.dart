@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:offline_pos/api_requests/customer.dart';
 import 'package:offline_pos/api_requests/items.dart';
 import 'package:offline_pos/api_requests/license_details.dart';
@@ -46,14 +47,12 @@ Future<void> dbSync(context, notifyListeners)async {
   await UserPreference.getInstance();
   final List<ConnectivityResult> connectivityResult =
       await (Connectivity().checkConnectivity());
-
+      bool hasInternet = await InternetConnection().hasInternetAccess;
   try {
-    if (connectivityResult.isEmpty ||
-        connectivityResult.contains(ConnectivityResult.none)) {
+    if (hasInternet) {
       onofflineSync(context);
       return;
-    } else if (connectivityResult.contains(ConnectivityResult.mobile) ||
-        connectivityResult.contains(ConnectivityResult.wifi) || connectivityResult.contains(ConnectivityResult.ethernet)) {
+    } else if (hasInternet) {
       onlineSync(context, notifyListeners);
     } else {
       dbSyncErrorDialog(

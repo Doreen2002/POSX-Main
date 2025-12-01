@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 
 class IsOnline extends StatefulWidget {
   const IsOnline({super.key});
@@ -13,44 +14,27 @@ class _IsOnlineState extends State<IsOnline> {
 
   @override
   void initState() {
-    if (!mounted) return;
     super.initState();
-    checkOnline();
-
-    // listen for connectivity changes
-    Connectivity().onConnectivityChanged.listen((result) {
-      if (result.isEmpty ||
-    result.contains(ConnectivityResult.none)) {
-        setState(() {
-      isOnline = false;
-        });
-    }
-    else if (result.contains(ConnectivityResult.mobile) ||
-        result.contains(ConnectivityResult.wifi) || result.contains(ConnectivityResult.ethernet)) {
-          setState(() {
-      isOnline = true;
-        });
-        }
-    });
+    monitorConnection();
   }
 
-  Future<void> checkOnline() async {
-    final result = await Connectivity().checkConnectivity();
-    if (result.isEmpty ||
-    result.contains(ConnectivityResult.none)) {
-        setState(() {
-      isOnline = false;
-        });
-    }
-    else if (result.contains(ConnectivityResult.mobile) ||
-        result.contains(ConnectivityResult.wifi)|| result.contains(ConnectivityResult.ethernet)) {
+  void monitorConnection() {
+    Connectivity().onConnectivityChanged.listen((result) async {
+      bool hasInternet = await InternetConnection().hasInternetAccess;
 
-          setState(() {
-      isOnline = true;
-        });
-        }
-   
-      
+      setState(() {
+        isOnline = hasInternet;
+      });
+    });
+
+    _initialCheck();
+  }
+
+  Future<void> _initialCheck() async {
+    bool hasInternet = await InternetConnection().hasInternetAccess;
+    setState(() {
+      isOnline = hasInternet;
+    });
   }
 
   @override
