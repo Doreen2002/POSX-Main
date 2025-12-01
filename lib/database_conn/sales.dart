@@ -17,14 +17,19 @@ import 'package:offline_pos/widgets_components/log_error_to_file.dart';
 
 Future<bool> createSalesInvoiceTable() async {
  bool isCreatedDB = false;
+  final conn = await getDatabase();
   try {
-    final conn = await getDatabase();
+   
     await conn.query("CREATE TABLE IF NOT EXISTS SalesInvoice (id varchar(255), name varchar(255) PRIMARY KEY,erpnext_id varchar(255),customer varchar(255), customer_name varchar(255),pos_profile varchar(255),company varchar(255),posx_date varchar(255),erpnext_si_date varchar(255),due_date varchar(255),net_total FLOAT,additional_discount_percentage FLOAT,grand_total FLOAT,gross_total FLOAT, change_amount FLOAT,status varchar(255),messageStatus varchar(255),vat FLOAT,discount FLOAT,opening_name varchar(255),invoice_status varchar(255),sales_person varchar(255),submitted_at varchar(255),background_job_id varchar(255), is_return varchar(255), return_against varchar(255))");
     isCreatedDB = true;
-    await conn.close();
+   
   } catch (e) {
     print("Error creating sales invoice table $e");
     isCreatedDB = false;
+  }
+  finally
+  {
+     await conn.close();
   }
 
   return isCreatedDB;
@@ -32,8 +37,9 @@ Future<bool> createSalesInvoiceTable() async {
 
 Future<bool> createSalesInvoiceItemTable() async {
  bool isCreatedDB = false;
+   final conn = await getDatabase();
   try {
-    final conn = await getDatabase();
+  
     await conn.query( "CREATE TABLE IF NOT EXISTS SalesInvoiceItem  (id INTEGER PRIMARY KEY AUTO_INCREMENT,name varchar(255),item_code varchar(255),item_name varchar(255),image varchar(255),stock_uom varchar(255),item_group varchar(255),rate FLOAT,qty int,batch_no varchar(255),serial_no varchar(255),item_tax_rate varchar(255),price_list_rate FLOAT,base_price_list_rate FLOAT,amount FLOAT,net_rate FLOAT,net_amount FLOAT,discount_percentage FLOAT,discount_amount FLOAT, custom_is_vat_inclusive INTEGER,applied_pricing_rule_id varchar(255),applied_pricing_rule_title varchar(255),discount_source varchar(255))");
     
     // Add pricing rule columns to existing tables
@@ -54,10 +60,13 @@ Future<bool> createSalesInvoiceItemTable() async {
     }
     
     isCreatedDB = true;
-    await conn.close();
+
   } catch (e) {
     logErrorToFile("Error creating sales invoice item table $e");
     isCreatedDB = false;
+  }
+  finally{
+        await conn.close();
   }
 
   return isCreatedDB;
@@ -65,14 +74,18 @@ Future<bool> createSalesInvoiceItemTable() async {
 
 Future<bool> createSalesInvoicePayment() async {
  bool isCreatedDB = false;
+  final conn = await getDatabase();
   try {
-    final conn = await getDatabase(); 
+    
     await conn.query(  "CREATE TABLE IF NOT EXISTS SalesInvoicePayment (id varchar(255),mode_of_payment varchar(255),amount FLOAT,opening_name varchar(255), erpnext_invoice_id varchar(255))");
     isCreatedDB = true;
-    await conn.close();
+  
   } catch (e) {
     logErrorToFile("Error creating sales invoice payment table $e");
     isCreatedDB = false;
+  }
+  finally{
+      await conn.close();
   }
 
   return isCreatedDB;
@@ -81,9 +94,10 @@ Future<bool> createSalesInvoicePayment() async {
 List<TempSalesInvoiceModel> closedSalesInvoiceData = [];
 
 Future<List<TempSalesInvoiceModel>> fetchFromClosedSalesInvoice(name) async {
+    final conn = await getDatabase();
   try {
 
-    final conn = await getDatabase();
+  
 
 
     final queryResult = await conn.query("""
@@ -99,12 +113,16 @@ Future<List<TempSalesInvoiceModel>> fetchFromClosedSalesInvoice(name) async {
           .map((row) => TempSalesInvoiceModel.fromJson(row.fields))
           .toList().cast<TempSalesInvoiceModel>();
 
-    await closeDatabase(conn);
+    
     return closedSalesInvoiceData ;
   } catch (e) {
     logErrorToFile("Error fetching data from SalesInvoice Table $e");
     return [];
   } 
+  finally
+  {
+    await closeDatabase(conn);
+  }
 
 }
 
@@ -172,9 +190,12 @@ Future<List<Map<String, dynamic>>> fetchGroupedInvoiceData() async {
       });
     }
 
-    await conn.close();
+    
   } catch (e) {
     logErrorToFile("❌ Error fetching invoice data: $e");
+   
+  }
+  finally{
     await conn.close();
   }
 
@@ -184,16 +205,20 @@ Future<List<Map<String, dynamic>>> fetchGroupedInvoiceData() async {
 
 Future<dynamic> insertTableSalesInvoice({String? id, String? name, String? customer, String? customerName, String? posProfile,String? company,String? postingDate,
     String? postingTime,String? paymentDueDate,double? netTotal,double? additionalDiscountPer,double? grandTotal, double? grossTotal, double? changeAmount, String? status,String? messageStatus,double? vat,double? discount,String? setWarehouse,String? openingName, String? invoiceStatus, String? salesPerson,  String? returnAgainst, String? isReturn}) async {
+  final conn = await getDatabase();
   try {
-    final conn = await getDatabase();
+    
     dynamic res;
      var insertItemQuery = 'INSERT INTO SalesInvoice (id, name,customer,customer_name, pos_profile,company,posx_date,erpnext_si_date,due_date,net_total,additional_discount_percentage,grand_total,gross_total, change_amount, status,messageStatus,vat,discount,opening_name,invoice_status, sales_person, is_return, return_against) ';
       res = await conn.query('''$insertItemQuery VALUES('$id','$name','$customer', '$customerName', '$posProfile','$company','$postingDate','$postingTime','$paymentDueDate','$netTotal','$additionalDiscountPer','$grandTotal', '$grossTotal', '$changeAmount', '$status','$messageStatus','$vat','$discount','$openingName','$invoiceStatus','$salesPerson' , '$isReturn', '$returnAgainst')''');
      
-      await closeDatabase(conn);
+
     return res;
   } catch (e) {
     logErrorToFile("Error inserting data into invoice Table $e");
+  }
+  finally{
+          await closeDatabase(conn);
   }
 }
 
@@ -230,8 +255,9 @@ List<TempSalesInvoiceModel> salesInvoiceData = [];
 
 
 Future<List<TempSalesInvoiceModel>> fetchFromSalesInvoice() async {
+      final conn = await getDatabase();
   try {
-    final conn = await getDatabase();
+
     final queryResult = await conn.query("""
       SELECT * FROM SalesInvoice
      
@@ -242,39 +268,49 @@ Future<List<TempSalesInvoiceModel>> fetchFromSalesInvoice() async {
           .map((row) => TempSalesInvoiceModel.fromJson(row.fields))
           .toList().cast<TempSalesInvoiceModel>();
 
-    await closeDatabase(conn);
+   
     return salesInvoiceData ;
   } catch (e) {
     logErrorToFile("Error fetching data from SalesInvoice Table $e");
     return [];
+  }
+  finally
+  {
+     await closeDatabase(conn);
   } 
 }
 
 List<TempSalesInvoiceItemModel> salesInvoiceItemModelList =[];
 Future <List<TempSalesInvoiceItemModel>> fetchFromSalesInvoiceItem() async {
+      final conn = await getDatabase();
   try {
-    final conn = await getDatabase();
+
     final queryResult = await conn.query("""
       SELECT * FROM SalesInvoiceItem;
     """);
       salesInvoiceItemModelList = queryResult.map((row) => TempSalesInvoiceItemModel.fromJson(row.fields))
           .toList().cast<TempSalesInvoiceItemModel>();
   
-    await closeDatabase(conn);
+    
     return salesInvoiceItemModelList;
   } catch (e) {
     logErrorToFile("Error fetching data from SalesInvoiceItem Table $e");
 
     return [];
   } 
+  finally
+  {
+    await closeDatabase(conn);
+  }
 }
 
 List<TempSalesInvoiceModel> salesInvoiceInProgressData = [];
 
 
 Future<List<TempSalesInvoiceModel>> fetchFromSalesInvoiceInProgress() async {
+      final conn = await getDatabase();
   try {
-    final conn = await getDatabase();
+
     final queryResult = await conn.query("""
       SELECT * FROM SalesInvoice
       WHERE status = 'In Progress'
@@ -285,12 +321,16 @@ Future<List<TempSalesInvoiceModel>> fetchFromSalesInvoiceInProgress() async {
           .map((row) => TempSalesInvoiceModel.fromJson(row.fields))
           .toList().cast<TempSalesInvoiceModel>();
 
-    await closeDatabase(conn);
     return salesInvoiceInProgressData ;
   } catch (e) {
     logErrorToFile("Error fetching data from SalesInvoice Table $e");
     return [];
   } 
+  finally
+  {
+    
+    await closeDatabase(conn);
+  }
 }
 
 
@@ -305,12 +345,15 @@ Future<bool> updateSalesInvoiceSynced(String invoiceName, String status, String 
       "UPDATE SalesInvoicePayment SET erpnext_invoice_id ='$erpnextID' WHERE id = ?",
       [invoiceName],
     );
-    await conn.close();
+   
     return true;
   } catch (e) {
     logErrorToFile("❌ Error updating SalesInvoice synced status: $e");
-    await conn.close();
+   
     return false;
+  }
+  finally{
+     await conn.close();
   }
 }
 
@@ -325,12 +368,15 @@ Future<bool> updateSalesInvoiceSyncedFinal(String invoiceName, String status, St
       "UPDATE SalesInvoicePayment SET erpnext_invoice_id ='$erpnextID' WHERE id = ?",
       [invoiceName],
     );
-    await conn.close();
+  
     return true;
   } catch (e) {
     logErrorToFile("❌ Error updating SalesInvoice synced status: $e");
-    await conn.close();
+    
     return false;
+  }
+  finally{
+      await conn.close();
   }
 }
 
@@ -342,12 +388,15 @@ Future<bool> updateSalesInvoiceErrorFinal(String invoiceName, String status, Str
       [invoiceName],
     );
 
-    await conn.close();
+   
     return true;
   } catch (e) {
     logErrorToFile("❌ Error updating SalesInvoice synced status: $e");
-    await conn.close();
+
     return false;
+  }
+  finally{
+     await conn.close();
   }
 }
 
@@ -358,12 +407,15 @@ Future<bool> updateCancelledInvoice(String invoiceName, String invoiceStatus) as
       "UPDATE SalesInvoice SET invoice_status = '$invoiceStatus' WHERE name = ?",
       [invoiceName],
     );
-    await conn.close();
+
     return true;
   } catch (e) {
     logErrorToFile("❌ Error updating SalesInvoice cancelled status: $e");
-    await conn.close();
+   
     return false;
+  }
+  finally{
+        await conn.close();
   }
 }
 
@@ -374,21 +426,25 @@ Future<bool> updateErrorRetryInvoice(String invoiceName, String invoiceStatus) a
       "UPDATE SalesInvoice SET status = '$invoiceStatus', messageStatus = '' WHERE name = ?",
       [invoiceName],
     );
-    await conn.close();
+   
     return true;
   } catch (e) {
     logErrorToFile("❌ Error updating SalesInvoice retry status: $e");
-    await conn.close();
+  
     return false;
+  }
+  finally{
+     await conn.close();
   }
 }
 
 List<Payments> salesInvoicePaymentData = [];
 
 Future<List<Payments>> fetchSalesInvoicePaymentByName(String name) async {
+     final conn = await getDatabase();
   try {
     // query the query
-    final conn = await getDatabase();
+ 
     final queryResult = await conn.query("""SELECT 
                         m.name AS mode_of_payment,
                         COALESCE(SUM(p.amount), 0) AS amount
@@ -412,19 +468,23 @@ Future<List<Payments>> fetchSalesInvoicePaymentByName(String name) async {
           .map((row) => Payments.fromJson(row.fields))
           .toList().cast<Payments>();
 
-    await closeDatabase(conn);
+   
     return salesInvoicePaymentData ;
   } catch (e) {
     logErrorToFile("Error fetching data from SalesInvoicePayment Table $e");
     return [];
   } 
+  finally{
+     await closeDatabase(conn);
+  }
 }
 
 
 Future<dynamic> fetchSalesInvoicePaymentByNameClose(String name) async {
+      final conn = await getDatabase();
   try {
     // query the query
-    final conn = await getDatabase();
+
         final queryResult = await conn.query("""
       SELECT 
         m.name AS mode_of_payment,
@@ -458,12 +518,15 @@ Future<dynamic> fetchSalesInvoicePaymentByNameClose(String name) async {
       
           
 
-    await closeDatabase(conn);
+ 
     return queryResult.map((row) => row.fields).toList();
   } catch (e) {
     logErrorToFile("Error fetching data from payment closing data $e");
     return [];
   } 
+  finally{
+       await closeDatabase(conn);
+  }
 }
 //return invoice details
 Future<Map<String, dynamic>> fetchSalesInvoiceDetailsToReturn(String name) async {
@@ -478,12 +541,15 @@ Future<Map<String, dynamic>> fetchSalesInvoiceDetailsToReturn(String name) async
       return {};
     }
     final invoice = invoiceResult.first.fields;
-    await conn.close();
+
     return invoice;
   }  catch (e) {
     logErrorToFile("Error fetching invoice details: $e");
-    await conn.close();
+   
     return {};
+  }
+  finally{
+     await conn.close();
   }
 }
 
@@ -495,7 +561,7 @@ Future<List<Item>> fetchSalesInvoiceItemDetailsToReturn(String name) async {
       [name],
     );
     if (invoiceResult.isEmpty) {
-      await conn.close();
+    
       return [];
     }
     final List<Item> invoice = invoiceResult.map<Item>((row) {
@@ -534,14 +600,17 @@ Future<List<Item>> fetchSalesInvoiceItemDetailsToReturn(String name) async {
   return Item.fromJson(fields);
 }).toList();
 
-    await conn.close();
+  
    
     return invoice;
   }  catch (e) {
     logErrorToFile("Error fetching invoice details: $e");
    
-    await conn.close();
+    
     return [];
+  }
+  finally{
+      await conn.close();
   }
 }
 
@@ -553,7 +622,7 @@ Future<List<PaymentModeTypeAheadModel>> fetchSalesInvoicePaymentDetailsToReturn(
       [name],
     );
     if (invoicePaymentsResult.isEmpty) {
-      await conn.close();
+    
       return [];
     }
     final List<PaymentModeTypeAheadModel> payments = invoicePaymentsResult.map<PaymentModeTypeAheadModel>((row) {
@@ -567,12 +636,15 @@ Future<List<PaymentModeTypeAheadModel>> fetchSalesInvoicePaymentDetailsToReturn(
       }
     return PaymentModeTypeAheadModel.fromJson(fields);
     }).toList();
-    await conn.close();
+   
     return payments;
   }  catch (e) {
     logErrorToFile("Error fetching payments details: $e");
-    await conn.close();
+   
     return [];
+  }
+  finally{
+     await conn.close();
   }
 }
 
@@ -586,7 +658,7 @@ Future<Map<String, dynamic>> fetchSalesInvoiceToPrint(String name) async {
       [name],
     );
     if (invoiceResult.isEmpty) {
-      await conn.close();
+    
       return {};
     }
     final invoice = invoiceResult.first.fields;
@@ -627,7 +699,7 @@ Future<Map<String, dynamic>> fetchSalesInvoiceToPrint(String name) async {
       },
     );
 
-    await conn.close();
+ 
     
     return {
       "grandTotal": invoice['grandTotal'],
@@ -649,7 +721,10 @@ Future<Map<String, dynamic>> fetchSalesInvoiceToPrint(String name) async {
     };
   }  catch (e) {
     logErrorToFile("Error fetching invoice for logErrorToFile: $e");
-    await conn.close();
+    
     return {};
+  }
+  finally{
+       await conn.close();
   }
 }

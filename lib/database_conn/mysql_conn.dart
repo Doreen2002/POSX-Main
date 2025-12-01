@@ -34,8 +34,9 @@ Future<void> closeDatabase(conn) async {
 
 
 Future<bool> isNewDatabase() async {
+   final conn = await getDatabase();
   try {
-    final conn = await getDatabase();
+   
 
   
     final results = await conn.query('''
@@ -52,15 +53,18 @@ Future<bool> isNewDatabase() async {
 
       if (count > 0) {
      
-        await conn.close();
+        
         return false; 
       }
     }
 
-    await conn.close();
+
     return true;
   } catch (e) {
     logErrorToFile('Error checking database: $e');
     return false; 
+  }
+  finally{
+    await conn.close();
   }
 }

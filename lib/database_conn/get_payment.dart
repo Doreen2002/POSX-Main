@@ -7,8 +7,9 @@ List <PaymentModeTypeAheadModel> modeOfPaymentList = [];
 List<TempPOSProfileModel> posProfileList = [];
 
 Future <List<PaymentModeTypeAheadModel>> fetchFromModeofPayment() async {
-  try {
     final conn = await getDatabase();
+  try {
+  
     final  queryResult = await conn.query("SELECT * FROM ModeOfPayment;");
 
     // Map results to TempItem objects
@@ -16,18 +17,22 @@ Future <List<PaymentModeTypeAheadModel>> fetchFromModeofPayment() async {
         .map((row) => PaymentModeTypeAheadModel.fromJson(row.fields))
         .toList().cast<PaymentModeTypeAheadModel>();
 
-    await conn.close();
+   
     
     return modeOfPaymentList;
   } catch (e) {
     logErrorToFile("Error fetching data from Item Table $e");
     return [];
   } 
+  finally{
+     await conn.close();
+  }
 }
 
 Future <List<TempPOSProfileModel>> fetchFromPosProfile() async {
+      final conn = await getDatabase();
   try {
-    final conn = await getDatabase();
+
     // Execute the query
     final queryResult = await conn.query("SELECT * FROM PosProfile;");
   
@@ -37,10 +42,14 @@ Future <List<TempPOSProfileModel>> fetchFromPosProfile() async {
         .map((row) => TempPOSProfileModel.fromJson(row.fields))
         .toList().cast<TempPOSProfileModel>();
   
-    await conn.close();
+ 
     return posProfileList;
   } catch (e) {
     logErrorToFile("Error fetching data from pos profile Table $e");
     return [];
   } 
+  finally
+  {
+       await conn.close();
+  }
 }

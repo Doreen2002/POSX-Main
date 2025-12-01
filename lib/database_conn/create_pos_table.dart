@@ -5,8 +5,9 @@ import 'package:offline_pos/models/pos_closing_entry_model.dart';
 import 'package:offline_pos/models/pos_opening_entry_model.dart';
 import 'package:offline_pos/widgets_components/log_error_to_file.dart';
 Future<void> createPosProfileTable() async {
+  final db = await getDatabase();
   try{
-    final db = await getDatabase();
+    
   await db.query(
     '''
     CREATE TABLE IF NOT EXISTS PosOpening (
@@ -24,25 +25,34 @@ Future<void> createPosProfileTable() async {
     );
     '''
   );
-  await db.close();
+ 
   }
   catch (e) {
     logErrorToFile("Error creating PosOpening table: $e");
+  }
+  finally
+  {
+     await db.close();
   }
 
 }
 
 Future<bool> createTablePosOpening() async {
  bool isCreatedDB = false;
+   final conn = await getDatabase();
   try {
-    final conn = await getDatabase();
+  
     await conn.query("CREATE TABLE IF NOT EXISTS PosOpening (name varchar(255) PRIMARY KEY,erpnext_id varchar(255),user varchar(255),period_start_date varchar(255),period_end_date varchar(255),status varchar(255),posting_date varchar(255),company varchar(255),pos_profile varchar(255),pos_closing_entry varchar(255),paymentMode varchar(255),amount double,sync_status varchar(255));");
     isCreatedDB = true;
-    await conn.close();
+  
   } catch (e) {
     logErrorToFile("Error creating pos opening table $e");
     isCreatedDB = false;
     
+  }
+  finally
+  {
+   await conn.close();
   }
 
   return isCreatedDB;
@@ -50,14 +60,19 @@ Future<bool> createTablePosOpening() async {
 
 Future<bool> createTablePosClosing() async {
  bool isCreatedDB = false;
+  final conn = await getDatabase();
   try {
-    final conn = await getDatabase();
+   
     await conn.query("CREATE TABLE IF NOT EXISTS PosClosing (name varchar(255) PRIMARY KEY,erpnext_id varchar(255),user varchar(255),period_start_date varchar(255),period_end_date varchar(255),posting_date varchar(255),posting_time varchar(255),company varchar(255),pos_profile varchar(255),pos_opening_entry varchar(255),closing_amount FLOAT,opening_entry_amount FLOAT,sync_status varchar(255), total_denomination_value FLOAT, comment varchar(255));");
     isCreatedDB = true;
-    await conn.close();
+    
   } catch (e) {
    logErrorToFile ("Error creating pos closing table $e");
     isCreatedDB = false;
+  }
+  finally
+  {
+    await conn.close();
   }
 
   return isCreatedDB;
@@ -66,14 +81,18 @@ Future<bool> createTablePosClosing() async {
 
 Future<bool> createTablePosProfile() async {
  bool isCreatedDB = false;
+ final conn = await getDatabase();
   try {
-    final conn = await getDatabase();
+    
     await conn.query("CREATE TABLE IF NOT EXISTS POSProfile (name varchar(255) PRIMARY KEY,company varchar(255),customer varchar(255),country varchar(255),disabled int,warehouse varchar(255),update_stock int,currency varchar(255))");
     isCreatedDB = true;
-    await conn.close();
+  
   } catch (e) {
     logErrorToFile("Error creating item table $e");
     isCreatedDB = false;
+  }
+  finally{
+      await conn.close();
   }
 
   return isCreatedDB;
@@ -82,14 +101,19 @@ Future<bool> createTablePosProfile() async {
 
 Future<bool> createTablePosClosingCurrencyDenomination() async {
  bool isCreatedDB = false;
+  final conn = await getDatabase();
   try {
-    final conn = await getDatabase();
+   
     await conn.query("CREATE TABLE IF NOT EXISTS PosClosingCurrencyDenomination (id INTEGER PRIMARY KEY AUTO_INCREMENT,pos_closing varchar(255),denomination_value FLOAT, total_denomination_value FLOAT, count INT)");
     isCreatedDB = true;
-    await conn.close();
+   
   } catch (e) {
     logErrorToFile("Error creating PosClosingCurrencyDenomination table $e");
     isCreatedDB = false;
+  }
+  finally
+  {
+     await conn.close();
   }
 
   return isCreatedDB;
@@ -98,14 +122,18 @@ Future<bool> createTablePosClosingCurrencyDenomination() async {
 
 Future<bool> createTableCashDrawer() async {
  bool isCreatedDB = false;
+ final conn = await getDatabase();
   try {
-    final conn = await getDatabase();
+    
     await conn.query("CREATE TABLE IF NOT EXISTS CashDrawer (id INTEGER PRIMARY KEY AUTO_INCREMENT,username varchar(255),datetime varchar(255) )");
     isCreatedDB = true;
-    await conn.close();
+    
   } catch (e) {
     logErrorToFile("Error creating CashDrawer table $e");
     isCreatedDB = false;
+  }
+  finally{
+    await conn.close();
   }
 
   return isCreatedDB;
@@ -116,37 +144,45 @@ Future<bool> createTableCashDrawer() async {
 List <PosOpeningEntry> posOpeningList = [];
 
 Future<List<PosOpeningEntry>> fetchFromPosOpening() async {
+  final conn = await getDatabase();
   try {
-     final conn = await getDatabase();
+     
     final queryResult = await conn.query("SELECT * FROM PosOpening where status = 'OPEN' ;");
 
     posOpeningList = queryResult
       .map((row) => PosOpeningEntry.fromJson(row.fields))
       .toList()
       .cast<PosOpeningEntry>();
-    await conn.close();
+ 
     return posOpeningList;
   } catch (e) {
     logErrorToFile("Error fetching data from Item Table: $e");
     return [];
   }
+  finally{
+       await conn.close();
+  }
 }
 
 List <PosOpeningEntry> posOpeningNotSyncedList = [];
 Future<List<PosOpeningEntry>> fetchFromNotSyncedPosOpening() async {
+   final conn = await getDatabase();
   try {
-     final conn = await getDatabase();
+    
     final queryResult = await conn.query("SELECT * FROM PosOpening WHERE sync_status IS NULL;");
 
     posOpeningNotSyncedList = queryResult
       .map((row) => PosOpeningEntry.fromJson(row.fields))
       .toList()
       .cast<PosOpeningEntry>();
-    await conn.close();
+   
     return posOpeningNotSyncedList;
   } catch (e) {
    logErrorToFile("Error fetching data from Item Table: $e");
     return [];
+  }
+  finally{
+     await conn.close();
   }
 }
 
@@ -154,19 +190,24 @@ Future<List<PosOpeningEntry>> fetchFromNotSyncedPosOpening() async {
 List <PosClosingEntry> posOpeningClosedList = [];
 
 Future<List<PosClosingEntry>> fetchFromPosOpeningClosed() async {
+    final conn = await getDatabase();
   try {
-     final conn = await getDatabase();
+   
     final queryResult = await conn.query("SELECT * FROM PosClosing where sync_status = 'Created' ;");
 
     posOpeningClosedList = queryResult
       .map((row) => PosClosingEntry.fromJson(row.fields))
       .toList()
       .cast<PosClosingEntry>();
-    await conn.close();
+   
     return posOpeningClosedList;
   } catch (e) {
     logErrorToFile("Error fetching data from Item Table: $e");
     return [];
+  }
+  finally
+  {
+     await conn.close();
   }
 }
 
@@ -174,57 +215,72 @@ Future<List<PosClosingEntry>> fetchFromPosOpeningClosed() async {
 
 List <PosOpeningEntry> allPosOpeningList = [];
 Future<List<PosOpeningEntry>> fetchAllFromPosOpening() async {
+      final conn = await getDatabase();
   try {
-     final conn = await getDatabase();
+ 
     final queryResult = await conn.query("SELECT * FROM PosOpening Order by posting_date DESC  ;");
 
     allPosOpeningList = queryResult
       .map((row) => PosOpeningEntry.fromJson(row.fields))
       .toList()
       .cast<PosOpeningEntry>();
-    await conn.close();
+   
     return allPosOpeningList;
   } catch (e) {
     logErrorToFile("Error fetching data from Item Table: $e");
     return [];
+  }
+  finally
+  {
+     await conn.close();
   }
 }
 
 
 List <PosClosingEntry> allPosClosingList = [];
 Future<List<PosClosingEntry>> fetchAllFromPosClosing() async {
+   final conn = await getDatabase();
   try {
-     final conn = await getDatabase();
+    
     final queryResult = await conn.query("SELECT * FROM PosClosing Order by posting_date DESC  ;");
 
     allPosClosingList = queryResult
       .map((row) => PosClosingEntry.fromJson(row.fields))
       .toList()
       .cast<PosClosingEntry>();
-    await conn.close();
+  
     return allPosClosingList;
   } catch (e) {
     logErrorToFile("Error fetching data from Item Table: $e");
     return [];
+  }
+   finally
+  {
+     await conn.close();
   }
 }
 
 List <PosClosingCurrencyDenomination> allPosClosingCurrencyDenominationList = [];
 
 Future<List<PosClosingCurrencyDenomination>> fetchAllFromPosClosingCurrencyDenomination(String closingEntry) async {
+ final conn = await getDatabase();
   try {
-     final conn = await getDatabase();
+     
     final queryResult = await conn.query("SELECT * FROM PosClosingCurrencyDenomination WHERE pos_closing = '$closingEntry';");
 
      allPosClosingCurrencyDenominationList= queryResult
       .map((row) => PosClosingCurrencyDenomination.fromJson(row.fields))
       .toList()
       .cast<PosClosingCurrencyDenomination>();
-    await conn.close();
+   
     return allPosClosingCurrencyDenominationList;
   } catch (e) {
    logErrorToFile("Error fetching data from PosClosingCurrencyDenomination Table: $e");
     return [];
+  }
+  finally
+  {
+     await conn.close();
   }
 }
 
@@ -237,7 +293,7 @@ Future<Map<String, dynamic>> fetchClosingEntryToPrint(String name, String closed
       [name],
     );
     if (closingResult.isEmpty) {
-      await conn.close();
+      
       return {};
     }
     final closed = closingResult.first.fields;
@@ -321,7 +377,7 @@ Future<Map<String, dynamic>> fetchClosingEntryToPrint(String name, String closed
 
     final paymentModes = paymentsResult.map((row) => row.fields).toList();
 
-    await conn.close();
+
 
     return {
       "startDate": closed['period_start_date'],
@@ -349,8 +405,10 @@ Future<Map<String, dynamic>> fetchClosingEntryToPrint(String name, String closed
     };
   } catch (e) {
     logErrorToFile("Error fetching invoice for print: $e");
-   
-    await conn.close();
     return {};
+  }
+  finally
+  {
+    await conn.close();
   }
 }

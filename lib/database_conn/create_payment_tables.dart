@@ -4,14 +4,19 @@ import 'package:offline_pos/widgets_components/log_error_to_file.dart';
 
 Future<bool> createModeOfPaymentTable() async {
  bool isCreatedDB = false;
+  final db = await getDatabase();
   try {
-    final db = await getDatabase();
+   
     await db.query("CREATE TABLE IF NOT EXISTS ModeOfPayment (name varchar(255) PRIMARY KEY)");
     isCreatedDB = true;
-    await db.close();
+    
   } catch (e) {
     logErrorToFile("Error creating mode of payment  table $e");
     isCreatedDB = false;
+  }
+  finally
+  {
+    await db.close();
   }
   
   return isCreatedDB;
@@ -19,10 +24,11 @@ Future<bool> createModeOfPaymentTable() async {
 
 Future<bool> deleteAllModeOfPayment(ids) async {
   bool isDeleted = false;
+  final db = await getDatabase();
   try {
     if(ids.isNotEmpty)
     {
-    final db = await getDatabase();
+   
     final placeholders = List.filled(ids.length, '?').join(', ');
 
     
@@ -32,11 +38,15 @@ Future<bool> deleteAllModeOfPayment(ids) async {
       );
 
     isDeleted = true;
-    await db.close();
+ 
     }
   } catch (e) {
     logErrorToFile("Error deleting ModeOfPayment records: $e");
     isDeleted = false;
+  }
+   finally
+  {
+    await db.close();
   }
 
   return isDeleted;
@@ -44,34 +54,44 @@ Future<bool> deleteAllModeOfPayment(ids) async {
 
 Future<bool> deleteAllUser() async {
   bool isDeleted = false;
-  try {
     final db = await getDatabase();
+  try {
+  
 
     
     await db.query("DELETE FROM User;");
 
     isDeleted = true;
-    await db.close();
+  
   } catch (e) {
     logErrorToFile("Error deleting User records: $e");
     isDeleted = false;
+  }
+  finally
+  {
+    await db.close();
   }
 
   return isDeleted;
 }
 Future<bool> deleteAllPOSProfile() async {
   bool isDeleted = false;
+  final db = await getDatabase();
   try {
-    final db = await getDatabase();
+    
 
     
     await db.query("DELETE FROM POSProfile;");
 
     isDeleted = true;
-    await db.close();
+   
   } catch (e) {
     logErrorToFile("Error deleting POSProfile records: $e");
     isDeleted = false;
+  }
+  finally
+  {
+     await db.close();
   }
 
   return isDeleted;
@@ -80,17 +100,21 @@ Future<bool> deleteAllPOSProfile() async {
 
 Future<bool> deleteAllHoldCart() async {
   bool isDeleted = false;
+     final db = await getDatabase();
   try {
-    final db = await getDatabase();
+ 
 
     
     await db.query("DELETE FROM HoldCart;");
     await db.query("DELETE FROM HoldCartItem;");
     isDeleted = true;
-    await db.close();
+    
   } catch (e) {
    logErrorToFile ("Error deleting User records: $e");
     isDeleted = false;
+  }
+  finally{
+  await db.close();
   }
 
   return isDeleted;

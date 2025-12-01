@@ -90,12 +90,15 @@ Future<dynamic> insertTablePricingRule({required List<PricingRuleModel> d}) asyn
         element.erpLastModified,
       ]);
     }
-    await conn.close();
+    
     return d.length;
   } catch (e) {
-    await conn.close();
+    
     logErrorToFile("Error inserting pricing rules: $e");
     return {"error": e.toString()};
+  }
+  finally{
+    await conn.close();
   }
 }
 
@@ -115,12 +118,15 @@ Future<dynamic> insertTablePricingRuleItem({required List<PricingRuleItemModel> 
         element.itemCode,
       ]);
     }
-    await conn.close();
+ 
     return d.length;
   } catch (e) {
-    await conn.close();
+   
     logErrorToFile("Error inserting pricing rule items: $e");
     return {"error": e.toString()};
+  }
+  finally{
+       await conn.close();
   }
 }
 
@@ -140,12 +146,15 @@ Future<dynamic> insertTablePricingRuleItemGroup({required List<PricingRuleItemGr
         element.itemGroup,
       ]);
     }
-    await conn.close();
+ 
     return d.length;
   } catch (e) {
-    await conn.close();
+   
     logErrorToFile("Error inserting pricing rule item groups: $e");
     return {"error": e.toString()};
+  }
+  finally{
+       await conn.close();
   }
 }
 
@@ -165,11 +174,14 @@ Future<dynamic> insertTablePricingRuleBrand({required List<PricingRuleBrandModel
         element.brand,
       ]);
     }
-    await conn.close();
+
     return d.length;
   } catch (e) {
-    await conn.close();
+   
     logErrorToFile("Error inserting pricing rule brands: $e");
     return {"error": e.toString()};
+  }
+  finally{
+     await conn.close();
   }
 }

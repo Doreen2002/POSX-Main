@@ -11,14 +11,14 @@ List<TempCustomerData> customerEditedDataList = [];
 List<TempCustomerData> customerCreatedDataList = [];
 
 Future<List<TempCustomerData>> fetchFromCustomer() async {
-  
-  try {
     final conn = await getDatabase();
+  try {
+  
     final  queryResult = await conn.query("SELECT * FROM Customer ORDER BY modified DESC;");
      final customerDataList = queryResult.map((row) {
       return TempCustomerData.fromJson(row.fields);
     }).toList().cast<TempCustomerData>();
-    conn.close();
+  
     
     // **NEW: Populate customer QR map for fast O(1) lookups**
     OptimizedDataManager.populateCustomerQRMap(customerDataList);
@@ -28,54 +28,66 @@ Future<List<TempCustomerData>> fetchFromCustomer() async {
     logErrorToFile("Error fetching data from Customer Table: $e");
     return [];
   }
+  finally{
+    await  conn.close();
+  }
   
 }
 
 
 
 Future<List<TempCustomerData>> fetchFromEditedCustomer() async {
-  
+      final conn = await getDatabase();
   try {
-    final conn = await getDatabase();
+
     final  queryResult = await conn.query("SELECT * FROM Customer WHERE sync_status = 'Edited' ORDER BY modified DESC;");
      final customerEditedDataList = queryResult.map((row) {
       return TempCustomerData.fromJson(row.fields);
     }).toList().cast<TempCustomerData>();
-    conn.close();
+ 
     return customerEditedDataList;
   } catch (e) {
    logErrorToFile("Error fetching data from edited Customer Table: $e");
     return [];
   }
+  finally
+  {
+      await  conn.close();
+  }
   
 }
 
 Future<List<TempCustomerData>> fetchFromCreatedCustomer() async {
-  
+   final conn = await getDatabase();
   try {
-    final conn = await getDatabase();
+   
     final  queryResult = await conn.query("SELECT * FROM Customer WHERE sync_status = 'Created' ;");
      final customerCreatedDataList = queryResult.map((row) {
       return TempCustomerData.fromJson(row.fields);
     }).toList().cast<TempCustomerData>();
-    conn.close();
+  
     return customerCreatedDataList;
   } catch (e) {
     logErrorToFile("Error fetching data from created Customer Table: $e");
     return [];
   }
+   finally
+  {
+      await  conn.close();
+  }
   
 }
 
 Future<String?> fetchLastCustomerSequence() async {
+  final conn = await getDatabase();
   try {
-    final conn = await getDatabase();
+    
     final branchID = UserPreference.getString(PrefKeys.branchID) ?? '';
     final queryResult = await conn.query(
       "SELECT posx_id FROM Customer WHERE posx_id LIKE ? ORDER BY CAST(SUBSTRING_INDEX(posx_id, ' - ', -1) AS UNSIGNED) DESC LIMIT 1;",
       ["CM - $branchID - %"],
     );
-    await conn.close();
+    
 
     if (queryResult.isNotEmpty) {
       final name = queryResult.first['posx_id'] as String;
@@ -88,5 +100,8 @@ Future<String?> fetchLastCustomerSequence() async {
   } catch (e) {
     logErrorToFile("Error fetching data from last customer: $e");
     return null;
+  }
+  finally{
+    await conn.close();
   }
 }

@@ -115,14 +115,18 @@ Future<bool> createTableItemPrice() async {
 
 Future<bool> createTableUOM() async {
   bool isCreatedDB = false;
+   final conn = await getDatabase();
   try {
-    final conn = await getDatabase();
+   
     await conn.query( "CREATE TABLE IF NOT EXISTS UOM (name varchar(255) PRIMARY KEY)");
     isCreatedDB = true;
-    await conn.close();
   } catch (e) {
     logErrorToFile("Error creating UOM table $e");
     isCreatedDB = false;
+  }
+  finally
+  {
+    await conn.close();
   }
 
   return isCreatedDB;

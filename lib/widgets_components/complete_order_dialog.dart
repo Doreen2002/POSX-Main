@@ -164,6 +164,7 @@ Widget completeOrderDialog(
 }
 
 Future<dynamic> createInvoice(model) async {
+    final conn = await getDatabase();
   try{
      
    final match = await OptimizedDataManager.getCustomerByName(
@@ -178,7 +179,7 @@ Future<dynamic> createInvoice(model) async {
       model.salePersonID = matchSalesPerson.name;
    
   int timestamp = DateTime.now().millisecondsSinceEpoch ~/ 1000;
-  final conn = await getDatabase();
+
   final invoiceNo = model.isSalesReturn ?'RT-INV-${UserPreference.getString(PrefKeys.branchID)}-${timestamp}' : 'INV-${UserPreference.getString(PrefKeys.branchID)}-${timestamp}';
   await fetchFromSalesPerson();
   await insertTableSalesInvoice(
@@ -207,13 +208,16 @@ Future<dynamic> createInvoice(model) async {
   );
   await createInvoiceItem(model, conn, invoiceNo, isReturn: model.isSalesReturn);
   await createPayment(model, conn, invoiceNo , isReturn: model.isSalesReturn);
-  await closeDatabase(conn);
+  
   return invoiceNo;
   }
   catch (e) {
    
     logErrorToFile("Failed to create invoice: $e");
    
+  }
+  finally{
+    await closeDatabase(conn);
   }
  
 }

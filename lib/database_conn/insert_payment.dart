@@ -4,8 +4,9 @@ import 'package:offline_pos/database_conn/mysql_conn.dart';
 import 'package:offline_pos/widgets_components/log_error_to_file.dart';
 
 Future<dynamic> insertTableModeOfPayment({List<ModeOfPaymentModel>? d}) async {
+      final conn = await getDatabase();
   try {
-    final conn = await getDatabase();
+
     dynamic res;
 
     for (var element in d!) {
@@ -16,10 +17,13 @@ Future<dynamic> insertTableModeOfPayment({List<ModeOfPaymentModel>? d}) async {
       ;''');
    
     }
-    await conn.close();
+  
     
     return res;
   } catch (e) {
     logErrorToFile("Error inserting data into payment mode Table $e");
+  }
+  finally{
+      await conn.close();
   }
 }

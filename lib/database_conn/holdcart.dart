@@ -6,8 +6,9 @@ import 'package:offline_pos/widgets_components/log_error_to_file.dart';
 
 Future<bool> createHoldCartTable() async {
   bool isCreatedDB = false;
+  final conn = await getDatabase();
   try {
-    final conn = await getDatabase();
+    
     await conn.query("""
       CREATE TABLE IF NOT EXISTS HoldCart (
         id INTEGER PRIMARY KEY AUTO_INCREMENT,
@@ -24,10 +25,14 @@ Future<bool> createHoldCartTable() async {
       )
     """);
     isCreatedDB = true;
-    await conn.close();
+   
   } catch (e) {
     logErrorToFile("Error creating HoldCart table: $e");
     isCreatedDB = false;
+  }
+  finally
+  {
+     await conn.close();
   }
   return isCreatedDB;
 }
@@ -35,8 +40,9 @@ Future<bool> createHoldCartTable() async {
 
 Future<bool> createHoldCartItemTable() async {
   bool isCreatedDB = false;
+     final conn = await getDatabase();
   try {
-    final conn = await getDatabase();
+ 
     await conn.query("""
       CREATE TABLE IF NOT EXISTS HoldCartItem (
         id INTEGER PRIMARY KEY AUTO_INCREMENT,
@@ -61,10 +67,14 @@ Future<bool> createHoldCartItemTable() async {
       )
     """);
     isCreatedDB = true;
-    await conn.close();
+   
   } catch (e) {
     logErrorToFile("Error creating HoldItemCart table: $e");
     isCreatedDB = false;
+  }
+  finally
+  {
+     await conn.close();
   }
   return isCreatedDB;
 }
@@ -72,58 +82,73 @@ Future<bool> createHoldCartItemTable() async {
 List<HoldCart> holdcartList = [];
 
 Future<List<HoldCart>> fetchFromHoldCart() async {
-  try {
      final conn = await getDatabase();
+  try {
+  
     final queryResult = await conn.query("SELECT * FROM HoldCart ORDER BY date DESC;");
 
     holdcartList = queryResult
       .map((row) => HoldCart.fromJson(row.fields))
       .toList()
       .cast<HoldCart>();
-    await conn.close();
+    
     return holdcartList;
   } catch (e) {
     logErrorToFile("Error fetching data from Hold Cart  Table: $e");
     return [];
+  }
+  finally
+  {
+    await conn.close();
   }
 }
 
 List<HoldCartItem> holdcartItemList = [];
 
 Future<List<HoldCartItem>> fetchFromHoldCartItem() async {
+    final conn = await getDatabase();
   try {
-     final conn = await getDatabase();
+   
     final queryResult = await conn.query("SELECT * FROM HoldCartItem;");
 
     holdcartItemList = queryResult
       .map((row) => HoldCartItem.fromJson(row.fields))
       .toList()
       .cast<HoldCartItem>();
-    await conn.close();
+    
     return holdcartItemList;
   } catch (e) {
     logErrorToFile("Error fetching data from Hold Cart Item Table: $e");
     return [];
   }
+  finally
+  {
+    await conn.close();
+  }
 }
 
 
 Future<List<HoldCartItem>> deleteFromHoldCartItem(name) async {
+   final conn = await getDatabase();
   try {
-     final conn = await getDatabase();
+    
     await conn.query("DELETE FROM HoldCart WHERE name = '$name';");
     await conn.query("DELETE FROM HoldCartItem WHERE parent_id = '$name';");
-    await conn.close();
+ 
     return holdcartItemList;
   } catch (e) {
     logErrorToFile("Error deleteing hold cart: $e");
     return [];
   }
+  finally{
+       await conn.close();
+  }
 }
 
 Future<void> insertIntoHoldCart(HoldCart holdCart) async {
+  final conn = await getDatabase();
   try {
-    final conn = await getDatabase();
+    
     await conn.query(
       '''
       INSERT INTO HoldCart (
@@ -153,16 +178,20 @@ Future<void> insertIntoHoldCart(HoldCart holdCart) async {
         holdCart.totalQty,
       ],
     );
-    await conn.close();
+ 
   } catch (e) {
     logErrorToFile("Error inserting into HoldCart: $e");
+  }
+  finally{
+       await conn.close();
   }
 }
 
 
 Future<void> insertIntoHoldCartItem(HoldCartItem item) async {
+  final conn = await getDatabase();
   try {
-    final conn = await getDatabase();
+    
     await conn.query(
       '''
       INSERT INTO HoldCartItem (
@@ -209,9 +238,12 @@ Future<void> insertIntoHoldCartItem(HoldCartItem item) async {
         item.idx
       ],
     );
-    await conn.close();
+    
   } catch (e) {
     logErrorToFile("Error inserting into HoldCartItem: $e");
    
+  }
+  finally{
+    await conn.close();
   }
 }

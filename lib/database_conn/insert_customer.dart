@@ -67,8 +67,9 @@ Future<dynamic> insertTableCustomer({required List<TempCustomerData> d}) async {
 
 
 Future<dynamic> updateCustomerStatus(TempCustomerData customer, context) async {
+   final conn = await getDatabase();
   try {
-    final conn = await getDatabase();
+   
     dynamic res;
 
     const updateQuery = '''
@@ -102,17 +103,21 @@ Future<dynamic> updateCustomerStatus(TempCustomerData customer, context) async {
    
     ]);
 
-    await conn.close();
+    
     return res;
   } catch (e) {
     logErrorToFile("Error updating data into Customer Table $e ${customer.name}");
     return null;
   }
+  finally{
+    await conn.close();
+  }
 }
 
 Future<dynamic> updateCustomerSyncStatus(customer) async {
+     final conn = await getDatabase();
   try {
-    final conn = await getDatabase();
+ 
     dynamic res;
 
     const updateQuery = '''
@@ -128,17 +133,21 @@ Future<dynamic> updateCustomerSyncStatus(customer) async {
       customer
     ]);
     
-    await conn.close();
+    
     return res;
   } catch (e) {
     logErrorToFile("Error updating data into Customer Table $e ${customer}");
     return null;
   }
+  finally{
+    await conn.close();
+  }
 }
 
 Future<dynamic> updateCustomerLoyaltyPoints(String customer, double amountToDeduct) async {
+   final conn = await getDatabase();
   try {
-    final conn = await getDatabase();
+   
 
    
     final result = await conn.query(
@@ -148,7 +157,7 @@ Future<dynamic> updateCustomerLoyaltyPoints(String customer, double amountToDedu
 
     if (result.isEmpty) {
      
-      await conn.close();
+     
       return null;
     }
 
@@ -158,7 +167,7 @@ Future<dynamic> updateCustomerLoyaltyPoints(String customer, double amountToDedu
 
     if (conversionRate == 0) {
       
-      await conn.close();
+    
       return null;
     }
 
@@ -187,19 +196,23 @@ Future<dynamic> updateCustomerLoyaltyPoints(String customer, double amountToDedu
       customer
     ]);
 
-    await conn.close();
+    
     return res;
   } catch (e) {
     logErrorToFile("Error updating loyalty points: $e ($customer)");
     return null;
+  }
+  finally{
+     await conn.close();
   }
 }
 
 
 
 Future<dynamic> updateCustomerID(String customer, String id) async {
-  try {
     final conn = await getDatabase();
+  try {
+  
     dynamic res;
 
     const updateQuery = '''
@@ -212,18 +225,22 @@ Future<dynamic> updateCustomerID(String customer, String id) async {
 
     res = await conn.query(updateQuery, [id, customer]);
 
-    
-    await conn.close();
+   
     return res;
   } catch (e) {
     logErrorToFile("Error updating data in Customer Table: $e | Customer: $customer");
     return null;
   }
+  finally{
+     
+    await conn.close();
+  }
 }
 
 Future<dynamic> updateSalesInvoiceCustomerID(String customer, String id) async {
+      final conn = await getDatabase();
   try {
-    final conn = await getDatabase();
+
     dynamic res;
 
     const updateQuery = '''
@@ -235,10 +252,13 @@ Future<dynamic> updateSalesInvoiceCustomerID(String customer, String id) async {
     res = await conn.query(updateQuery, [id, customer]);
 
    
-    await conn.close();
+  
     return res;
   } catch (e) {
     logErrorToFile("Error updating data in Sales Invoice Table: $e | Customer: $customer");
     return null;
+  }
+  finally{
+      await conn.close();
   }
 }

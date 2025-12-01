@@ -9,8 +9,9 @@ List<PricingRuleItemGroupModel> pricingRuleItemGroupListdata = [];
 List<PricingRuleBrandModel> pricingRuleBrandListdata = [];
 
 Future<List<PricingRuleModel>> fetchFromPricingRules() async {
+      final conn = await getDatabase();
   try {
-    final conn = await getDatabase();
+
     final queryResult = await conn.query("SELECT * FROM PricingRules WHERE disabled = 0 ORDER BY priority DESC;");
 
     pricingRuleListdata = queryResult
@@ -18,17 +19,22 @@ Future<List<PricingRuleModel>> fetchFromPricingRules() async {
         .toList()
         .cast<PricingRuleModel>();
 
-    await conn.close();
+    
     return pricingRuleListdata;
   } catch (e) {
     logErrorToFile("Error fetching data from PricingRules Table: $e");
     return [];
   }
+  finally
+  {
+    await conn.close();
+  }
 }
 
 Future<List<PricingRuleItemModel>> fetchFromPricingRuleItems() async {
+  final conn = await getDatabase();
   try {
-    final conn = await getDatabase();
+    
     final queryResult = await conn.query("SELECT * FROM PricingRuleItems;");
 
     pricingRuleItemListdata = queryResult
@@ -36,17 +42,22 @@ Future<List<PricingRuleItemModel>> fetchFromPricingRuleItems() async {
         .toList()
         .cast<PricingRuleItemModel>();
 
-    await conn.close();
+    
     return pricingRuleItemListdata;
   } catch (e) {
     logErrorToFile("Error fetching data from PricingRuleItems Table: $e");
     return [];
   }
+  finally
+  {
+    await conn.close();
+  }
 }
 
 Future<List<PricingRuleItemGroupModel>> fetchFromPricingRuleItemGroups() async {
+   final conn = await getDatabase();
   try {
-    final conn = await getDatabase();
+   
     final queryResult = await conn.query("SELECT * FROM PricingRuleItemGroups;");
 
     pricingRuleItemGroupListdata = queryResult
@@ -54,11 +65,14 @@ Future<List<PricingRuleItemGroupModel>> fetchFromPricingRuleItemGroups() async {
         .toList()
         .cast<PricingRuleItemGroupModel>();
 
-    await conn.close();
+   
     return pricingRuleItemGroupListdata;
   } catch (e) {
     logErrorToFile("Error fetching data from PricingRuleItemGroups Table: $e");
     return [];
+  }
+  finally{
+     await conn.close();
   }
 }
 
@@ -89,8 +103,9 @@ Future<List<PricingRuleModel>> fetchApplicablePricingRules({
   double? qty,
   double? amount,
 }) async {
+   final conn = await getDatabase();
   try {
-    final conn = await getDatabase();
+   
     
     String whereClause = "WHERE disabled = 0 AND (valid_from IS NULL OR valid_from <= CURDATE()) AND (valid_upto IS NULL OR valid_upto >= CURDATE())";
     List<dynamic> params = [];
@@ -144,10 +159,14 @@ Future<List<PricingRuleModel>> fetchApplicablePricingRules({
         .toList()
         .cast<PricingRuleModel>();
 
-    await conn.close();
+   
     return applicableRules;
   } catch (e) {
     logErrorToFile("Error fetching applicable pricing rules: $e");
     return [];
+  }
+  finally
+  {
+     await conn.close();
   }
 }

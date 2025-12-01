@@ -5,8 +5,9 @@ import 'package:offline_pos/widgets_components/log_error_to_file.dart';
 /// Create PricingRules main table
 Future<bool> createPricingRulesTable() async {
   bool isCreatedDB = false;
-  try {
     final conn = await getDatabase();
+  try {
+  
     await conn.query("""
       CREATE TABLE IF NOT EXISTS PricingRules (
         pricing_rule_id VARCHAR(255) PRIMARY KEY,
@@ -81,10 +82,13 @@ Future<bool> createPricingRulesTable() async {
       )
     """);
     isCreatedDB = true;
-    await conn.close();
+   
   } catch (e) {
     logErrorToFile("Error creating PricingRules table: $e");
     isCreatedDB = false;
+  }
+  finally{
+ await conn.close();
   }
   return isCreatedDB;
 }
@@ -92,8 +96,9 @@ Future<bool> createPricingRulesTable() async {
 /// Create PricingRuleItems child table
 Future<bool> createPricingRuleItemsTable() async {
   bool isCreatedDB = false;
+   final conn = await getDatabase();
   try {
-    final conn = await getDatabase();
+   
     await conn.query("""
       CREATE TABLE IF NOT EXISTS PricingRuleItems (
         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -118,10 +123,13 @@ Future<bool> createPricingRuleItemsTable() async {
       )
     """);
     isCreatedDB = true;
-    await conn.close();
+
   } catch (e) {
     logErrorToFile("Error creating PricingRuleItems table: $e");
     isCreatedDB = false;
+  }
+  finally{
+ await conn.close();
   }
   return isCreatedDB;
 }
@@ -129,8 +137,9 @@ Future<bool> createPricingRuleItemsTable() async {
 /// Create PricingRuleItemGroups child table
 Future<bool> createPricingRuleItemGroupsTable() async {
   bool isCreatedDB = false;
+   final conn = await getDatabase();
   try {
-    final conn = await getDatabase();
+   
     await conn.query("""
       CREATE TABLE IF NOT EXISTS PricingRuleItemGroups (
         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -155,10 +164,13 @@ Future<bool> createPricingRuleItemGroupsTable() async {
       )
     """);
     isCreatedDB = true;
-    await conn.close();
+    
   } catch (e) {
     logErrorToFile("Error creating PricingRuleItemGroups table: $e");
     isCreatedDB = false;
+  }
+   finally{
+ await conn.close();
   }
   return isCreatedDB;
 }
@@ -166,8 +178,9 @@ Future<bool> createPricingRuleItemGroupsTable() async {
 /// Create PricingRuleBrands child table
 Future<bool> createPricingRuleBrandsTable() async {
   bool isCreatedDB = false;
+  final conn = await getDatabase();
   try {
-    final conn = await getDatabase();
+    
     await conn.query("""
       CREATE TABLE IF NOT EXISTS PricingRuleBrands (
         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -191,10 +204,13 @@ Future<bool> createPricingRuleBrandsTable() async {
       )
     """);
     isCreatedDB = true;
-    await conn.close();
+   
   } catch (e) {
     logErrorToFile("Error creating PricingRuleBrands table: $e");
     isCreatedDB = false;
+  }
+   finally{
+ await conn.close();
   }
   return isCreatedDB;
 }
@@ -224,8 +240,9 @@ Future<bool> createAllPricingRuleTables() async {
 
 /// Drop all pricing rule tables (for clean reinstall)
 Future<bool> dropAllPricingRuleTables() async {
+   final conn = await getDatabase();
   try {
-    final conn = await getDatabase();
+   
     
     // Drop child tables first (due to foreign key constraints)
     await conn.query("DROP TABLE IF EXISTS PricingRuleBrands");
@@ -233,11 +250,14 @@ Future<bool> dropAllPricingRuleTables() async {
     await conn.query("DROP TABLE IF EXISTS PricingRuleItems");
     await conn.query("DROP TABLE IF EXISTS PricingRules");
     
-    await conn.close();
+   
     logErrorToFile("All pricing rule tables dropped successfully");
     return true;
   } catch (e) {
     logErrorToFile("Error dropping pricing rule tables: $e");
     return false;
+  }
+  finally{
+     await conn.close();
   }
 }
