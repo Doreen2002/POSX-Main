@@ -26,7 +26,7 @@ class _IsOnlineState extends State<IsOnline> {
         });
     }
     else if (result.contains(ConnectivityResult.mobile) ||
-        result.contains(ConnectivityResult.wifi)) {
+        result.contains(ConnectivityResult.wifi) || result.contains(ConnectivityResult.ethernet)) {
           setState(() {
       isOnline = true;
         });
@@ -43,7 +43,7 @@ class _IsOnlineState extends State<IsOnline> {
         });
     }
     else if (result.contains(ConnectivityResult.mobile) ||
-        result.contains(ConnectivityResult.wifi)) {
+        result.contains(ConnectivityResult.wifi)|| result.contains(ConnectivityResult.ethernet)) {
 
           setState(() {
       isOnline = true;
