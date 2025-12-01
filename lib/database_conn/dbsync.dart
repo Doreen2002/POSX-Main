@@ -447,7 +447,8 @@ Future<void> syncData(context, model) async {
           ),
         ),
       );
- if (connectivityResult.contains(ConnectivityResult.mobile) || connectivityResult.contains(ConnectivityResult.wifi) || connectivityResult.contains(ConnectivityResult.ethernet))
+  bool hasInternet = await InternetConnection().hasInternetAccess;
+ if (hasInternet)
     {   
         await createopeningEntry();
         await createCustomerRequest(
