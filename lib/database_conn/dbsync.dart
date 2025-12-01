@@ -22,6 +22,7 @@ import 'package:offline_pos/database_conn/get_pricing_rules.dart';
 import 'package:offline_pos/database_conn/holdcart.dart';
 import 'package:offline_pos/database_conn/sales.dart';
 import 'package:offline_pos/database_conn/users.dart';
+import 'package:offline_pos/models/uom.dart';
 import 'package:offline_pos/widgets_components/log_error_to_file.dart';
 import 'package:offline_pos/services/optimized_data_manager.dart';
 import 'create_item_tables.dart';
@@ -52,7 +53,7 @@ Future<void> dbSync(context, notifyListeners)async {
       onofflineSync(context);
       return;
     } else if (connectivityResult.contains(ConnectivityResult.mobile) ||
-        connectivityResult.contains(ConnectivityResult.wifi)) {
+        connectivityResult.contains(ConnectivityResult.wifi) || connectivityResult.contains(ConnectivityResult.ethernet)) {
       onlineSync(context, notifyListeners);
     } else {
       dbSyncErrorDialog(
@@ -414,6 +415,7 @@ Future <void> sync() async {
   modeOfPaymentList = await fetchFromModeofPayment();
   posProfileList = await fetchFromPosProfile();
   itemPriceListdata = await  fetchFromItemPrice();
+  UOMListdata = await fetchFromUOM();
    batchListdata = await fetchFromBatch();
    barcodeListdata = await fetchFromBarcode();
   await fetchFromBatch();
@@ -446,7 +448,7 @@ Future<void> syncData(context, model) async {
           ),
         ),
       );
- if (connectivityResult.contains(ConnectivityResult.mobile) || connectivityResult.contains(ConnectivityResult.wifi))
+ if (connectivityResult.contains(ConnectivityResult.mobile) || connectivityResult.contains(ConnectivityResult.wifi) || connectivityResult.contains(ConnectivityResult.ethernet))
     {   
         await createopeningEntry();
         await createCustomerRequest(
@@ -513,6 +515,7 @@ Future<void> syncData(context, model) async {
    batchListdata = await fetchFromBatch();
    barcodeListdata = await fetchFromBarcode();
    itemPriceListdata = await  fetchFromItemPrice();
+    UOMListdata = await fetchFromUOM();
   await fetchFromBatch();
   await fetchFromPosOpening();
   await submitInvoiceRequest();

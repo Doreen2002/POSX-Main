@@ -103,6 +103,8 @@ class CartItemScreenController extends ItemScreenController {
   TextEditingController singlediscountPercentController =
       TextEditingController();
     FocusNode singleItemdiscountAmountfocusNode = FocusNode();
+  TextEditingController singleuomController = TextEditingController();
+  FocusNode singleuomfocusNode = FocusNode();
   String singlediscountMaxPercent = '0';
   String singlediscountMaxAmount = '0.000';
   String singleItemdiscountAmount = '0.000';
@@ -341,18 +343,18 @@ Future<void>  initializePaymentModes(List<PaymentModeTypeAheadModel> jsonData) a
 
 
       if (!itemExists) {
-        if(customerData.defaultPriceList != null)
-      {
+      //   if(customerData.defaultPriceList != null)
+      // {
       
-        await fetchItemQueries.fetchFromItemPrice();
-        final itemPricingRuleRate = fetchItemQueries.itemPriceListdata.firstWhere(
-          (price) => price.itemCode == item.itemCode && price.priceList == customerData.defaultPriceList,
-          orElse: () => ItemPrice(itemCode: item.itemCode,name: item.itemCode, UOM:item.stockUom, priceList: customerData.defaultPriceList!, priceListRate: item.standardRate ?? 0.0)
-        ).priceListRate;
-         item.standardRate = itemPricingRuleRate;
-         item.newRate = itemPricingRuleRate;
-         item.newNetRate = itemPricingRuleRate;
-      }
+      //   await fetchItemQueries.fetchFromItemPrice();
+      //   final itemPricingRuleRate = fetchItemQueries.itemPriceListdata.firstWhere(
+      //     (price) => price.itemCode == item.itemCode && price.priceList == customerData.defaultPriceList,
+      //     orElse: () => ItemPrice(itemCode: item.itemCode,name: item.itemCode, UOM:item.stockUom, priceList: customerData.defaultPriceList!, priceListRate: item.standardRate ?? 0.0)
+      //   ).priceListRate;
+      //    item.standardRate = itemPricingRuleRate;
+      //    item.newRate = itemPricingRuleRate;
+      //    item.newNetRate = itemPricingRuleRate;
+      // }
         if (from_hold)
         {
           cartItems.add(item);
@@ -886,15 +888,15 @@ Future<void> repeatSync(context) async {
     
     final List<ConnectivityResult> connectivityResult =
       await (Connectivity().checkConnectivity());
-    Timer.periodic(Duration(minutes: 2), (Timer timer) async{
+    Timer.periodic(Duration(minutes: 20), (Timer timer) async{
     if (connectivityResult.contains(ConnectivityResult.mobile) ||
-        connectivityResult.contains(ConnectivityResult.wifi)) {
+        connectivityResult.contains(ConnectivityResult.wifi) || connectivityResult.contains(ConnectivityResult.ethernet)) {
           await submitInvoiceRequest() ;
           await errorInvoiceRequest();
         }});
-  Timer.periodic(Duration(minutes: 5), (Timer timer) async{
+  Timer.periodic(Duration(minutes: 20), (Timer timer) async{
     if (connectivityResult.contains(ConnectivityResult.mobile) ||
-        connectivityResult.contains(ConnectivityResult.wifi)) {
+        connectivityResult.contains(ConnectivityResult.wifi) || connectivityResult.contains(ConnectivityResult.ethernet)) {
       if (isSyncing) return; 
       isSyncing = true;
       
