@@ -50,7 +50,7 @@ void didChangeDependencies() {
   void initState() {
     super.initState();
     _loadInvoices();
-    _startAutoRefresh();
+    // _startAutoRefresh();
   }
 
   @override
