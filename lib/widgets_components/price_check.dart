@@ -75,7 +75,10 @@ Widget priceCheckModal(
                   child: InkWell(
                     onTap: () {
                       controller.clear();
-                      selectedItem = null;
+                      setState((){
+                         selectedItem = null;
+                      });
+                     
                     },
                     child: Icon(
                       Icons.clear,
@@ -157,28 +160,21 @@ Widget priceCheckModal(
               title: Text(suggestion, style: TextStyle(fontSize: 5.sp)),
             );
           },
+         
           onSelected: (suggestion) {
-            setState(() {
-              selectedItem = suggestion;
-              _controller.text = suggestion;
-              matchedItem = OptimizedDataManager.getItemByName(selectedItem ?? '') ?? TempItem(name: '', itemCode: '');
+            selectedItem = suggestion;
+            _controller.text = suggestion;
+            matchedItem =
+                itemListdata
+                    .where((item) => item.itemName == selectedItem)
+                    .first;
+                     setState(() {
+            rate = matchedItem.standardRate.toString();
+            stock = matchedItem.openingStock;
+          });
+           
 
-              rate = matchedItem.standardRate.toString();
-              stock = matchedItem.openingStock;
-              vat = matchedItem.standardRate * matchedItem.itemvat / 100;
-            });
           },
-          // onSelected: (suggestion) {
-          //   selectedItem = suggestion;
-          //   _controller.text = suggestion;
-          //   matchedItem =
-          //       itemListdata
-          //           .where((item) => item.itemName == selectedItem)
-          //           .first;
-
-          //   rate = matchedItem.valuationRate.toString();
-          //   stock = matchedItem.openingStock;
-          // },
         ),
         SizedBox(height: 3.h),
         if (selectedItem != null)
