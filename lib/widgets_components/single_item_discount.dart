@@ -507,11 +507,11 @@ Widget singleItemDiscountScreen(
                                           model.singleqtyController;
                                       model.notifyListeners();
                                     },
-                                    onChanged: (value) {
+                                    onChanged: (value) async{
                                      
                                       if (value.isEmpty) {
                                         // Update model qty to 1 immediately but don't change UI here
-                                        onChangeItemQTY(
+                                        await onChangeItemQTY(
                                           '',
                                           model,
                                           selectedItemIndex,
@@ -524,7 +524,7 @@ Widget singleItemDiscountScreen(
                                         return;
                                       }
 
-                                      onChangeItemQTY(
+                                     await  onChangeItemQTY(
                                         value,
                                         model,
                                         selectedItemIndex,
@@ -1315,12 +1315,15 @@ void onChageDiscountAmount(model, val, selectedItemIndex, context) {
   model.notifyListeners();
 }
 
-void onChangeItemQTY(value, model, selectedItemIndex) {
+Future<void> onChangeItemQTY(value, model, selectedItemIndex) async{
+  try{
+    print("changing ");
   final selectedItemModel = model.cartItems[selectedItemIndex];
   int _value = int.tryParse(value.isNotEmpty ? value : "0") ?? 0;
-  TempItem? item = OptimizedDataManager.getItemByCode(
-    model.cartItems[model.selectedItemIndex].itemCode
-  );
+ 
+  await UserPreference.getInstance();
+  int allowNegativeStock = UserPreference.getInt(PrefKeys.allowNegativeStock) ?? 0;
+  
   if(model.isSalesReturn)
   {
   if(_value > model.cartItems[selectedItemIndex].validateQty)
@@ -1336,25 +1339,25 @@ void onChangeItemQTY(value, model, selectedItemIndex) {
     return;
   }
   }
-  if (item == null) {
-    return; // Item not found, skip processing
+  if (selectedItemModel  == null) {
+    return; 
   }
-  if (item.hasBatchNo ==1)
+  if (selectedItemModel .hasBatchNo ==1)
   {
-    item.batchQty = model.cartItems[model.selectedItemIndex].batchQty;
+    selectedItemModel .batchQty = model.cartItems[model.selectedItemIndex].batchQty;
   }
-  if ((_value > item.openingStock && item.hasBatchNo != 1) || (_value > (item.batchQty ?? 0) && item.hasBatchNo == 1))  {
+  if ((allowNegativeStock ==1 ? false:  _value > selectedItemModel .openingStock && selectedItemModel .hasBatchNo != 1) || (allowNegativeStock ==1 ? false:_value > (selectedItemModel .batchQty ?? 0) && selectedItemModel.hasBatchNo == 1))  {
     DialogUtils.showError(
       context: model.context,
       title: 'Insufficient Stock',
       message:
-          'You cannot set quantity greater than available stock.\nAvailable stock: ${item.hasBatchNo != 1?  item.openingStock : (item.batchQty ?? 0)}',
+          'You cannot set quantity greater than available stock.\nAvailable stock: ${selectedItemModel .hasBatchNo != 1?  selectedItemModel.openingStock : (selectedItemModel.batchQty ?? 0)}',
     );
     model.singleqtyController.text =
         model.cartItems[selectedItemIndex].qty.toString();
     return;
-  } else if (_value <= item.openingStock) {
-    
+  } else if (allowNegativeStock ==1 ? true: _value <= selectedItemModel.openingStock) {
+   
     model.cartItems[model.selectedItemIndex].qty = _value ?? 0;
     selectedItemModel.singleItemDiscAmount =
         (selectedItemModel.singleItemDiscAmount ?? 0);
@@ -1373,6 +1376,12 @@ void onChangeItemQTY(value, model, selectedItemIndex) {
     );
     model.notifyListeners();
   }
+  }
+  catch(e)
+  {
+    print("error change qty $e");
+  }
+
 }
 
 /// Shows the three-button below-cost validation dialog
