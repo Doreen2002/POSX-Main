@@ -204,7 +204,7 @@ Widget checkOutRightSide(context, CartItemScreenController model) {
                                                     autoFocus: true,
                                                     focusNode:
                                                         paymentMode.focusNode,
-                                                    hintText: 'BHD. 0.000',
+                                                    hintText: '${model.currency}. ${0.toStringAsFixed(model.decimalPoints)}',
                                                     inputFormatters: <
                                                       TextInputFormatter
                                                     >[
