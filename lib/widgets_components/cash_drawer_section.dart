@@ -29,7 +29,7 @@ class CashDrawerSectionState extends State<CashDrawerSection> {
       child: Padding(
         padding: EdgeInsets.all(12.w),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text('Cash Drawer', style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600)),
+          Text('Cash Drawer', style: TextStyle(fontSize: 10.sp, fontWeight: FontWeight.w600)),
           SizedBox(height: 8.h),
           SwitchListTile(value: _enabled, onChanged: (v) async { setState(() => _enabled = v); await UserPreference.getInstance(); await UserPreference.putBool(PrefKeys.openCashDrawer, v); }, title: const Text('Open cash drawer on sale')),
           if (_enabled) SizedBox(width: double.infinity, child: OutlinedButton(onPressed: _test, child: const Text('Test Cash Drawer'))),

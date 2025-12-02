@@ -52,7 +52,7 @@ class ReceiptPrinterSection extends StatefulWidget {
           child: Padding(
             padding: EdgeInsets.all(12.w),
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text('Receipt Printer', style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600)),
+              Text('Receipt Printer', style: TextStyle(fontSize: 10.sp, fontWeight: FontWeight.w600)),
               SizedBox(height: 8.h),
               SizedBox(width: double.infinity, child: ElevatedButton.icon(onPressed: _scanning ? null : _scan, icon: _scanning ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2)) : const Icon(Icons.search, color: Color(0xFF2B3691),), label: Text(_scanning ? 'Scanning...' : 'Scan for Printers', style: TextStyle(color: Color(0xFF2B3691),),))),
               SizedBox(height: 12.h),

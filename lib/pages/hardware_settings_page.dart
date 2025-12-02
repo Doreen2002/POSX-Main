@@ -66,6 +66,7 @@ class HardwareSettingsPage extends StatelessWidget {
 
   Widget _buildHeader() {
     return Container(
+      width: 600.w,
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -84,7 +85,7 @@ class HardwareSettingsPage extends StatelessWidget {
           Text(
             'Configure Hardware & Backups',
             style: TextStyle(
-              fontSize: 18.sp,
+              fontSize: 10.sp,
               fontWeight: FontWeight.bold,
               color: Color(0xFF033D20)
             )
@@ -93,7 +94,7 @@ class HardwareSettingsPage extends StatelessWidget {
           Text(
             'Receipt printers, VFD, cash drawer and local MariaDB backup settings.',
             style: TextStyle(
-              fontSize: 13.sp,
+              fontSize: 8.sp,
               color: Colors.grey.shade700
             )
           ),

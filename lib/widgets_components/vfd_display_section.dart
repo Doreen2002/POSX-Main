@@ -14,7 +14,7 @@ class VFDDisplaySection extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.all(12.w),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text('VFD Customer Display', style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600)),
+          Text('VFD Customer Display', style: TextStyle(fontSize: 10.sp, fontWeight: FontWeight.w600)),
           SizedBox(height: 8.h),
           Row(children: [
             const Expanded(child: Text('Enable VFD')),

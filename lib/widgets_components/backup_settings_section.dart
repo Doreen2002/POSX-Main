@@ -134,7 +134,7 @@ class BackupSettingsSectionState extends State<BackupSettingsSection> {
       child: Padding(
         padding: EdgeInsets.all(12.w),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text('Local MariaDB Backups', style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600)),
+          Text('Local MariaDB Backups', style: TextStyle(fontSize: 10.sp, fontWeight: FontWeight.w600)),
           SizedBox(height: 8.h),
           TextField(controller: _folder, decoration: const InputDecoration(labelText: 'Backup folder')),
           SizedBox(height: 8.h),

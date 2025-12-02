@@ -91,7 +91,7 @@ class _HardwareOptimizationPanelState extends State<HardwareOptimizationPanel> {
             SizedBox(width: 8.w),
             Text(
               result.success ? 'Optimization Complete' : 'Optimization Failed',
-              style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 8.sp, fontWeight: FontWeight.bold),
             ),
           ],
         ),
@@ -137,7 +137,7 @@ class _HardwareOptimizationPanelState extends State<HardwareOptimizationPanel> {
                 Text(
                   'Hardware Optimization',
                   style: TextStyle(
-                    fontSize: 20.sp,
+                    fontSize: 8.sp,
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF033D20),
                   ),
@@ -288,7 +288,7 @@ class _HardwareOptimizationPanelState extends State<HardwareOptimizationPanel> {
               : Icon(Icons.rocket_launch, size: 18.sp),
             label: Text(
               _isOptimizing ? 'Optimizing...' : 'Apply Optimizations',
-              style: TextStyle(fontSize: 16.sp),
+              style: TextStyle(fontSize: 8.sp,),
             ),
             style: ElevatedButton.styleFrom(
               backgroundColor: Color(0xFF2B3691),
@@ -301,7 +301,7 @@ class _HardwareOptimizationPanelState extends State<HardwareOptimizationPanel> {
         OutlinedButton.icon(
           onPressed: _isLoading ? null : _loadHardwareInfo,
           icon: Icon(Icons.refresh, size: 18.sp, color: Color(0xFF2B3691),),
-          label: Text('Refresh', style: TextStyle(fontSize: 16.sp, color: Color(0xFF2B3691),)),
+          label: Text('Refresh', style: TextStyle(fontSize: 8.sp, color: Color(0xFF2B3691),)),
           style: OutlinedButton.styleFrom(
             padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 16.w),
           ),
@@ -328,7 +328,7 @@ class _HardwareOptimizationPanelState extends State<HardwareOptimizationPanel> {
               Text(
                 title,
                 style: TextStyle(
-                  fontSize: 16.sp,
+                  fontSize: 8.sp,
                   fontWeight: FontWeight.w600,
                   color: Color(0xFF033D20),
                 ),
@@ -353,7 +353,7 @@ class _HardwareOptimizationPanelState extends State<HardwareOptimizationPanel> {
             child: Text(
               '$label:',
               style: TextStyle(
-                fontSize: 14.sp,
+                fontSize: 8.sp,
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -362,7 +362,7 @@ class _HardwareOptimizationPanelState extends State<HardwareOptimizationPanel> {
             child: Text(
               value,
               style: TextStyle(
-                fontSize: 14.sp,
+                fontSize: 8.sp,
                 color: valueColor ?? Colors.grey.shade700,
               ),
             ),
