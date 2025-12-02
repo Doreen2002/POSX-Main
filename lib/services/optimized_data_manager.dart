@@ -132,12 +132,17 @@ class OptimizedDataManager {
         if((e.item ?? "").toLowerCase() == itemCode.toLowerCase()){
           match =  e;
         }
+        else
+        {
+          match = BatchListModel(batchId: '', item: itemCode);
+        }
       }).toList();
+      
     return match;
    }
    catch(e){
     logErrorToFile('OptimizedDataManager: getBatchesByItem not yet implemented for: $itemCode');
-    return [];
+   
    }
   }
   

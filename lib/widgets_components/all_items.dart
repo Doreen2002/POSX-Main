@@ -1,3 +1,5 @@
+import 'package:offline_pos/data_source/local/pref_keys.dart';
+import 'package:offline_pos/data_source/local/user_preference.dart';
 import 'package:offline_pos/models/item_model.dart';
 import 'package:offline_pos/utils/dialog_utils.dart';
 import 'package:flutter/material.dart';
@@ -284,11 +286,13 @@ Future<void> showOpeningPOSDialog(context, model, item) async {
 
 Future<void> addItemsToCartTable(model, context, item, {scan=false}) async {
   try {
-   
+    await UserPreference.getInstance();
+   int allowNegativeStock = UserPreference.getInt(PrefKeys.allowNegativeStock) ?? 0;
     String searchedBatch = model.searchController.text.isNotEmpty ? model.searchController.text.toLowerCase() : item.itemCode!.toLowerCase();
      
-    if (item.openingStock > 0) {
+    if (item.openingStock > 0 || (item.openingStock == 0 && allowNegativeStock == 1)) {
       if (item.hasBatchNo == 1 && searchedBatch.isNotEmpty) {
+       
         final searchMatchedBatch = OptimizedDataManager.getBatchByCode(
           searchedBatch
         ) ?? BatchListModel( batchId: '',name: '', expiryDate: '');
@@ -297,8 +301,9 @@ Future<void> addItemsToCartTable(model, context, item, {scan=false}) async {
         ).item.isNotEmpty ? OptimizedDataManager.getBatchesByItem(
           searchedBatch
         ) : TempItem(name: '', itemCode: '', );
+        
         if ((searchMatchedBatch.batchId ).isNotEmpty) {
-          if ((searchMatchedBatch.batchQty ?? 0) > 0) {
+          if ((searchMatchedBatch.batchQty ?? 0) > 0 || ((searchMatchedBatch.batchQty ?? 0) == 0 && allowNegativeStock == 1)) {
           
             await model.addItemsToCart(
               Item(
@@ -363,7 +368,7 @@ Future<void> addItemsToCartTable(model, context, item, {scan=false}) async {
                     );
 
                 if (model.batchController.text.isNotEmpty) {
-                  if ((matchedBatch.batchQty ?? 0) > 0) {
+                  if ((matchedBatch.batchQty ?? 0) > 0 ||((matchedBatch.batchQty ?? 0) == 0 && allowNegativeStock == 1)) {
                     Navigator.of(context).pop();
                     // item.openingStock = item.openingStock - 1;
                     await model.addItemsToCart(

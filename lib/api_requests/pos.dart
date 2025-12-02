@@ -41,6 +41,7 @@ Future<List<TempPOSProfileModel>> posProfileRequest(String httpType, String frap
           if (item['default'] == 1)
           {
               await UserPreference.getInstance();
+              await UserPreference.putInt(PrefKeys.allowNegativeStock, item['allow_negative_stock']);
               await UserPreference.putString(PrefKeys.companyName, item['company']);
               await UserPreference.putString(PrefKeys.taxID, item['tax_id']);
               await UserPreference.putString(PrefKeys.crNO, item['cr_no']);

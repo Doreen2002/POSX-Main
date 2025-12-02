@@ -27,7 +27,7 @@ class PrefKeys {
   static const String cookies = "cookies";
   static const String deviceID = "deviceID";
   static const String licenseKey = "licenseKey";
-
+  static const String allowNegativeStock = "allowNegativeStock";
   static const String openingEntry = "openingEntry";
   static const String openingAmount = "openingAmount";
   static const String closeEntry = "closeEntry";
