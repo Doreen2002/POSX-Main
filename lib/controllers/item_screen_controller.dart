@@ -25,7 +25,7 @@ import 'package:offline_pos/models/batch_list_model.dart';
 import 'package:offline_pos/models/customer_list_model.dart';
 import 'package:offline_pos/models/item_model.dart';
 import 'package:offline_pos/models/type_ahead_model.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
+
 import 'package:offline_pos/widgets_components/log_error_to_file.dart';
 import 'package:offline_pos/services/pricing_rule_evaluation_service.dart';
 import 'package:offline_pos/services/vfd_service.dart';
@@ -887,8 +887,7 @@ Future <void> getPosOpening() async {
 Future<void> repeatSync(context) async {
   try{
     bool hasInternet = await InternetConnection().hasInternetAccess;
-    final List<ConnectivityResult> connectivityResult =
-      await (Connectivity().checkConnectivity());
+ 
     Timer.periodic(Duration(minutes: 20), (Timer timer) async{
     if (hasInternet) {
           await submitInvoiceRequest() ;

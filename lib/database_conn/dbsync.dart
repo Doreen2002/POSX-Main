@@ -29,7 +29,6 @@ import 'package:offline_pos/services/optimized_data_manager.dart';
 import 'create_item_tables.dart';
 import 'mysql_conn.dart';
 import 'package:offline_pos/models/user.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:offline_pos/globals/global_values.dart';
 List itemGroupdata = [];
 List customerDataList = [];
@@ -45,8 +44,6 @@ BuildContext? dialogContext ;
 
 Future<void> dbSync(context, notifyListeners)async {
   await UserPreference.getInstance();
-  final List<ConnectivityResult> connectivityResult =
-      await (Connectivity().checkConnectivity());
       bool hasInternet = await InternetConnection().hasInternetAccess;
   try {
     if (hasInternet) {
@@ -423,8 +420,6 @@ Future <void> sync() async {
 //sync function
 Future<void> syncData(context, model) async {
   try{
-     final List<ConnectivityResult> connectivityResult =
-      await (Connectivity().checkConnectivity());
       // if(isSyncing){
       //   ScaffoldMessenger.of(context).showSnackBar(
       //     const SnackBar(
