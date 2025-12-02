@@ -681,17 +681,19 @@ Widget singleItemDiscountScreen(
                                      
                                       final item =
                                           model.cartItems[selectedItemIndex];
-
+                                      await UserPreference.getInstance();
+                                      int allowNegativeStock = UserPreference.getInt(PrefKeys.allowNegativeStock) ?? 0;
                                       if ((item.hasSerialNo != 1 &&
                                               item.hasBatchNo != 1 &&
                                               item.openingStock! > 0 &&
-                                              item.qty <
-                                                  (item.openingStock ?? 0)) ||
+                                              (allowNegativeStock ==1 ? true : item.qty <
+                                                  (item.openingStock ?? 0)  )) ||
                                           (item.hasBatchNo == 1 &&
                                               item.hasSerialNo != 1 &&
-                                              (item.batchQty ?? 0) > 0 &&
+                                              (allowNegativeStock ==1 ? true : (item.batchQty ?? 0) > 0 &&
                                               item.qty <
-                                                  (item.batchQty ?? 0))) {
+                                                  (item.batchQty ?? 0)) )) {
+                                      
                                         item.qty += 1;
                                         if(model.isSalesReturn)
                                       {
