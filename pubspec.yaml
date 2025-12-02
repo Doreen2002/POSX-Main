@@ -31,7 +31,6 @@ dependencies:
 
   # Networking
   http: ^1.2.1
-  connectivity_plus: ^6.0.3
   internet_connection_checker: ^1.0.0+1
   mysql1: ^0.20.0
   mysql_client: ^0.0.27
