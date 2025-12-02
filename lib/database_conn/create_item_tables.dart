@@ -4,8 +4,9 @@ import 'package:offline_pos/widgets_components/log_error_to_file.dart';
 
 Future<bool> createTableItem() async {
  bool isCreatedDB = false;
+     final conn = await getDatabase();
   try {
-    final conn = await getDatabase();
+
 await conn.query("""
     CREATE TABLE IF NOT EXISTS Item (
         name varchar(20) PRIMARY KEY,
@@ -29,10 +30,13 @@ await conn.query("""
 """);
 
     isCreatedDB = true;
-    await conn.close();
+    
   } catch (e) {
     logErrorToFile("Error creating item table $e");
     isCreatedDB = false;
+  }
+  finally{
+    await conn.close();
   }
 
   return isCreatedDB;
@@ -55,14 +59,18 @@ Future<bool> createTableItemGroup(conn) async {
 
 Future<bool> createTableBarcode() async {
   bool isCreatedDB = false;
+   final conn = await getDatabase();
   try {
-      final conn = await getDatabase();
-    await conn.query( "CREATE TABLE IF NOT EXISTS Barcode (barcode varchar(255) PRIMARY KEY, item_code varchar(255));");
+    await conn.query( "CREATE TABLE IF NOT EXISTS Barcode (barcode varchar(255) PRIMARY KEY, item_code varchar(255), barcode_type varchar(255), uom varchar(255));");
      isCreatedDB = true;
-    await conn.close();
+    
   } catch (e) {
    logErrorToFile("Error creating item table $e");
     isCreatedDB = false;
+  }
+  finally
+  {
+    await conn.close();
   }
 
   return isCreatedDB;
@@ -70,14 +78,18 @@ Future<bool> createTableBarcode() async {
 
 Future<bool> createTableBatch() async {
   bool isCreatedDB = false;
+   final conn = await getDatabase();
   try {
-    final conn = await getDatabase();
+   
     await conn.query(  "CREATE TABLE IF NOT EXISTS Batch (name varchar(255) PRIMARY KEY,batch_id varchar(255),item varchar(255),item_name varchar(255),manufacturing_date varchar(255),batch_qty FLOAT,stock_uom varchar(255),expiry_date varchar(255),modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP)");
     isCreatedDB = true;
-    await conn.close();
+    
   } catch (e) {
    logErrorToFile ("Error creating batch table $e");
     isCreatedDB = false;
+  }
+  finally{
+    await conn.close();
   }
 
   return isCreatedDB;
@@ -85,14 +97,18 @@ Future<bool> createTableBatch() async {
 
 Future<bool> createTableSerial() async {
   bool isCreatedDB = false;
+  final conn = await getDatabase();
   try {
-    final conn = await getDatabase();
+    
     await conn.query( "CREATE TABLE IF NOT EXISTS Serial (name varchar(255) PRIMARY KEY,serial_no varchar(255),batch_no varchar(255),item_code varchar(255),item_name varchar(255),item_group varchar(255),purchase_date varchar(255),purchase_rate FLOAT)");
     isCreatedDB = true;
-    await conn.close();
+    
   } catch (e) {
     logErrorToFile("Error creating item table $e");
     isCreatedDB = false;
+  }
+  finally{
+    await conn.close();
   }
 
   return isCreatedDB;
@@ -100,14 +116,19 @@ Future<bool> createTableSerial() async {
 
 Future<bool> createTableItemPrice() async {
   bool isCreatedDB = false;
+   final conn = await getDatabase();
   try {
-    final conn = await getDatabase();
+   
     await conn.query( "CREATE TABLE IF NOT EXISTS ItemPrice (name varchar(255) PRIMARY KEY,item_code varchar(255),batch_no varchar(255),uom varchar(255),price_list varchar(255),customer varchar(255),valid_from varchar(255),valid_to varchar(255),price_list_rate FLOAT)");
     isCreatedDB = true;
-    await conn.close();
+    
   } catch (e) {
     logErrorToFile("Error creating Item Price table $e");
     isCreatedDB = false;
+  }
+  finally
+  {
+    await conn.close();
   }
 
   return isCreatedDB;
