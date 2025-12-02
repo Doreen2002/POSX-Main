@@ -261,6 +261,8 @@ Future<void>  initializePaymentModes(List<PaymentModeTypeAheadModel> jsonData) a
       grandTotal = 0;
       originalNetTotal = 0;
       bool itemExists = false;
+      await UserPreference.getInstance();
+      int allowNegativeStock = UserPreference.getInt(PrefKeys.allowNegativeStock) ?? 0;
       if(item.openingStock == null)
       {
       final itemData = OptimizedDataManager.getItemByCode(item.itemCode);
@@ -287,7 +289,9 @@ Future<void>  initializePaymentModes(List<PaymentModeTypeAheadModel> jsonData) a
          cartItem.newRate = itemPricingRuleRate;
          cartItem.newNetRate = itemPricingRuleRate;
       }
-        if ((cartItem.itemCode == item.itemCode && cartItem.hasBatchNo == 0 && cartItem.qty < (item.openingStock ?? 0)) || (cartItem.itemCode == item.itemCode && cartItem.hasBatchNo == 1 && cartItem.batchNumberSeries == item.batchNumberSeries && cartItem.qty < (item.batchQty ?? 0))) {
+      if(cartItem.itemCode == item.itemCode)
+      {
+        if ((cartItem.hasBatchNo == 0 && (cartItem.qty < (item.openingStock ?? 0)) || allowNegativeStock == 1) || (cartItem.itemCode == item.itemCode && cartItem.hasBatchNo == 1 && cartItem.batchNumberSeries == item.batchNumberSeries && (cartItem.qty < (item.batchQty ?? 0) || allowNegativeStock ==1)) ) {
          
           if(cartItem.hasBatchNo != 1)
           {
@@ -340,6 +344,9 @@ Future<void>  initializePaymentModes(List<PaymentModeTypeAheadModel> jsonData) a
                 notifyListeners();
                   return cartItems;
                 }
+
+      }
+        
               }
 
 
