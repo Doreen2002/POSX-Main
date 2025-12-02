@@ -1,6 +1,6 @@
 import 'dart:async';
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 
 import 'base_controller.dart';
 
@@ -18,14 +18,6 @@ class SplashController extends ItemScreenController {
   static double? _safeBlockHorizontal;
   static double? _safeBlockVertical;
   static double? _textScaleFactor;
-
-  // DBQueries mysqdb = DBQueries();
-
-  ///<----------Net connectivity declaration---------->
-  final Connectivity connectivity = Connectivity();
-  List<ConnectivityResult> result = [];
-  int connectionStatus = 0;
-  late StreamSubscription<List<ConnectivityResult>> connectivitySubscription;
 
   void initialise() {
     _mediaQueryData = MediaQuery.of(context!);

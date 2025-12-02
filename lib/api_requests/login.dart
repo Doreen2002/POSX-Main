@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:offline_pos/api_requests/customer.dart';
 import 'package:offline_pos/api_requests/items.dart';
 import 'package:offline_pos/api_requests/pos.dart';
@@ -16,7 +17,6 @@ import 'package:offline_pos/database_conn/holdcart.dart';
 import 'package:offline_pos/database_conn/licence_db.dart';
 import 'package:offline_pos/database_conn/sales.dart';
 import 'package:offline_pos/database_conn/users.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:offline_pos/database_conn/mysql_conn.dart';
 import 'package:offline_pos/widgets_components/log_error_to_file.dart';
 import 'package:offline_pos/globals/global_values.dart';
@@ -33,9 +33,9 @@ Future<bool> loginRequest(
   UserPreference.putString(PrefKeys.httpType, httpType);
    final encodedUsername = Uri.encodeQueryComponent(usr);
   final encodedPassword = Uri.encodeQueryComponent(pwd);
-  final List<ConnectivityResult> connectivityResult = await (Connectivity().checkConnectivity());
+  bool hasInternet = await InternetConnection().hasInternetAccess;
  
-  if (connectivityResult.isEmpty || connectivityResult.contains(ConnectivityResult.none)) {
+  if (!hasInternet) {
     final List users = await fetchFromUser();
     if (users.isNotEmpty)
     {

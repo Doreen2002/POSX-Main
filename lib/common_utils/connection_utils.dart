@@ -1,11 +1,11 @@
-import 'package:connectivity_plus/connectivity_plus.dart';
-// import 'package:fluttertoast/fluttertoast.dart';
+
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 
 class CommonUtils {
   static String username="";
   static Future<bool> isConnected() async {
-    var connectivityResult = await  Connectivity().checkConnectivity();
-    if (connectivityResult == ConnectivityResult.none) {
+    bool connectivityResult = await  InternetConnection().hasInternetAccess;
+    if (!connectivityResult) {
       return false;
     } else {
       return true;
@@ -14,8 +14,8 @@ class CommonUtils {
 
 
   static Future<bool> checkConnected() async {
-    var connectivityResult = await  Connectivity().checkConnectivity();
-    if (connectivityResult == ConnectivityResult.none) {
+    bool connectivityResult = await  InternetConnection().hasInternetAccess;
+    if (!connectivityResult) {
       return false;
     } else {
       return true;
