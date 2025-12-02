@@ -172,11 +172,11 @@ Future<List<ItemPrice>> fetchFromItemPrice() async {
 
 List <UOM> UOMListdata = [];
 
-Future<List<UOM>> fetchFromUOM() async {
+Future<List<UOM>> fetchFromUOM(itemCode) async {
    final conn = await getDatabase();
   try {
     
-    final queryResult = await conn.query("SELECT * FROM UOM;");
+    final queryResult = await conn.query("SELECT * FROM UOM WHERE item_code = $itemCode;");
 
     UOMListdata = queryResult
       .map((row) => UOM.fromJson(row.fields))

@@ -207,8 +207,8 @@ Future<dynamic> insertTableUOM({List <UOM>? d}) async {
 
     dynamic res;
     for (var element in d!) {
-       var insertUOMQuery = 'INSERT INTO UOM (name)';
-      res = await conn.query('''$insertUOMQuery VALUE('${element.name}');''');
+       var insertUOMQuery = 'INSERT INTO UOM (name,uom, item_code, conversion_factor)';
+      res = await conn.query('''$insertUOMQuery VALUE('${element.name}', '${element.uom}','${element.itemCode}', '${element.conversionFactor}');''');
     }
    
     return res;

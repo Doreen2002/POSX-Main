@@ -411,7 +411,6 @@ Future <void> sync() async {
   modeOfPaymentList = await fetchFromModeofPayment();
   posProfileList = await fetchFromPosProfile();
   itemPriceListdata = await  fetchFromItemPrice();
-  UOMListdata = await fetchFromUOM();
    batchListdata = await fetchFromBatch();
    barcodeListdata = await fetchFromBarcode();
   await fetchFromBatch();
@@ -420,6 +419,7 @@ Future <void> sync() async {
 //sync function
 Future<void> syncData(context, model) async {
   try{
+   
       // if(isSyncing){
       //   ScaffoldMessenger.of(context).showSnackBar(
       //     const SnackBar(
@@ -510,7 +510,6 @@ Future<void> syncData(context, model) async {
    batchListdata = await fetchFromBatch();
    barcodeListdata = await fetchFromBarcode();
    itemPriceListdata = await  fetchFromItemPrice();
-    UOMListdata = await fetchFromUOM();
   await fetchFromBatch();
   await fetchFromPosOpening();
   await submitInvoiceRequest();

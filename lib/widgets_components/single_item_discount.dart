@@ -1,3 +1,6 @@
+import 'package:offline_pos/database_conn/get_item_queries.dart';
+import 'package:offline_pos/models/item_price.dart';
+import 'package:offline_pos/models/uom.dart';
 import 'package:offline_pos/utils/dialog_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -540,6 +543,99 @@ Widget singleItemDiscountScreen(
                                   FocusScope.of(
                                     context,
                                   ).requestFocus(model.singleqtyfocusNode);
+                                  model.hasFocus = '';
+                                  model.notifyListeners();
+                                },
+                                child: Container(
+                                  height: 40.h,
+                                  width: 15.w,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8.r),
+                                    border: Border.all(
+                                      color: Color(0xFF2B3691),
+                                      width: 1,
+                                    ),
+                                    color: Color(0xFF2B3691),
+                                  ),
+                                  child: Center(
+                                    child: SingleText(
+                                      text: 'C',
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                      fontSize: 5.sp,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                     // UOM
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SingleText(text: 'Item UOM', fontSize: 5.sp),
+                          SizedBox(height: 8.h),
+                          Row(
+                            children: [
+                              SizedBox(
+                                width: 120,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: Color(0xFF2B3691),
+                                      width: 1,
+                                    ),
+                                    borderRadius: BorderRadius.circular(8.r),
+                                  ),
+                                  child: TypeAheadField(
+                                    controller: model.singleuomController,
+                                    itemBuilder: (context, suggestion) {
+                                      UOM value =suggestion as UOM;
+                                      return ListTile(
+                                      title: Text(
+                                        value.name ,
+                                        style: TextStyle(fontSize: 5.sp),
+                                      ),
+                                    );
+                                    },
+                              
+                                     onSelected: (suggestion) {
+                                      UOM value = suggestion as UOM;
+                                      model.singleuomController.text = value.name;
+                                      model.cartItems[selectedItemIndex].newNetRate = itemPriceListdata.firstWhere(
+                                          (item) =>
+                                              item.UOM == value.name &&
+                                              item.itemCode == model.cartItems[selectedItemIndex].itemCode,
+                                          orElse: () => ItemPrice(name: '', itemCode: '', UOM: '', priceList: '', priceListRate: model.cartItems[selectedItemIndex].newRate)
+                                        ).priceListRate;
+                                        model.discountCalculation(model.allItemsDiscountAmount.text, model.allItemsDiscountPercent.text);
+                                      model.notifyListeners();
+                                      },
+                                      suggestionsCallback: (pattern) async {
+                                        await fetchFromUOM(model.cartItems[selectedItemIndex].itemCode);
+                                        return UOMListdata
+                                          .where(
+                                            (item) =>
+                                                (item.name?.toLowerCase() ?? '')
+                                          .contains(pattern.toLowerCase()) 
+                                          )
+                                          .take(20)
+                                          .toList();
+                                    },
+                                      )
+                                ),
+                              ),
+                              SizedBox(width: 3.w),
+                              InkWell(
+                                onTap: () {
+                                  model.singleqtyController.clear();
+                                  FocusScope.of(
+                                    context,
+                                  ).requestFocus(model.singleuomfocusNode);
                                   model.hasFocus = '';
                                   model.notifyListeners();
                                 },
