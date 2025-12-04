@@ -139,7 +139,7 @@ Future<bool> createTableUOM() async {
    final conn = await getDatabase();
   try {
    
-    await conn.query( "CREATE TABLE IF NOT EXISTS UOM (name varchar(255) PRIMARY KEY, uom varchar(255), item_code varchar(255), conversion_factor INT )");
+    await conn.query( "CREATE TABLE IF NOT EXISTS UOM (name varchar(255) PRIMARY KEY, uom varchar(255), item_code varchar(255), conversion_factor Float )");
     isCreatedDB = true;
   } catch (e) {
     logErrorToFile("Error creating UOM table $e");

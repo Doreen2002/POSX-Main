@@ -2,7 +2,7 @@ class UOM {
  String name;
  String itemCode;
  String uom;
- int conversionFactor;
+double conversionFactor;
 
 
 UOM({
