@@ -49,7 +49,7 @@ Widget singleItemDiscountScreen(
   String? serialNo,
 }) {
   final currencyPrecision = 3;
-
+  
   return Visibility(
     visible: model.itemDiscountVisible == true,
     child: Expanded(
@@ -594,10 +594,11 @@ Widget singleItemDiscountScreen(
                                   child: TypeAheadField(
                                     controller: model.singleuomController,
                                     itemBuilder: (context, suggestion) {
+                                      
                                       UOM value =suggestion as UOM;
                                       return ListTile(
                                       title: Text(
-                                        value.name ,
+                                        value.uom ,
                                         style: TextStyle(fontSize: 5.sp),
                                       ),
                                     );
@@ -605,10 +606,10 @@ Widget singleItemDiscountScreen(
                               
                                      onSelected: (suggestion) {
                                       UOM value = suggestion as UOM;
-                                      model.singleuomController.text = value.name;
+                                      model.singleuomController.text = value.uom;
                                       model.cartItems[selectedItemIndex].newNetRate = itemPriceListdata.firstWhere(
                                           (item) =>
-                                              item.UOM == value.name &&
+                                              item.UOM == value.uom &&
                                               item.itemCode == model.cartItems[selectedItemIndex].itemCode,
                                           orElse: () => ItemPrice(name: '', itemCode: '', UOM: '', priceList: '', priceListRate: model.cartItems[selectedItemIndex].newRate)
                                         ).priceListRate;
@@ -616,11 +617,12 @@ Widget singleItemDiscountScreen(
                                       model.notifyListeners();
                                       },
                                       suggestionsCallback: (pattern) async {
-                                        await fetchFromUOM(model.cartItems[selectedItemIndex].itemCode);
+                                        UOMListdata =await fetchFromUOM(model.cartItems[selectedItemIndex].itemCode);
+                                      
                                         return UOMListdata
                                           .where(
                                             (item) =>
-                                                (item.name?.toLowerCase() ?? '')
+                                                (item.uom.toLowerCase())
                                           .contains(pattern.toLowerCase()) 
                                           )
                                           .take(20)

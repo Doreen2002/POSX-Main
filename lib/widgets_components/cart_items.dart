@@ -206,6 +206,7 @@ Widget cartDesign(BuildContext context, CartItemScreenController model, isSalesR
                           if (model.isCheckOutScreen) return;
                           model.selectedItemIndex =
                               model.cartItems.isEmpty ? -1 : index;
+                         
                           singleItemDiscountScreen(
                             context,
                             model.selectedItemIndex,
@@ -222,6 +223,8 @@ Widget cartDesign(BuildContext context, CartItemScreenController model, isSalesR
                               !model.itemDiscountVisible;
 
                           if (model.itemDiscountVisible) {
+                             model.singleuomController.text =model
+                                      .cartItems[model.selectedItemIndex].stockUom;
                             if (model.selectedItemIndex >= 0) {
                               model.singleqtyController.text =
                                   model.cartItems[model.selectedItemIndex].qty
