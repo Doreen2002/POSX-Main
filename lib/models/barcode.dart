@@ -1,6 +1,6 @@
 class BarcodeModel {
   final String barcode;
-  String? itemCode;
+  final String itemCode;
   final String? barcodeType;
   final String? uom;
 
@@ -9,7 +9,7 @@ class BarcodeModel {
      this.barcodeType,
      this.uom,
      required this.barcode,
-      this.itemCode,
+    required this.itemCode,
   });
 
 

@@ -301,6 +301,7 @@ void onofflineSync(context) async {
   modeOfPaymentList = await fetchFromModeofPayment();
   posProfileList = await fetchFromPosProfile();
   batchListdata = await fetchFromBatch();
+  barcodeListdata = await fetchFromBarcode();
   pricingRuleListdata = await fetchFromPricingRules();
   pricingRuleItemListdata = await fetchFromPricingRuleItems();
   pricingRuleItemGroupListdata = await fetchFromPricingRuleItemGroups();
@@ -317,6 +318,7 @@ Future<dynamic> reloadItems() async {
 
     itemListdata = await fetchFromItem();
     batchListdata = await fetchFromBatch();
+    barcodeListdata = await fetchFromBarcode();
     pricingRuleListdata = await fetchFromPricingRules();
     pricingRuleItemListdata = await fetchFromPricingRuleItems();
     pricingRuleItemGroupListdata = await fetchFromPricingRuleItemGroups();

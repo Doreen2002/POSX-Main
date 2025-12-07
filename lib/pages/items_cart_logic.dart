@@ -283,12 +283,15 @@ Future<void> searchItems(model, val) async {
   final barcodeMap = {
     for (var barcode in fetchQueries.barcodeListdata) barcode.barcode.toLowerCase(): barcode
   };
-
+  
   model.filteredItems = [
     if (itemMapByName.containsKey(searchVal)) itemMapByName[searchVal],
     if (itemMapByCode.containsKey(searchVal)) itemMapByCode[searchVal],
     if (itemMapByPLU.containsKey(searchVal)) itemMapByPLU[searchVal],
     if (itemMapByBatchSeries.containsKey(searchVal)) itemMapByBatchSeries[searchVal],
+    if (barcodeMap.containsKey(searchVal) && barcodeMap[searchVal]?.itemCode != null)
+      itemMapByCode[barcodeMap[searchVal]?.itemCode.toLowerCase()]
+   
   ].whereType().toList();
 
   if (model.filteredItems.length == 1) return;

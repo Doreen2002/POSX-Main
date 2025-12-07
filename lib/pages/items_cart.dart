@@ -227,6 +227,17 @@ class _CartItemScreenState extends State<CartItemScreen> {
                                           focusNode: model.searchFocusNode,
                                           autofocus: model.autoFocusSearchItem,
                                           readonly: model.isSalesReturn,
+                                          onChanged: (value)
+                                          async{
+                                            await UserPreference.getInstance();
+                                            final autoPress = UserPreference.getBool(PrefKeys.autoPressEnterOnScan) ?? false;
+                                            final barcodeChar = UserPreference.getInt(PrefKeys.barcodeLength) ?? 5;
+                                            if(autoPress  && value.length >= barcodeChar)
+                                            {
+                                              searchItems(model, value);
+                                              await scanItems(model, context, value);
+                                            }
+                                          },
                                           onSubmitted: (value) async {
                                             try {
                                               
