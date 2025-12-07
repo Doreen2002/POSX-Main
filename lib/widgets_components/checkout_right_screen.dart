@@ -680,14 +680,7 @@ Future<void> _showDialog(BuildContext context, model) async {
         debugPrint('[VFD] Error showing thank you: $e');
       }
       
-      model.totalQTy = 0;
-      model.grossTotal = 0.0;
-      model.netTotal = 0.0;
-      model.vatTotal = 0.0;
-      model.grandTotal = 0.0;
-      model.showAddDiscount = false;
-      await fetchFromCustomer();
-      model.notifyListeners();
+     
 
       // Navigate to home screen IMMEDIATELY
       Navigator.push(
@@ -702,14 +695,21 @@ Future<void> _showDialog(BuildContext context, model) async {
       if (model.printSalesInvoice) {
         Printer? pri = await Printing.pickPrinter(context: context);
        
-        Printing.directPrintPdf(
+        await Printing.directPrintPdf(
           printer: pri!,
           name: 'Invoice_$invoiceno',
           onLayout: (PdfPageFormat format) async =>
               generateNewPrintFormatPdf(format, model, invoiceno),
         );
       }
-
+       model.totalQTy = 0;
+      model.grossTotal = 0.0;
+      model.netTotal = 0.0;
+      model.vatTotal = 0.0;
+      model.grandTotal = 0.0;
+      model.showAddDiscount = false;
+      await fetchFromCustomer();
+      model.notifyListeners();
       model.notifyListeners();
     } else if (paid < total) {
       model.paymentmsgTimeOut = true;
