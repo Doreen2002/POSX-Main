@@ -698,17 +698,16 @@ Future<void> _showDialog(BuildContext context, model) async {
         ),
       );
 
-      // Print asynchronously AFTER navigation (non-blocking)
+     
       if (model.printSalesInvoice) {
-        // Use unawaited to make print non-blocking
-        Printing.layoutPdf(
+        Printer? pri = await Printing.pickPrinter(context: context);
+       
+        Printing.directPrintPdf(
+          printer: pri!,
           name: 'Invoice_$invoiceno',
           onLayout: (PdfPageFormat format) async =>
               generateNewPrintFormatPdf(format, model, invoiceno),
-        ).catchError((error) {
-          logErrorToFile("Print error: $error");
-          return false; // Return value for catchError
-        });
+        );
       }
 
       model.notifyListeners();
