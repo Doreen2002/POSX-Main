@@ -591,7 +591,9 @@ Widget singleItemDiscountScreen(
                                     ),
                                     borderRadius: BorderRadius.circular(8.r),
                                   ),
-                                  child: TypeAheadField(
+                                  child: SizedBox(
+                                  height: 30, child:TypeAheadField(
+                                    
                                     controller: model.singleuomController,
                                     itemBuilder: (context, suggestion) {
                                       
@@ -604,17 +606,36 @@ Widget singleItemDiscountScreen(
                                     );
                                     },
                               
-                                     onSelected: (suggestion) {
+                                     onSelected: (suggestion) async{
                                       UOM value = suggestion as UOM;
                                       model.singleuomController.text = value.uom;
+                                      final item =  model.cartItems[selectedItemIndex];
+
+                                      model.cartItems[selectedItemIndex].stockUom = value.uom;
+                      
                                       model.cartItems[selectedItemIndex].newNetRate = itemPriceListdata.firstWhere(
                                           (item) =>
                                               item.UOM == value.uom &&
                                               item.itemCode == model.cartItems[selectedItemIndex].itemCode,
-                                          orElse: () => ItemPrice(name: '', itemCode: '', UOM: '', priceList: '', priceListRate: model.cartItems[selectedItemIndex].newRate)
+                                          orElse: () => ItemPrice(name: '', itemCode: '', UOM: '', priceList: model.customerData.defaultPriceList ?? "", priceListRate: model.cartItems[selectedItemIndex].newRate)
                                         ).priceListRate;
-                                        model.discountCalculation(model.allItemsDiscountAmount.text, model.allItemsDiscountPercent.text);
-                                      model.notifyListeners();
+                                      item.singleItemDiscAmount = (item.singleItemDiscPer ?? 0)/100 * (item.newNetRate ?? 0);
+                                                  item.newRate =
+                                            (item.newNetRate ?? 0) -
+                                            (item.singleItemDiscAmount ?? 0);
+                                        item.itemTotal = (item.newRate * item.qty);
+                                        item.totalWithVatPrev =
+                                            item.itemTotal +
+                                            (item.itemTotal *
+                                                (item.vatValue ?? 0) /
+                                                100);
+                                       item.ItemDiscAmount =  item.singleItemDiscAmount;
+                                      
+                                        await model.discountCalculation(
+                                        model.allItemsDiscountAmount.text,
+                                        model.allItemsDiscountPercent.text,
+                                      );
+                                        model.notifyListeners();
                                       },
                                       suggestionsCallback: (pattern) async {
                                         UOMListdata =await fetchFromUOM(model.cartItems[selectedItemIndex].itemCode);
@@ -628,13 +649,13 @@ Widget singleItemDiscountScreen(
                                           .take(20)
                                           .toList();
                                     },
-                                      )
+                                  ))
                                 ),
                               ),
                               SizedBox(width: 3.w),
                               InkWell(
                                 onTap: () {
-                                  model.singleqtyController.clear();
+                                  model.singleuomController.clear();
                                   FocusScope.of(
                                     context,
                                   ).requestFocus(model.singleuomfocusNode);
