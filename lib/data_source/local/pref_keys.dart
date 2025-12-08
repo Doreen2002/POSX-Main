@@ -50,7 +50,8 @@ class PrefKeys {
   static const String delayMilliSecondsScan = 'delayMilliSecondsScan';
   static const String scanBarcodeLength = 'scanBarcodeLength';
   static const String loginInternet = "1";
-
+  static const String defaultPrinter = "defaultPrinter";
+  static const String defaultPrinterUrl = "defaultPrinterUrl";
   //backupsettings 
   static const String backupFolder = "backupFolder";
   static const String backupRetentionDays = "backupRetentionDays";

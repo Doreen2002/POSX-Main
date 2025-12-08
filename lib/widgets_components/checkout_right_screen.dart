@@ -467,6 +467,19 @@ Widget checkOutRightSide(context, CartItemScreenController model) {
                                       if (model.submitPrintClicked) {
                                         return;
                                       }
+
+                                      await UserPreference.getInstance();
+                                    if (UserPreference.getString(PrefKeys.defaultPrinterUrl) == "") {
+                                  showDialog(
+                                    context: context,
+                                    builder: (_) => const Dialog(
+                                      child: Padding(
+                                        padding: EdgeInsets.all(16),
+                                        child: Text("Please set your default printer"),
+                                      ),
+                                    ),
+                                  );
+                                }
                                       
                                       model.submitPrintClicked = true;
                                       model.printSalesInvoice = true;
@@ -693,10 +706,10 @@ Future<void> _showDialog(BuildContext context, model) async {
 
      
       if (model.printSalesInvoice) {
-        Printer? pri = await Printing.pickPrinter(context: context);
-       
+        
+              
         await Printing.directPrintPdf(
-          printer: pri!,
+          printer: Printer(url: UserPreference.getString(PrefKeys.defaultPrinterUrl) ?? "") ,
           name: 'Invoice_$invoiceno',
           onLayout: (PdfPageFormat format) async =>
               generateNewPrintFormatPdf(format, model, invoiceno),

@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:printing/printing.dart';
 
 
 import '../widgets_components/auto_persist.dart';
@@ -44,6 +45,18 @@ class ReceiptPrinterSection extends StatefulWidget {
         });
       }
 
+      Future<void> _setPrinter()
+      async{
+        Printer ? printer;
+        await UserPreference.getInstance();
+        printer = await Printing.pickPrinter(context: context);
+        UserPreference.putString(PrefKeys.defaultPrinter, printer!.name);
+        UserPreference.putString(PrefKeys.defaultPrinterUrl, printer.url);
+        setState(() {
+          
+        });
+      }
+
       void _testPrint() => ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Test print queued')));
 
       @override
@@ -54,8 +67,21 @@ class ReceiptPrinterSection extends StatefulWidget {
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text('Receipt Printer', style: TextStyle(fontSize: 10.sp, fontWeight: FontWeight.w600)),
               SizedBox(height: 8.h),
-              SizedBox(width: double.infinity, child: ElevatedButton.icon(onPressed: _scanning ? null : _scan, icon: _scanning ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2)) : const Icon(Icons.search, color: Color(0xFF2B3691),), label: Text(_scanning ? 'Scanning...' : 'Scan for Printers', style: TextStyle(color: Color(0xFF2B3691),),))),
-              SizedBox(height: 12.h),
+             
+              SizedBox(width: double.infinity, child: ElevatedButton.icon(onPressed: _scanning ? null : _scan, icon: _scanning ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2)) : const Icon(Icons.search, color: Color(0xFF2B3691),), label: Text(_scanning ? 'Scanning...' : 'Scan for Printers', style: TextStyle(color: Color(0xFF2B3691),),),)),
+              SizedBox(height: 40.h),
+                SizedBox(width: double.infinity,  child:Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                   ElevatedButton.icon(onPressed: ()async{await _setPrinter();},  label: Text( 'Set Default Printer', ), style: ElevatedButton.styleFrom(
+              backgroundColor: Color(0xFF2B3691),
+              foregroundColor: Colors.white,
+              
+              padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 12.w),
+            ),),
+            Text("Default Printer : ${UserPreference.getString(PrefKeys.defaultPrinter)}", style: TextStyle(fontWeight:FontWeight.bold),)
+                ],)),
+                SizedBox(height: 12.h),
               if (_available.isNotEmpty)
                 AutoPersist<String?>(prefKey: PrefKeys.receiptPrinterUrl, defaultValue: null, builder: (ctx, val, onChanged) {
                   return DropdownButton<String>(value: val, isExpanded: true, items: _available.map((p) => DropdownMenuItem(value: p, child: Text(p))).toList(), onChanged: (v) => onChanged(v));
