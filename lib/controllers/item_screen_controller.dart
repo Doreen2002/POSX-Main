@@ -275,14 +275,28 @@ Future<void>  initializePaymentModes(List<PaymentModeTypeAheadModel> jsonData) a
       }
       item.singleItemDiscAmount = (item.newNetRate ?? 0) * (item.singleItemDiscPer ?? 0)/100 ;
       item.ItemDiscAmount = (item.singleItemDiscAmount ?? 0) * item.qty;
-      
+       if(customerData.defaultPriceList != '')
+      {
+     
+        await fetchItemQueries.fetchFromItemPrice();
+        final itemPricingRuleRate = fetchItemQueries.itemPriceListdata.firstWhere(
+          (price) => price.itemCode == item.itemCode && price.priceList == customerData.defaultPriceList,
+          orElse: () => ItemPrice(itemCode: item.itemCode,name: item.itemCode, UOM:item.stockUom, priceList: customerData.defaultPriceList!, priceListRate: item.standardRate ?? 0.0)
+        ).priceListRate;
+       
+         item.standardRate = itemPricingRuleRate;
+         item.newRate = itemPricingRuleRate;
+         item.newNetRate = itemPricingRuleRate;
+         item.itemTotal =itemPricingRuleRate;
+         item.totalWithVatPrev = (item.vatValue ?? 0) /100 * itemPricingRuleRate ;
+      }
       for (var cartItem in cartItems) {
         if(customerData.defaultPriceList != null)
       {
       
         await fetchItemQueries.fetchFromItemPrice();
         final itemPricingRuleRate = fetchItemQueries.itemPriceListdata.firstWhere(
-          (price) => price.itemCode == cartItem.itemCode && price.priceList == customerData.defaultPriceList,
+          (price) => price.itemCode == cartItem.itemCode && price.priceList == customerData.defaultPriceList && price.UOM == item.stockUom,
           orElse: () => ItemPrice(itemCode: cartItem.itemCode,name: cartItem.itemCode, UOM:cartItem.stockUom, priceList: customerData.defaultPriceList!, priceListRate: cartItem.standardRate ?? 0.0)
         ).priceListRate;
          cartItem.standardRate = itemPricingRuleRate;
@@ -351,18 +365,7 @@ Future<void>  initializePaymentModes(List<PaymentModeTypeAheadModel> jsonData) a
 
 
       if (!itemExists) {
-      //   if(customerData.defaultPriceList != null)
-      // {
       
-      //   await fetchItemQueries.fetchFromItemPrice();
-      //   final itemPricingRuleRate = fetchItemQueries.itemPriceListdata.firstWhere(
-      //     (price) => price.itemCode == item.itemCode && price.priceList == customerData.defaultPriceList,
-      //     orElse: () => ItemPrice(itemCode: item.itemCode,name: item.itemCode, UOM:item.stockUom, priceList: customerData.defaultPriceList!, priceListRate: item.standardRate ?? 0.0)
-      //   ).priceListRate;
-      //    item.standardRate = itemPricingRuleRate;
-      //    item.newRate = itemPricingRuleRate;
-      //    item.newNetRate = itemPricingRuleRate;
-      // }
         if (from_hold)
         {
           cartItems.add(item);
