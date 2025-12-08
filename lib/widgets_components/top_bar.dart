@@ -1,4 +1,5 @@
 import 'package:offline_pos/database_conn/get_item_queries.dart' as fetchQueries;
+import 'package:offline_pos/models/item_price.dart';
 import 'package:offline_pos/utils/dialog_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -433,7 +434,13 @@ Widget buildTopBarContent(
                             modeOfPaymentListData.modeOfPaymentList,
                           );
                           model.searchFocusNode.requestFocus();
-                           
+                        if(model.cartItems.isNotEmpty)
+                        {
+                          List<Future> futures = model.cartItems.map((item) {
+                            return setItemPrice(item, model, model.customerData.defaultPriceList);
+                          }).toList();
+                        await Future.wait(futures);
+                        }
                           model.notifyListeners();
                         },
                         suggestionsCallback: (pattern) async {
@@ -666,4 +673,42 @@ Widget buildTopBarContent(
       ),
     ),
   );
+}
+
+
+Future<void> setItemPrice(item,model,priceList)
+async{
+await fetchQueries.fetchFromItemPrice();
+try{
+item.newNetRate = fetchQueries.itemPriceListdata.firstWhere(
+(itemprice) =>
+itemprice.priceList.toLowerCase() == priceList.toLowerCase()  &&
+itemprice.UOM.toLowerCase()  == item.stockUom.toLowerCase()  &&
+itemprice.itemCode.toLowerCase()  == item.itemCode.toLowerCase() ,
+orElse: () => ItemPrice(name: '', itemCode: '', UOM: '', priceList: priceList, priceListRate: item.newRate)
+).priceListRate;
+
+item.singleItemDiscAmount = (item.singleItemDiscPer ?? 0)/100 * (item.newNetRate ?? 0);
+item.newRate =
+(item.newNetRate ?? 0) -
+(item.singleItemDiscAmount ?? 0);
+item.itemTotal = (item.newRate * item.qty);
+item.totalWithVatPrev =
+item.itemTotal +
+(item.itemTotal *
+(item.vatValue ?? 0) /
+100);
+item.ItemDiscAmount =  item.singleItemDiscAmount;
+
+await model.discountCalculation(
+model.allItemsDiscountAmount.text,
+model.allItemsDiscountPercent.text,
+);
+model.notifyListeners();
+}
+catch(e)
+{
+logErrorToFile("error $e");
+}
+
 }
