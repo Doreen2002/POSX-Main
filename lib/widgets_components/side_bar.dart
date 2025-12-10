@@ -214,7 +214,7 @@ Widget SideBar(BuildContext context, CartItemScreenController model) {
               Padding(
                 padding: EdgeInsets.only(bottom: 8.h),
                 child: SingleText(
-                  text: 'v1.0.15',
+                  text: 'v1.0.16',
                   fontSize: 4.sp,
                   color: Colors.grey,
                 ),
