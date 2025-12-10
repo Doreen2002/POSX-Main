@@ -44,14 +44,23 @@ import 'package:flutter/foundation.dart';
                         
                         // Phone Number from Settings
                         if (UserPreference.getString(PrefKeys.receiptPhoneNumber)?.isNotEmpty ?? false)
+                        
                           pw.Text(
                             'Tel: ${UserPreference.getString(PrefKeys.receiptPhoneNumber)}',
                             style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 8),
                           ),
-                      
+                        if (UserPreference.getString(PrefKeys.companyEmail)?.isNotEmpty ?? false)
+                        pw.Text(
+                            'Email: ${UserPreference.getString(PrefKeys.companyEmail)}',
+                            style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 8),
+                          ),
                         pw.SizedBox(height: 10),
+                        if (UserPreference.getString(PrefKeys.crNO)?.isNotEmpty ?? false)
                         pw.Text('CR.NO: ${UserPreference.getString(PrefKeys.crNO) ?? ""}' ,style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 7)),
+                        if (UserPreference.getString(PrefKeys.taxID)?.isNotEmpty ?? false)
+                
                         pw.Text('VAT: ${UserPreference.getString(PrefKeys.taxID) ?? ""}' ,style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 7)),
+                        if (UserPreference.getString(PrefKeys.companyAddress)?.isNotEmpty ?? false)
                         pw.Text(UserPreference.getString(PrefKeys.companyAddress) ?? "",style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 7)),
                       ],
                     ),
@@ -152,6 +161,7 @@ import 'package:flutter/foundation.dart';
                                   child: pw.Text('Rate',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 6)),
                                 ),
                                 pw.SizedBox(width: 5),
+                                if (UserPreference.getBool(PrefKeys.isVatEnabled) ?? false)
                                 pw.Container(
                                   width: 20,
                                   // width: 20.w,
@@ -191,7 +201,7 @@ import 'package:flutter/foundation.dart';
                           pw.Container(width: 30, child: pw.Text((item.newNetRate ?? 0).toStringAsFixed(model.decimalPoints), style: itemStyle)),
                           pw.Container(width: 30, child: pw.Text((item.singleItemDiscAmount ?? 0).toStringAsFixed(3), style: itemStyle)),
                           pw.Container(width: 35, child: pw.Text(item.itemTotal.toStringAsFixed(model.decimalPoints), style: itemStyle)),
-                          pw.Container(width: 35, child: pw.Text((item.vatValueAmount ?? 0).toStringAsFixed(model.decimalPoints), style: itemStyle)),
+                          if (UserPreference.getBool(PrefKeys.isVatEnabled) ?? false) pw.Container(width: 35, child: pw.Text((item.vatValueAmount ?? 0).toStringAsFixed(model.decimalPoints), style: itemStyle)),
                           pw.Container(width: 30, child: pw.Text((item.totalWithVatPrev ?? 0).toStringAsFixed(model.decimalPoints), style: itemStyle)),
                           ] ),
                         
@@ -262,6 +272,7 @@ import 'package:flutter/foundation.dart';
                                       ]
                                   ),
                                   pw.SizedBox(height: 10.h,),
+                                    if (UserPreference.getBool(PrefKeys.isVatEnabled) ?? false)
                                   pw.Row(
                                       mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                                       children: [

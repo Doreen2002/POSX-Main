@@ -42,10 +42,10 @@ Future<List<TempPOSProfileModel>> posProfileRequest(String httpType, String frap
           {
               await UserPreference.getInstance();
               await UserPreference.putInt(PrefKeys.allowNegativeStock, item['allow_negative_stock']);
-              await UserPreference.putString(PrefKeys.companyName, item['company']);
-              await UserPreference.putString(PrefKeys.taxID, item['tax_id']);
-              await UserPreference.putString(PrefKeys.crNO, item['cr_no']);
-               await UserPreference.putString(PrefKeys.companyAddress, item['address']);
+              // await UserPreference.putString(PrefKeys.companyName, item['company']);
+              // await UserPreference.putString(PrefKeys.taxID, item['tax_id']);
+              // await UserPreference.putString(PrefKeys.crNO, item['cr_no']);
+              //  await UserPreference.putString(PrefKeys.companyAddress, item['address']);
               await UserPreference.putString(PrefKeys.walkInCustomer, item['customer'] ?? "");
               await UserPreference.putString(PrefKeys.branchID, item['custom_pos_id'] ?? "");
               await UserPreference.putString(PrefKeys.currency, item['currency']);

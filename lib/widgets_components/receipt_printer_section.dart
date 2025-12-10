@@ -23,6 +23,8 @@ class ReceiptPrinterSection extends StatefulWidget {
         final TextEditingController _taxIDController = TextEditingController();
         final TextEditingController _emailController = TextEditingController();
         final TextEditingController _addressController = TextEditingController();
+        final TextEditingController  _cprController = TextEditingController();
+        bool? _isVatEnabled ;
       List<String> _available = [];
       bool _scanning = false;
 
@@ -30,12 +32,14 @@ class ReceiptPrinterSection extends StatefulWidget {
       void initState() {
         super.initState();
         UserPreference.getInstance().then((_) {
-          _phoneController.text = UserPreference.getString(PrefKeys.receiptPhoneNumber) ?? '';
+          
           _companyNameController.text = UserPreference.getString(PrefKeys.companyName) ?? '';
           _taxIDController.text = UserPreference.getString(PrefKeys.taxID) ?? '';
           _mobileNoNameController.text = UserPreference.getString(PrefKeys.receiptPhoneNumber) ?? '';
-          _emailController.text = UserPreference.getString(PrefKeys.activePosProfile) ?? '';
+          _emailController.text = UserPreference.getString(PrefKeys.companyEmail) ?? '';
           _addressController.text = UserPreference.getString(PrefKeys.companyAddress) ?? '';
+           _cprController.text = UserPreference.getString(PrefKeys.crNO) ?? '';
+          _isVatEnabled = UserPreference.getBool(PrefKeys.isVatEnabled) ?? false;
           setState(() {});
         });
       }
@@ -48,6 +52,8 @@ class ReceiptPrinterSection extends StatefulWidget {
         _taxIDController.dispose();
         _emailController.dispose();
         _addressController.dispose();
+        _cprController.dispose();
+       
         super.dispose();
       }
 
@@ -71,6 +77,21 @@ class ReceiptPrinterSection extends StatefulWidget {
           
         });
       }
+
+        Future<void> _savePrintFormatSettings()
+        async{
+        await UserPreference.getInstance();
+        await UserPreference.putString(PrefKeys.companyName, _companyNameController.text);
+        await UserPreference.putString(PrefKeys.taxID, _taxIDController.text);
+        await UserPreference.putString(PrefKeys.receiptPhoneNumber, _mobileNoNameController.text);
+        await UserPreference.putString(PrefKeys.companyEmail, _emailController.text);
+        await UserPreference.putString(PrefKeys.companyAddress, _addressController.text);
+        await UserPreference.putString(PrefKeys.crNO, _cprController.text);
+        await UserPreference.putBool(PrefKeys.isVatEnabled,  _isVatEnabled ?? false);
+         setState(() {
+          
+        });
+        }
 
       void _testPrint() => ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Test print queued')));
 
@@ -98,7 +119,8 @@ class ReceiptPrinterSection extends StatefulWidget {
                 ],)),
                 SizedBox(height: 80.h),
                 SizedBox(
-                  width: double.infinity,child:Text("Print Format Settings  ", textAlign: TextAlign.center)),
+                  width: double.infinity,child:Text("Print Format Settings  ", textAlign: TextAlign.center,  style: TextStyle(fontSize: 6.sp, fontWeight: FontWeight.w600))),
+                 SizedBox(height: 20.h),
                 SizedBox(
                   width: double.infinity,
                   child: Row(
@@ -106,7 +128,7 @@ class ReceiptPrinterSection extends StatefulWidget {
                       Expanded(
                         child: Row(
                           children: [
-                            SizedBox(width:100,  child:const Text('Company Name')),
+                            SizedBox(width:100,  child:const Text('Company Name', style: TextStyle(fontWeight: FontWeight.bold))),
                             SizedBox(width: 8.w),
                             Expanded(
                               child: TextField(
@@ -115,8 +137,7 @@ class ReceiptPrinterSection extends StatefulWidget {
                                   border: OutlineInputBorder(),
                                 ),
                                 onChanged: (v) async {
-                                  await UserPreference.getInstance();
-                                  await UserPreference.putString(PrefKeys.companyName, v);
+                                
                                 },
                               ),
                             ),
@@ -127,7 +148,7 @@ class ReceiptPrinterSection extends StatefulWidget {
                       Expanded(
                         child: Row(
                           children: [
-                           SizedBox(width:80,  child:const Text('TAX ID')),
+                           SizedBox(width:80,  child:const Text('TAX ID', style: TextStyle(fontWeight: FontWeight.bold))),
                             SizedBox(width: 8.w),
                             Expanded(
                               child: TextField(
@@ -136,8 +157,7 @@ class ReceiptPrinterSection extends StatefulWidget {
                                   border: OutlineInputBorder(),
                                 ),
                                 onChanged: (v) async {
-                                  await UserPreference.getInstance();
-                                  await UserPreference.putString(PrefKeys.taxID, v);
+                                  
                                 },
                               ),
                             ),
@@ -156,7 +176,7 @@ class ReceiptPrinterSection extends StatefulWidget {
                       Expanded(
                         child: Row(
                           children: [
-                            SizedBox(width:100,  child:const Text('Mobile No')),
+                            SizedBox(width:100,  child:const Text('Mobile No', style: TextStyle(fontWeight: FontWeight.bold))),
                             SizedBox(width: 8.w),
                             Expanded(
                               child: TextField(
@@ -165,8 +185,7 @@ class ReceiptPrinterSection extends StatefulWidget {
                                   border: OutlineInputBorder(),
                                 ),
                                 onChanged: (v) async {
-                                  await UserPreference.getInstance();
-                                  await UserPreference.putString(PrefKeys.receiptPhoneNumber, v);
+                                
                                 },
                               ),
                             ),
@@ -177,7 +196,7 @@ class ReceiptPrinterSection extends StatefulWidget {
                       Expanded(
                         child: Row(
                           children: [
-                            SizedBox(width:80,  child:const Text('Email')),
+                            SizedBox(width:80,  child:const Text('Email', style: TextStyle(fontWeight: FontWeight.bold))),
                             SizedBox(width: 8.w),
                             Expanded(
                               child: TextField(
@@ -186,8 +205,7 @@ class ReceiptPrinterSection extends StatefulWidget {
                                   border: OutlineInputBorder(),
                                 ),
                                 onChanged: (v) async {
-                                  await UserPreference.getInstance();
-                                  await UserPreference.putString(PrefKeys.activePosProfile, v);
+                                  
                                 },
                               ),
                             ),
@@ -197,13 +215,31 @@ class ReceiptPrinterSection extends StatefulWidget {
                     ],
                   ),
                 ),
-                SizedBox(height: 12.h),
                 
+                SizedBox(height: 12.h),
                 SizedBox(
                   width: double.infinity,
                   child: Row(
                     children: [
-                      SizedBox(width:100,  child:const Text('Address')),
+                      Expanded(child: Row(children: [
+                        SizedBox(width:100,  child:const Text('CPR NO', style: TextStyle(fontWeight: FontWeight.bold),)),
+                      SizedBox(width: 8.w),
+                      Expanded(
+                        child: TextField(
+                          controller: _cprController,
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                          ),
+                        
+                          onChanged: (v) async {
+                           
+                          },
+                        ),
+                      ),
+                      ],)),
+                      SizedBox(width: 12.w),
+                      Expanded(child: Row(children: [
+                      SizedBox(width:100,  child:const Text('Address', style: TextStyle(fontWeight: FontWeight.bold),)),
                       SizedBox(width: 8.w),
                       Expanded(
                         child: TextField(
@@ -213,15 +249,41 @@ class ReceiptPrinterSection extends StatefulWidget {
                           ),
                           maxLines: 2,
                           onChanged: (v) async {
-                            await UserPreference.getInstance();
-                            await UserPreference.putString(PrefKeys.companyAddress, v);
+                           
                           },
                         ),
                       ),
+                      ],))
+                      
                     ],
                   ),
                 ),
-                   SizedBox(height: 12.h),
+                SizedBox(height: 12.h),
+                 
+                 SizedBox(   width: double.infinity,
+                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                  
+                  Expanded(child: Row(children: [
+                    SizedBox(width:110,  child:const Text('Is Vat Enabled', style: TextStyle(fontWeight: FontWeight.bold))),
+                  Checkbox(value:_isVatEnabled ?? false, onChanged: (value){
+                    setState(() {
+                       _isVatEnabled = value ?? false;
+                    });
+                  })
+                  ],)),
+
+                    ElevatedButton.icon(onPressed: ()async{await _savePrintFormatSettings();},  label: Text( 'Save', ), style: ElevatedButton.styleFrom(
+              backgroundColor: Color(0xFF2B3691),
+              foregroundColor: Colors.white,
+              
+              padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 12.w),
+            ),), 
+
+                  
+                ],),),
+                   SizedBox(height: 40.h),
               if (_available.isNotEmpty)
                 AutoPersist<String?>(prefKey: PrefKeys.receiptPrinterUrl, defaultValue: null, builder: (ctx, val, onChanged) {
                   return DropdownButton<String>(value: val, isExpanded: true, items: _available.map((p) => DropdownMenuItem(value: p, child: Text(p))).toList(), onChanged: (v) => onChanged(v));
@@ -230,7 +292,7 @@ class ReceiptPrinterSection extends StatefulWidget {
               AutoPersist<bool>(prefKey: PrefKeys.silentPrintEnabled, defaultValue: false, builder: (ctx, val, onChanged) => SwitchListTile(value: val, onChanged: (v) => onChanged(v), title: const Text('Silent Print'))),
               AutoPersist<bool>(prefKey: PrefKeys.autoPrintReceipt, defaultValue: false, builder: (ctx, val, onChanged) => SwitchListTile(value: val, onChanged: (v) => onChanged(v), title: const Text('Auto-print on payment'))),
               SizedBox(height: 12.h),
-              TextField(controller: _phoneController, decoration: const InputDecoration(labelText: 'Phone for receipts'), keyboardType: TextInputType.phone, onChanged: (v) async { await UserPreference.getInstance(); await UserPreference.putString(PrefKeys.receiptPhoneNumber, v); }),
+              TextField(controller: _phoneController, decoration: const InputDecoration(labelText: 'Phone for receipts'), keyboardType: TextInputType.phone, onChanged: (v) async {  }),
               SizedBox(height: 12.h),
               SizedBox(width: double.infinity, child: OutlinedButton(onPressed: _testPrint, child: const Text('Test Print'))),
             ]),
