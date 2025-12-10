@@ -34,7 +34,7 @@ class PrefKeys {
   static const String posProfileName = "posProfileName";
   static const String maxSyncMin = "maxSyncMin";
     static const String syncInterval = "syncInterval";
-
+static const String companyEmail = "companyEmail";
   //<-------------Setting Value------------->
   static const String adminUserToken = "adminUserToken";
   static const String loggedInUserToken = "loggedInUserToken";

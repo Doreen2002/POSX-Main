@@ -17,7 +17,12 @@ class ReceiptPrinterSection extends StatefulWidget {
     }
 
     class _ReceiptPrinterSectionState extends State<ReceiptPrinterSection> {
-      final TextEditingController _phoneController = TextEditingController();
+        final TextEditingController _phoneController = TextEditingController();
+        final TextEditingController _companyNameController = TextEditingController();
+        final TextEditingController _mobileNoNameController = TextEditingController();
+        final TextEditingController _taxIDController = TextEditingController();
+        final TextEditingController _emailController = TextEditingController();
+        final TextEditingController _addressController = TextEditingController();
       List<String> _available = [];
       bool _scanning = false;
 
@@ -26,6 +31,11 @@ class ReceiptPrinterSection extends StatefulWidget {
         super.initState();
         UserPreference.getInstance().then((_) {
           _phoneController.text = UserPreference.getString(PrefKeys.receiptPhoneNumber) ?? '';
+          _companyNameController.text = UserPreference.getString(PrefKeys.companyName) ?? '';
+          _taxIDController.text = UserPreference.getString(PrefKeys.taxID) ?? '';
+          _mobileNoNameController.text = UserPreference.getString(PrefKeys.receiptPhoneNumber) ?? '';
+          _emailController.text = UserPreference.getString(PrefKeys.activePosProfile) ?? '';
+          _addressController.text = UserPreference.getString(PrefKeys.companyAddress) ?? '';
           setState(() {});
         });
       }
@@ -33,6 +43,11 @@ class ReceiptPrinterSection extends StatefulWidget {
       @override
       void dispose() {
         _phoneController.dispose();
+        _companyNameController.dispose();
+        _mobileNoNameController.dispose();
+        _taxIDController.dispose();
+        _emailController.dispose();
+        _addressController.dispose();
         super.dispose();
       }
 
@@ -81,7 +96,132 @@ class ReceiptPrinterSection extends StatefulWidget {
             ),),
             Text("Default Printer : ${UserPreference.getString(PrefKeys.defaultPrinter)}", style: TextStyle(fontWeight:FontWeight.bold),)
                 ],)),
+                SizedBox(height: 80.h),
+                SizedBox(
+                  width: double.infinity,child:Text("Print Format Settings  ", textAlign: TextAlign.center)),
+                SizedBox(
+                  width: double.infinity,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Row(
+                          children: [
+                            SizedBox(width:100,  child:const Text('Company Name')),
+                            SizedBox(width: 8.w),
+                            Expanded(
+                              child: TextField(
+                                controller: _companyNameController,
+                                decoration: const InputDecoration(
+                                  border: OutlineInputBorder(),
+                                ),
+                                onChanged: (v) async {
+                                  await UserPreference.getInstance();
+                                  await UserPreference.putString(PrefKeys.companyName, v);
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(width: 12.w),
+                      Expanded(
+                        child: Row(
+                          children: [
+                           SizedBox(width:80,  child:const Text('TAX ID')),
+                            SizedBox(width: 8.w),
+                            Expanded(
+                              child: TextField(
+                                controller: _taxIDController,
+                                decoration: const InputDecoration(
+                                  border: OutlineInputBorder(),
+                                ),
+                                onChanged: (v) async {
+                                  await UserPreference.getInstance();
+                                  await UserPreference.putString(PrefKeys.taxID, v);
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
                 SizedBox(height: 12.h),
+                
+                SizedBox(
+                  width: double.infinity,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Row(
+                          children: [
+                            SizedBox(width:100,  child:const Text('Mobile No')),
+                            SizedBox(width: 8.w),
+                            Expanded(
+                              child: TextField(
+                                controller: _mobileNoNameController,
+                                decoration: const InputDecoration(
+                                  border: OutlineInputBorder(),
+                                ),
+                                onChanged: (v) async {
+                                  await UserPreference.getInstance();
+                                  await UserPreference.putString(PrefKeys.receiptPhoneNumber, v);
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(width: 12.w),
+                      Expanded(
+                        child: Row(
+                          children: [
+                            SizedBox(width:80,  child:const Text('Email')),
+                            SizedBox(width: 8.w),
+                            Expanded(
+                              child: TextField(
+                                controller: _emailController,
+                                decoration: const InputDecoration(
+                                  border: OutlineInputBorder(),
+                                ),
+                                onChanged: (v) async {
+                                  await UserPreference.getInstance();
+                                  await UserPreference.putString(PrefKeys.activePosProfile, v);
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 12.h),
+                
+                SizedBox(
+                  width: double.infinity,
+                  child: Row(
+                    children: [
+                      SizedBox(width:100,  child:const Text('Address')),
+                      SizedBox(width: 8.w),
+                      Expanded(
+                        child: TextField(
+                          controller: _addressController,
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                          ),
+                          maxLines: 2,
+                          onChanged: (v) async {
+                            await UserPreference.getInstance();
+                            await UserPreference.putString(PrefKeys.companyAddress, v);
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                   SizedBox(height: 12.h),
               if (_available.isNotEmpty)
                 AutoPersist<String?>(prefKey: PrefKeys.receiptPrinterUrl, defaultValue: null, builder: (ctx, val, onChanged) {
                   return DropdownButton<String>(value: val, isExpanded: true, items: _available.map((p) => DropdownMenuItem(value: p, child: Text(p))).toList(), onChanged: (v) => onChanged(v));
