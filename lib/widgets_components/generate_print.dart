@@ -264,7 +264,7 @@ import 'package:flutter/foundation.dart';
                                       mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                                       children: [
                                         pw.Container(
-                                          child: pw.Text('Amount Excl. VAT',style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 6)),
+                                          child: pw.Text('Amount ${(UserPreference.getBool(PrefKeys.isVatEnabled) ?? false) ? "Excl. VAT": "" } ',style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 6)),
                                         ),
                                         pw.Container(
                                           child: pw.Text(model.netTotal.toStringAsFixed(model.decimalPoints),style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 6)),
@@ -272,8 +272,8 @@ import 'package:flutter/foundation.dart';
                                       ]
                                   ),
                                   pw.SizedBox(height: 10.h,),
-                                    if (UserPreference.getBool(PrefKeys.isVatEnabled) ?? false)
-                                  pw.Row(
+                                    
+                                  if (UserPreference.getBool(PrefKeys.isVatEnabled) ?? false) pw.Row(
                                       mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                                       children: [
                                         pw.Container(
@@ -290,7 +290,7 @@ import 'package:flutter/foundation.dart';
                                       mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                                       children: [
                                         pw.Container(
-                                          child: pw.Text('SubTotal Inc. VAT',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 6)),
+                                          child: pw.Text('SubTotal ${(UserPreference.getBool(PrefKeys.isVatEnabled) ?? false) ? "Inc. VAT": "" }',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 6)),
                                         ),
                                         pw.Container(
                                           child: pw.Text(model.grandTotal.toStringAsFixed(model.decimalPoints),style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 6)),

@@ -729,7 +729,8 @@ void didChangeDependencies() {
                                                                         invoice
                                                                             .name,
                                                                       );
-                                                                  Printing.layoutPdf(
+                                                                  Printing.directPrintPdf(
+                                                                    printer: Printer(url: UserPreference.getString(PrefKeys.defaultPrinterUrl) ?? ""),
                                                                     onLayout:
                                                                         (
                                                                           PdfPageFormat

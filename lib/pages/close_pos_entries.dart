@@ -333,7 +333,8 @@ class _ClosingEntryListPageState extends State<ClosingEntryListPage> {
 
                                                       closed.name ?? "",
                                                     );
-                                                Printing.layoutPdf(
+                                                Printing.directPrintPdf(
+                                                  printer: Printer(url: UserPreference.getString(PrefKeys.defaultPrinterUrl) ?? ""),
                                                   onLayout:
                                                       (
                                                         PdfPageFormat format,
@@ -343,7 +344,7 @@ class _ClosingEntryListPageState extends State<ClosingEntryListPage> {
                                                             model,
                                                             closingEntry,
                                                           ),
-                                                ).then((value) async {});
+                                                );
                                               },
                                               tooltip: 'Print',
                                             ),
