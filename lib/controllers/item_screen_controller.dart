@@ -281,7 +281,7 @@ Future<void>  initializePaymentModes(List<PaymentModeTypeAheadModel> jsonData) a
         await fetchItemQueries.fetchFromItemPrice();
         final itemPricingRuleRate = fetchItemQueries.itemPriceListdata.firstWhere(
           (price) => price.itemCode == item.itemCode && price.priceList == customerData.defaultPriceList,
-          orElse: () => ItemPrice(itemCode: item.itemCode,name: item.itemCode, UOM:item.stockUom, priceList: customerData.defaultPriceList!, priceListRate: item.standardRate ?? 0.0)
+          orElse: () => ItemPrice(itemCode: item.itemCode,name: item.itemCode, UOM:item.stockUom, priceList: customerData.defaultPriceList ?? "", priceListRate: item.standardRate ?? 0.0)
         ).priceListRate;
        
          item.standardRate = itemPricingRuleRate;
@@ -297,7 +297,7 @@ Future<void>  initializePaymentModes(List<PaymentModeTypeAheadModel> jsonData) a
         await fetchItemQueries.fetchFromItemPrice();
         final itemPricingRuleRate = fetchItemQueries.itemPriceListdata.firstWhere(
           (price) => price.itemCode == cartItem.itemCode && price.priceList == customerData.defaultPriceList && price.UOM == item.stockUom,
-          orElse: () => ItemPrice(itemCode: cartItem.itemCode,name: cartItem.itemCode, UOM:cartItem.stockUom, priceList: customerData.defaultPriceList!, priceListRate: cartItem.standardRate ?? 0.0)
+          orElse: () => ItemPrice(itemCode: cartItem.itemCode,name: cartItem.itemCode, UOM:cartItem.stockUom, priceList: customerData.defaultPriceList ?? "", priceListRate: cartItem.standardRate ?? 0.0)
         ).priceListRate;
          cartItem.standardRate = itemPricingRuleRate;
          cartItem.newRate = itemPricingRuleRate;
@@ -334,7 +334,7 @@ Future<void>  initializePaymentModes(List<PaymentModeTypeAheadModel> jsonData) a
        
 
           if (cartItem.vatValue != 0) {
-            item.vatValueAmount = roundToDecimals((totalAmount * (cartItem.vatValue! / 100)), decimalPoints)  ;
+            item.vatValueAmount = roundToDecimals((totalAmount * (cartItem.vatValue ?? 0 / 100)), decimalPoints)  ;
             totalAmount += roundToDecimals(totalAmount , decimalPoints) * roundToDecimals((cartItem.vatValue! / 100), decimalPoints);
             
             
@@ -448,7 +448,7 @@ Future<void>  initializePaymentModes(List<PaymentModeTypeAheadModel> jsonData) a
      
       return cartItems;
     } catch (e) {
-      logErrorToFile("error $e");
+      print("error $e");
       return <Item>[];
     }
   }

@@ -316,6 +316,7 @@ class _HoldCartListPageState extends State<HoldCartListPage> {
                                                     image: '',
                                                     qty: qty,
                                                     itemTotal:newRate * qty,
+                                                    standardRate: newRate,
                                                     newRate:
                                                         newRate ,
                                                     newNetRate: (item.rate?.toDouble() ??
