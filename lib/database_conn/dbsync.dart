@@ -4,6 +4,7 @@ import 'package:internet_connection_checker_plus/internet_connection_checker_plu
 import 'package:offline_pos/api_requests/customer.dart';
 import 'package:offline_pos/api_requests/items.dart';
 import 'package:offline_pos/api_requests/license_details.dart';
+import 'package:offline_pos/api_requests/login.dart';
 import 'package:offline_pos/api_requests/pos.dart';
 import 'package:offline_pos/api_requests/post_pos_entry.dart';
 import 'package:offline_pos/api_requests/pricing_rules.dart';
@@ -335,64 +336,50 @@ Future<dynamic> reloadItems() async {
 
 //sync function
 Future <void> sync() async {
+   String _baseUsername = UserPreference.getString(PrefKeys.baseUrl) ?? "";
+    String  _username =   UserPreference.getString(PrefKeys.userName) ?? "";
    await activateLicenseRequest(
      "$transferProtocol",
     UserPreference.getString(PrefKeys.baseUrl)!,
     UserPreference.getString(PrefKeys.deviceID)!,
     UserPreference.getString(PrefKeys.licenseKey)!,
   );
-  await createModeOfPaymentTable();
-  await createTablePosProfile();
-  await createTableUser();
+  await createMissingTables();
   await posProfileRequest(
     "$transferProtocol",
-    UserPreference.getString(PrefKeys.baseUrl)!,
-    UserPreference.getString(PrefKeys.userName)!,
+    _baseUsername,
+    _username
   );
  
-  await createTableCustomer();
-  await createTableItem();
-  await createSalesPersonTable();
-  await createSalesInvoiceItemTable();
-  await createSalesInvoiceTable();
-  await createSalesInvoicePayment();
-  await createTableBatch();
-  await createTableSerial();
-  await createHoldCartTable();
-  await createHoldCartItemTable();
-  await createTablePosOpening();
-  await createTablePosClosing();
-  await createPricingRulesTable();
-  await createPricingRuleItemsTable();
-  await createPricingRuleItemGroupsTable();
-  await createPricingRuleBrandsTable();
+  
   await itemRequest(
     "$transferProtocol",
-    UserPreference.getString(PrefKeys.baseUrl)!,
-    UserPreference.getString(PrefKeys.userName)!,
+    _baseUsername,
+    _username
   );
-  await customerRequest("$transferProtocol", UserPreference.getString(PrefKeys.baseUrl)!);
+  await customerRequest("$transferProtocol", UserPreference.getString(PrefKeys.baseUrl) ?? "");
+   await uomRequest(
+    "$transferProtocol",
+    _baseUsername,
+  );
   await batchRequest(
     "$transferProtocol",
-    UserPreference.getString(PrefKeys.baseUrl)!,
-    UserPreference.getString(PrefKeys.userName)!,
+    _baseUsername,
+    _username
   );
   await barcodeRequest(  "$transferProtocol",
-    UserPreference.getString(PrefKeys.baseUrl)!,
-    UserPreference.getString(PrefKeys.userName)!);
+    _baseUsername,
+    _username);
   await pricingRulesRequest(
     "$transferProtocol",
-    UserPreference.getString(PrefKeys.baseUrl)!,
-    UserPreference.getString(PrefKeys.userName)!,
+   _baseUsername,
+    _username
   );
   await itemPriceRequest(
     "$transferProtocol",
-    UserPreference.getString(PrefKeys.baseUrl)!,
+    _baseUsername,
   );
-  await uomRequest(
-    "$transferProtocol",
-    UserPreference.getString(PrefKeys.baseUrl)!,
-  );
+ 
   await insertUserTable(
     d: [
       User(
@@ -405,7 +392,7 @@ Future <void> sync() async {
   );
   await salesPersonRequest(
     "$transferProtocol",
-    UserPreference.getString(PrefKeys.baseUrl)!,
+    _baseUsername,
   );
   customerDataList = await fetchFromCustomer();
   itemListdata = await fetchFromItem();
@@ -421,20 +408,8 @@ Future <void> sync() async {
 //sync function
 Future<void> syncData(context, model) async {
   try{
-   
-      // if(isSyncing){
-      //   ScaffoldMessenger.of(context).showSnackBar(
-      //     const SnackBar(
-      //       backgroundColor: Color(0xFF018644),
-      //       content: Text(
-      //         'Auto Sync in progress',
-      //         style: TextStyle(color: Colors.white, fontSize: 16),
-      //       ),
-      //     ),
-      //   );
-      //   return;
-      // }
-      // isSyncing = true;
+   String _baseUsername = UserPreference.getString(PrefKeys.baseUrl) ?? "";
+    String  _username =   UserPreference.getString(PrefKeys.userName) ?? "";
   ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           backgroundColor:Color(0xFF018644),
@@ -446,50 +421,52 @@ Future<void> syncData(context, model) async {
       );
   bool hasInternet = await InternetConnection().hasInternetAccess;
  if (hasInternet)
-    {   
+    { 
+      await createMissingTables();  
         await createopeningEntry();
         await createCustomerRequest(
           "$transferProtocol",
-          UserPreference.getString(PrefKeys.baseUrl)!,
+          _baseUsername,
         );
         await updateCustomerRequest(
           "$transferProtocol",
-          UserPreference.getString(PrefKeys.baseUrl)!,
+               _baseUsername,
         );
         await  createInvoiceRequest();
         await  closePOSTOERPnext();
         await posProfileRequest(
           "$transferProtocol",
-          UserPreference.getString(PrefKeys.baseUrl)!,
-          UserPreference.getString(PrefKeys.userName)!,
+          _baseUsername,
+          _username
         );
         await batchRequest(
           "$transferProtocol",
-          UserPreference.getString(PrefKeys.baseUrl)!,
-          UserPreference.getString(PrefKeys.userName)!,
+           _baseUsername,
+          _username
         );
           batchListdata = await fetchFromBatch();
         await itemRequest(
           "$transferProtocol",
-          UserPreference.getString(PrefKeys.baseUrl)!,
-          UserPreference.getString(PrefKeys.userName)!,
+           _baseUsername,
+          _username
         );
         await customerRequest("$transferProtocol", UserPreference.getString(PrefKeys.baseUrl)!);
-        
+           await uomRequest(
+          "$transferProtocol",
+           _baseUsername,
+         
+        );
           await barcodeRequest(  "$transferProtocol",
-    UserPreference.getString(PrefKeys.baseUrl)!,
-    UserPreference.getString(PrefKeys.userName)!);
+     _baseUsername,
+          _username);
      await itemPriceRequest(
     "$transferProtocol",
-    UserPreference.getString(PrefKeys.baseUrl)!,
+     _baseUsername,
   );
-  await uomRequest(
-    "$transferProtocol",
-    UserPreference.getString(PrefKeys.baseUrl)!,
-  );
+  
         await salesPersonRequest(
         "$transferProtocol",
-        UserPreference.getString(PrefKeys.baseUrl)!,
+        _baseUsername,
       );
     }
     
