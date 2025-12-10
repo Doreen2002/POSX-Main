@@ -106,13 +106,14 @@ Future<bool> loginRequest(
       _baseUsername,
         _username
     );
+    await uomRequest(httpType, _baseUsername);
     await customerRequest(
       
       "$transferProtocol",
      _baseUsername,
       
     );
-    await uomRequest(httpType, _baseUsername);
+    
       });
       return true;
     } else {
