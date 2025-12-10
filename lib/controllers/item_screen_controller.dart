@@ -897,13 +897,14 @@ Future <void> getPosOpening() async {
 Future<void> repeatSync(context) async {
   try{
     bool hasInternet = await InternetConnection().hasInternetAccess;
- 
-    Timer.periodic(Duration(minutes: 20), (Timer timer) async{
+    String _baseUsername = UserPreference.getString(PrefKeys.baseUrl) ?? "";
+    String  _username =   UserPreference.getString(PrefKeys.userName) ?? "";
+    Timer.periodic(Duration(minutes: 3), (Timer timer) async{
     if (hasInternet) {
           await submitInvoiceRequest() ;
           await errorInvoiceRequest();
         }});
-  Timer.periodic(Duration(minutes: 20), (Timer timer) async{
+  Timer.periodic(Duration(minutes: 8), (Timer timer) async{
     if (hasInternet) {
       if (isSyncing) return; 
       isSyncing = true;
@@ -919,17 +920,18 @@ Future<void> repeatSync(context) async {
       await submitInvoiceRequest() ;
       await errorInvoiceRequest();
       await itemRequest("$transferProtocol",
-      UserPreference.getString(PrefKeys.baseUrl)!,
-      UserPreference.getString(PrefKeys.userName)!);
+     _baseUsername, _username);
+     await uomRequest("$transferProtocol",
+     _baseUsername,);
       await batchRequest("$transferProtocol",
-      UserPreference.getString(PrefKeys.baseUrl)!,
-      UserPreference.getString(PrefKeys.userName)!);
+      _baseUsername, _username);
       await pricingRulesRequest(
       "$transferProtocol", 
-      UserPreference.getString(PrefKeys.baseUrl)!,
-      UserPreference.getString(PrefKeys.userName)!);
+      _baseUsername, _username);
       await fetchItemQueries.fetchFromItem();
       await fetchItemQueries.fetchFromBatch();
+      await fetchItemQueries.fetchFromBarcode();
+      
 
     }
   });
