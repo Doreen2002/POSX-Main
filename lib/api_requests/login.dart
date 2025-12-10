@@ -61,6 +61,8 @@ Future<bool> loginRequest(
     body: 'usr=$encodedUsername&pwd=$encodedPassword',
   );
   if (response.statusCode == 200) {
+    String _baseUsername = UserPreference.getString(PrefKeys.baseUrl) ?? "";
+    String  _username =   UserPreference.getString(PrefKeys.userName) ?? "";
     final body = jsonDecode(response.body);
     if (body is Map && body['message'] == 'Logged In') {
       await UserPreference.getInstance();
@@ -73,7 +75,68 @@ Future<bool> loginRequest(
       UserPreference.putString(PrefKeys.baseUrl, frappeInstance);
       UserPreference.putString(PrefKeys.httpType, httpType);
 
-      await createModeOfPaymentTable();
+      await createMissingTables();
+      
+      final newDB = await  isNewDatabase();
+      if ( newDB == true)
+      {
+        await UserPreference.getInstance();
+        UserPreference.putBool('isOfflinePOSSetup', false);
+      }
+      else  if ( newDB == false)
+      {
+        await UserPreference.getInstance();
+        UserPreference.putBool('isOfflinePOSSetup', true);
+      }
+      
+
+      await posProfileRequest(
+        "$transferProtocol",
+        _baseUsername,
+        _username
+        
+      );
+        modeOfPaymentList.modeOfPaymentList = await fetchFromModeofPayment();
+    
+      
+     
+      Future.delayed(Duration(seconds: 10), ()async{
+        await itemRequest(
+      "$transferProtocol",
+      _baseUsername,
+        _username
+    );
+    await customerRequest(
+      
+      "$transferProtocol",
+     _baseUsername,
+      
+    );
+    await uomRequest(httpType, _baseUsername);
+      });
+      return true;
+    } else {
+      logErrorToFile("⚠️ Login response was not 'Logged In': $body");
+      return false;
+    }
+  } else {
+    logErrorToFile(
+      "❌ Failed with status: ${response.statusCode}, body: ${response.body}",
+    );
+    return false;
+  }
+ }
+ catch(e){
+    print("Error in login request: $e");
+    return false;
+  }
+
+}
+
+
+Future<void> createMissingTables()
+async{
+  await createModeOfPaymentTable();
       await createTablePosProfile();
       await createTableUser();
       await createTablePosOpening();
@@ -95,59 +158,4 @@ Future<bool> loginRequest(
       await createHoldCartTable();
       await createHoldCartItemTable();
       await createLicenseTable();
-      
-      final newDB = await  isNewDatabase();
-      if ( newDB == true)
-      {
-        await UserPreference.getInstance();
-        UserPreference.putBool('isOfflinePOSSetup', false);
-      }
-      else  if ( newDB == false)
-      {
-        await UserPreference.getInstance();
-        UserPreference.putBool('isOfflinePOSSetup', true);
-      }
-      
-      
-      // await deleteAllUser();
-      // await deleteAllPOSProfile();
-      await posProfileRequest(
-        "$transferProtocol",
-        UserPreference.getString(PrefKeys.baseUrl)!,
-        UserPreference.getString(PrefKeys.userName)!,
-      );
-        modeOfPaymentList.modeOfPaymentList = await fetchFromModeofPayment();
-    
-      
-     
-      Future.delayed(Duration(seconds: 10), ()async{
-        await itemRequest(
-      
-      "$transferProtocol",
-      UserPreference.getString(PrefKeys.baseUrl)!,
-      UserPreference.getString(PrefKeys.userName)!,
-    );
-    await customerRequest(
-      
-      "$transferProtocol",
-      UserPreference.getString(PrefKeys.baseUrl)!,
-    );
-      });
-      return true;
-    } else {
-      logErrorToFile("⚠️ Login response was not 'Logged In': $body");
-      return false;
-    }
-  } else {
-    logErrorToFile(
-      "❌ Failed with status: ${response.statusCode}, body: ${response.body}",
-    );
-    return false;
-  }
- }
- catch(e){
-    print("Error in login request: $e");
-    return false;
-  }
-
 }
