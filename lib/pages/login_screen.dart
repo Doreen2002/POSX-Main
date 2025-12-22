@@ -120,8 +120,12 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                         const SizedBox(height: 15),
-
-                        const Text(
+                        Visibility(
+                          visible: (UserPreference.getString(PrefKeys.baseUrl) ?? "").isEmpty,
+                          child:
+                        Column(
+                          children:[
+                             const Text(
                           'ERPNext Link',
                           style: TextStyle(
                             fontSize: 18,
@@ -164,6 +168,10 @@ class _LoginScreenState extends State<LoginScreen> {
                           },
                         ),
                         const SizedBox(height: 15),
+                          ]
+                        )
+                        ),
+                       
 
                         const Text(
                           'User ID',
