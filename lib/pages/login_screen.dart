@@ -124,6 +124,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           visible: (UserPreference.getString(PrefKeys.baseUrl) ?? "").isEmpty,
                           child:
                         Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children:[
                              const Text(
                           'ERPNext Link',
@@ -277,11 +278,16 @@ class _LoginScreenState extends State<LoginScreen> {
                             return null;
                           },
                         ),
-                        Visibility(child: 
+                        Visibility(
+                          visible: (UserPreference.getString(PrefKeys.licenseKey) ?? "").isEmpty,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [Visibility(child: 
                         const SizedBox(height: 15),
                         ),
                          
-                        Visibility(child: 
+                        Visibility(
+                          child: 
                         const Text(
                           'License Key',
                           style: TextStyle(
@@ -341,6 +347,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           
                         ),
                         ),
+                        ],
+                        )),
                         
                         const SizedBox(height: 20),
                         Align(
