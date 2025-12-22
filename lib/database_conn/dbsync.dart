@@ -523,6 +523,7 @@ Future<void> syncData(context, model) async {
   {
     model.syncDataLoading = false;
     isSyncing = false;
+    model.notifyListeners();
   }
 }
 

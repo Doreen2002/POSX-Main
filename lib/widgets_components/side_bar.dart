@@ -104,11 +104,22 @@ Widget SideBar(BuildContext context, CartItemScreenController model) {
               MouseRegion(
                 cursor: SystemMouseCursors.click,
                 child: _menuItem('assets/ico/sync.png', 'Sync Data', () async {
-                  if (model.syncDataLoading) return;
+                  if (model.syncDataLoading) 
+                  {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      backgroundColor:Color(0xFF018644),
+                      content: Text(
+                        'Syncing is already in progress. Please wait...',
+                        style: TextStyle(color: Colors.white, fontSize: 16),
+                      ),
+                    ),
+                  );
+                    return;
+                  }
                   model.syncDataLoading = true;
-                   model.searchFocusNode.requestFocus();
+                  model.searchFocusNode.requestFocus();
                   await syncData(context, model);
-                 
                   model.notifyListeners();
                    
                 }),
