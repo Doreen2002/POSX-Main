@@ -707,7 +707,6 @@ Future<void> syncCustomer(context, model) async {
  if (hasInternet)
     { 
       await createMissingTables();  
-        await createopeningEntry();
         await createCustomerRequest(
           "$transferProtocol",
           _baseUsername,
