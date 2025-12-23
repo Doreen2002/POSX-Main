@@ -607,6 +607,7 @@ Widget singleItemDiscountScreen(
                                     },
                               
                                      onSelected: (suggestion) async{
+                                      await fetchFromItemPrice();
                                       UOM value = suggestion as UOM;
                                       model.singleuomController.text = value.uom;
                                       final item =  model.cartItems[selectedItemIndex];
@@ -639,7 +640,7 @@ Widget singleItemDiscountScreen(
                                       },
                                       suggestionsCallback: (pattern) async {
                                         UOMListdata =await fetchFromUOM(model.cartItems[selectedItemIndex].itemCode);
-                                      
+                                        print(UOMListdata.length);
                                         return UOMListdata
                                           .where(
                                             (item) =>
