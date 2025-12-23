@@ -527,6 +527,355 @@ Future<void> syncData(context, model) async {
   }
 }
 
+Future<void> syncClosingOpeningVoucher(context, model) async {
+  try{
+   String _baseUsername = UserPreference.getString(PrefKeys.baseUrl) ?? "";
+    String  _username =   UserPreference.getString(PrefKeys.userName) ?? "";
+  ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          backgroundColor:Color(0xFF018644),
+          content: Text(
+            'Syncing Opening and Closing Voucher...',
+            style: TextStyle(color: Colors.white, fontSize: 16),
+          ),
+        ),
+      );
+  bool hasInternet = await InternetConnection().hasInternetAccess;
+ if (hasInternet)
+    { 
+      await createMissingTables();  
+        await createopeningEntry();
+        await  closePOSTOERPnext();
+        await posProfileRequest(
+          "$transferProtocol",
+          _baseUsername,
+          _username
+        );
+       
+  
+        await salesPersonRequest(
+        "$transferProtocol",
+        _baseUsername,
+      );
+    }
+    
+  await insertUserTable(
+    d: [
+      User(
+        name: UserPreference.getString(PrefKeys.userName)!,
+        fullName: UserPreference.getString(PrefKeys.userName)!,
+        username: UserPreference.getString(PrefKeys.userName)!,
+        password: UserPreference.getString(PrefKeys.password)!,
+      ),
+    ],
+  );
+  
+ 
+  salesPersonList = await fetchFromSalesPerson();
+  modeOfPaymentList = await fetchFromModeofPayment();
+  posProfileList = await fetchFromPosProfile();
+  await fetchFromPosOpening();
+
+  model.notifyListeners();
+ 
+  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+   ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          backgroundColor:Color(0xFF018644),
+          content: Text(
+            'Syncing Opening and Closing Vouchers Complete',
+            style: TextStyle(color: Colors.white, fontSize: 16),
+          ),
+        ),
+      );
+  }
+  
+  catch(e)
+  {
+     ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          backgroundColor:Color(0xFF018644),
+          content: Text(
+            'Error during Opening and Closing Vouchers sync',
+            style: TextStyle(color: Colors.white, fontSize: 16),
+          ),
+        ),
+      );
+  }
+  finally
+  {
+    model.syncDataLoading = false;
+    isSyncing = false;
+    model.notifyListeners();
+  }
+}
+
+Future<void> syncInvoice(context, model) async {
+  try{
+   String _baseUsername = UserPreference.getString(PrefKeys.baseUrl) ?? "";
+    String  _username =   UserPreference.getString(PrefKeys.userName) ?? "";
+  ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          backgroundColor:Color(0xFF018644),
+          content: Text(
+            'Syncing Invoice Data...',
+            style: TextStyle(color: Colors.white, fontSize: 16),
+          ),
+        ),
+      );
+  bool hasInternet = await InternetConnection().hasInternetAccess;
+ if (hasInternet)
+    { 
+      await createMissingTables();  
+        await createopeningEntry();
+        await  createInvoiceRequest();
+        await  closePOSTOERPnext();
+        await posProfileRequest(
+          "$transferProtocol",
+          _baseUsername,
+          _username
+        );
+  
+        await salesPersonRequest(
+        "$transferProtocol",
+        _baseUsername,
+      );
+    }
+    
+  await insertUserTable(
+    d: [
+      User(
+        name: UserPreference.getString(PrefKeys.userName)!,
+        fullName: UserPreference.getString(PrefKeys.userName)!,
+        username: UserPreference.getString(PrefKeys.userName)!,
+        password: UserPreference.getString(PrefKeys.password)!,
+      ),
+    ],
+  );
+  salesPersonList = await fetchFromSalesPerson();
+  modeOfPaymentList = await fetchFromModeofPayment();
+  posProfileList = await fetchFromPosProfile();
+  await submitInvoiceRequest();
+  await errorInvoiceRequest();
+  model.notifyListeners();
+ 
+  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+   ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          backgroundColor:Color(0xFF018644),
+          content: Text(
+            'Syncing Invoices Complete',
+            style: TextStyle(color: Colors.white, fontSize: 16),
+          ),
+        ),
+      );
+  }
+  
+  catch(e)
+  {
+     ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          backgroundColor:Color(0xFF018644),
+          content: Text(
+            'Error during  Invoice sync',
+            style: TextStyle(color: Colors.white, fontSize: 16),
+          ),
+        ),
+      );
+  }
+  finally
+  {
+    model.syncDataLoading = false;
+    isSyncing = false;
+    model.notifyListeners();
+  }
+}
+Future<void> syncCustomer(context, model) async {
+  try{
+   String _baseUsername = UserPreference.getString(PrefKeys.baseUrl) ?? "";
+    String  _username =   UserPreference.getString(PrefKeys.userName) ?? "";
+  ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          backgroundColor:Color(0xFF018644),
+          content: Text(
+            'Syncing Customer Data...',
+            style: TextStyle(color: Colors.white, fontSize: 16),
+          ),
+        ),
+      );
+  bool hasInternet = await InternetConnection().hasInternetAccess;
+ if (hasInternet)
+    { 
+      await createMissingTables();  
+        await createopeningEntry();
+        await createCustomerRequest(
+          "$transferProtocol",
+          _baseUsername,
+        );
+        await updateCustomerRequest(
+          "$transferProtocol",
+               _baseUsername,
+        );
+        await posProfileRequest(
+          "$transferProtocol",
+          _baseUsername,
+          _username
+        );
+        await customerRequest("$transferProtocol", UserPreference.getString(PrefKeys.baseUrl)!);
+        await salesPersonRequest(
+        "$transferProtocol",
+        _baseUsername,
+      );
+    }
+    
+  await insertUserTable(
+    d: [
+      User(
+        name: UserPreference.getString(PrefKeys.userName)!,
+        fullName: UserPreference.getString(PrefKeys.userName)!,
+        username: UserPreference.getString(PrefKeys.userName)!,
+        password: UserPreference.getString(PrefKeys.password)!,
+      ),
+    ],
+  );
+  
+  customerDataList = await fetchFromCustomer();
+  salesPersonList = await fetchFromSalesPerson();
+  modeOfPaymentList = await fetchFromModeofPayment();
+  posProfileList = await fetchFromPosProfile();
+  model.notifyListeners();
+ 
+  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+   ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          backgroundColor:Color(0xFF018644),
+          content: Text(
+            'Syncing Customer Data Complete',
+            style: TextStyle(color: Colors.white, fontSize: 16),
+          ),
+        ),
+      );
+  }
+  
+  catch(e)
+  {
+     ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          backgroundColor:Color(0xFF018644),
+          content: Text(
+            'Error during Customer Data  sync',
+            style: TextStyle(color: Colors.white, fontSize: 16),
+          ),
+        ),
+      );
+  }
+  finally
+  {
+    model.syncDataLoading = false;
+    isSyncing = false;
+    model.notifyListeners();
+  }
+}
+Future<void> syncItem(context, model) async {
+  try{
+   String _baseUsername = UserPreference.getString(PrefKeys.baseUrl) ?? "";
+    String  _username =   UserPreference.getString(PrefKeys.userName) ?? "";
+  ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          backgroundColor:Color(0xFF018644),
+          content: Text(
+            'Syncing Item Data...',
+            style: TextStyle(color: Colors.white, fontSize: 16),
+          ),
+        ),
+      );
+  bool hasInternet = await InternetConnection().hasInternetAccess;
+ if (hasInternet)
+    { 
+        await createMissingTables();  
+        await posProfileRequest(
+          "$transferProtocol",
+          _baseUsername,
+          _username
+        );
+        await itemRequest(
+          "$transferProtocol",
+           _baseUsername,
+          _username
+        );
+         await uomRequest(
+          "$transferProtocol",
+           _baseUsername,
+         
+        );
+        await barcodeRequest(  "$transferProtocol",
+          _baseUsername,
+          _username);
+        await itemPriceRequest(
+        "$transferProtocol",
+        _baseUsername,
+      );
+      await batchRequest("$transferProtocol",
+          _baseUsername,
+          _username);
+       await salesPersonRequest(
+        "$transferProtocol",
+        _baseUsername,
+      );
+      
+  itemListdata = await fetchFromItem();
+  batchListdata = await fetchFromBatch();
+  barcodeListdata = await fetchFromBarcode();
+  itemPriceListdata = await  fetchFromItemPrice();
+  salesPersonList = await fetchFromSalesPerson();
+  modeOfPaymentList = await fetchFromModeofPayment();
+  posProfileList = await fetchFromPosProfile();
+
+
+  await insertUserTable(
+    d: [
+      User(
+        name: UserPreference.getString(PrefKeys.userName)!,
+        fullName: UserPreference.getString(PrefKeys.userName)!,
+        username: UserPreference.getString(PrefKeys.userName)!,
+        password: UserPreference.getString(PrefKeys.password)!,
+      ),
+    ],
+  );
+  model.notifyListeners();
+ 
+  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+   ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          backgroundColor:Color(0xFF018644),
+          content: Text(
+            'Syncing Item Data Complete',
+            style: TextStyle(color: Colors.white, fontSize: 16),
+          ),
+        ),
+      );
+  }
+  }
+  catch(e)
+  {
+     ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          backgroundColor:Color(0xFF018644),
+          content: Text(
+            'Error during Item Data sync',
+            style: TextStyle(color: Colors.white, fontSize: 16),
+          ),
+        ),
+      );
+  }
+  finally
+  {
+    model.syncDataLoading = false;
+    isSyncing = false;
+    model.notifyListeners();
+  }
+}
+
 void dbSyncErrorDialog(BuildContext context, String errorMessage) {
   showDialog(
     context: context,

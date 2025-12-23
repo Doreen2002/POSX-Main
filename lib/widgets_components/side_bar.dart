@@ -102,27 +102,61 @@ Widget SideBar(BuildContext context, CartItemScreenController model) {
               SizedBox(height: 5.h),
               // ✅ Sync Data
               MouseRegion(
-                cursor: SystemMouseCursors.click,
-                child: _menuItem('assets/ico/sync.png', 'Sync Data', () async {
-                  if (model.syncDataLoading) 
-                  {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      backgroundColor:Color(0xFF018644),
-                      content: Text(
-                        'Syncing is already in progress. Please wait...',
-                        style: TextStyle(color: Colors.white, fontSize: 16),
-                      ),
-                    ),
-                  );
-                    return;
-                  }
-                  model.syncDataLoading = true;
-                  model.searchFocusNode.requestFocus();
+              cursor: SystemMouseCursors.click,
+              child: _menuItem('assets/ico/sync.png', 'Sync', () {
+              showDialog(
+              context: context,
+              builder: (context) {
+              return AlertDialog(
+              title: Text('Select Sync Option'),
+              content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+              ElevatedButton(
+                onPressed: () async {
+                  Navigator.pop(context); // close popup
+                  await syncInvoice(context, model);
+                },
+                child: Text('Sync Invoice'),
+              ),
+              SizedBox(height: 8),
+              ElevatedButton(
+                onPressed: () async {
+                  Navigator.pop(context);
+                 await syncItem(context, model);
+                },
+                child: Text('Sync Item'),
+              ),
+              SizedBox(height: 8),
+              ElevatedButton(
+                onPressed: () async {
+                  Navigator.pop(context);
+                 await syncCustomer(context, model);
+                },
+                child: Text('Sync Customer'),
+              ),
+              SizedBox(height: 8),
+              ElevatedButton(
+                onPressed: () async {
+                  Navigator.pop(context);
+                  await syncClosingOpeningVoucher(context, model);
+                },
+                child: Text('Sync Opening & Closing Vouchers'),
+              ),
+              SizedBox(height: 8),
+              ElevatedButton(
+                onPressed: () async {
+                  Navigator.pop(context);
                   await syncData(context, model);
-                  model.notifyListeners();
-                   
-                }),
+                },
+                child: Text('Sync All Data'),
+              ),
+              ],
+              ),
+              );
+              },
+              );
+              }),
               ),
 
               SizedBox(height: 5.h),
