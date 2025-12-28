@@ -96,24 +96,25 @@ Future<bool> loginRequest(
         _username
         
       );
-        modeOfPaymentList.modeOfPaymentList = await fetchFromModeofPayment();
-    
-      
-     
-      Future.delayed(Duration(seconds: 10), ()async{
-        await itemRequest(
+      modeOfPaymentList.modeOfPaymentList = await fetchFromModeofPayment();
+      Future.delayed(Duration(seconds: 4), ()async{
+      print("Fetching Data after login...");
+      await itemPriceRequest(httpType, _baseUsername);
+      await uomRequest(httpType, _baseUsername);
+      await batchRequest(httpType, _baseUsername, _username);
+      await barcodeRequest(httpType, _baseUsername,  _username);
+      await itemRequest(
       "$transferProtocol",
       _baseUsername,
         _username
-    );
-    await uomRequest(httpType, _baseUsername);
-    await customerRequest(
-      
+      );
+      await customerRequest(
+
       "$transferProtocol",
-     _baseUsername,
-      
-    );
-    
+      _baseUsername,
+
+      );
+
       });
       return true;
     } else {
