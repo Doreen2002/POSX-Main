@@ -616,9 +616,9 @@ Widget singleItemDiscountScreen(
                       
                                       model.cartItems[selectedItemIndex].newNetRate = itemPriceListdata.firstWhere(
                                           (item) =>
-                                              item.UOM == value.uom &&
-                                              item.itemCode == model.cartItems[selectedItemIndex].itemCode,
-                                          orElse: () => ItemPrice(name: '', itemCode: '', UOM: '', priceList: model.customerData.defaultPriceList ?? "", priceListRate: model.cartItems[selectedItemIndex].newRate)
+                                              item.UOM.toLowerCase() == value.uom.toLowerCase() &&
+                                              item.itemCode.toLowerCase() == model.cartItems[selectedItemIndex].itemCode.toLowerCase(),
+                                          orElse: () => ItemPrice(name: '', itemCode: '', UOM: '', priceList: model.customerData.defaultPriceList ?? "", priceListRate: 0)
                                         ).priceListRate;
                                       item.singleItemDiscAmount = (item.singleItemDiscPer ?? 0)/100 * (item.newNetRate ?? 0);
                                                   item.newRate =
@@ -639,8 +639,7 @@ Widget singleItemDiscountScreen(
                                         model.notifyListeners();
                                       },
                                       suggestionsCallback: (pattern) async {
-                                        UOMListdata =await fetchFromUOM(model.cartItems[selectedItemIndex].itemCode);
-                                        print(UOMListdata.length);
+                                        UOMListdata =await fetchFromUOM(model.cartItems[selectedItemIndex].itemCode.trim());
                                         return UOMListdata
                                           .where(
                                             (item) =>
