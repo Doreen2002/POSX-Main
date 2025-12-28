@@ -351,12 +351,6 @@ Future <void> sync() async {
     _username
   );
  
-  
-  await itemRequest(
-    "$transferProtocol",
-    _baseUsername,
-    _username
-  );
   await customerRequest("$transferProtocol", UserPreference.getString(PrefKeys.baseUrl) ?? "");
    await uomRequest(
     "$transferProtocol",
@@ -378,6 +372,11 @@ Future <void> sync() async {
   await itemPriceRequest(
     "$transferProtocol",
     _baseUsername,
+  );
+  await itemRequest(
+    "$transferProtocol",
+    _baseUsername,
+    _username
   );
  
   await insertUserTable(
@@ -422,52 +421,53 @@ Future<void> syncData(context, model) async {
   bool hasInternet = await InternetConnection().hasInternetAccess;
  if (hasInternet)
     { 
-      await createMissingTables();  
-        await createopeningEntry();
-        await createCustomerRequest(
-          "$transferProtocol",
-          _baseUsername,
-        );
-        await updateCustomerRequest(
-          "$transferProtocol",
-               _baseUsername,
-        );
-        await  createInvoiceRequest();
-        await  closePOSTOERPnext();
-        await posProfileRequest(
-          "$transferProtocol",
-          _baseUsername,
-          _username
-        );
-        await batchRequest(
-          "$transferProtocol",
-           _baseUsername,
-          _username
-        );
-          batchListdata = await fetchFromBatch();
-        await itemRequest(
-          "$transferProtocol",
-           _baseUsername,
-          _username
-        );
-        await customerRequest("$transferProtocol", UserPreference.getString(PrefKeys.baseUrl)!);
-           await uomRequest(
-          "$transferProtocol",
-           _baseUsername,
-         
-        );
-          await barcodeRequest(  "$transferProtocol",
-     _baseUsername,
-          _username);
-     await itemPriceRequest(
-    "$transferProtocol",
-     _baseUsername,
-  );
-  
-        await salesPersonRequest(
-        "$transferProtocol",
+    await createMissingTables();  
+    await createopeningEntry();
+    await createCustomerRequest(
+      "$transferProtocol",
+      _baseUsername,
+    );
+    await updateCustomerRequest(
+      "$transferProtocol",
+            _baseUsername,
+    );
+    await  createInvoiceRequest();
+    await  closePOSTOERPnext();
+    await posProfileRequest(
+      "$transferProtocol",
+      _baseUsername,
+      _username
+    );
+    await batchRequest(
+      "$transferProtocol",
         _baseUsername,
-      );
+      _username
+    );
+      batchListdata = await fetchFromBatch();
+
+    await customerRequest("$transferProtocol", UserPreference.getString(PrefKeys.baseUrl)!);
+        await uomRequest(
+      "$transferProtocol",
+        _baseUsername,
+      
+    );
+      await barcodeRequest(  "$transferProtocol",
+    _baseUsername,
+      _username);
+    await itemPriceRequest(
+    "$transferProtocol",
+    _baseUsername,
+    );
+    await itemRequest(
+      "$transferProtocol",
+        _baseUsername,
+      _username
+    );
+
+    await salesPersonRequest(
+    "$transferProtocol",
+    _baseUsername,
+    );
     }
     
   await insertUserTable(
@@ -797,11 +797,10 @@ Future<void> syncItem(context, model) async {
           _baseUsername,
           _username
         );
-        await itemRequest(
-          "$transferProtocol",
-           _baseUsername,
-          _username
-        );
+        await itemPriceRequest(
+        "$transferProtocol",
+        _baseUsername,
+      );
          await uomRequest(
           "$transferProtocol",
            _baseUsername,
@@ -810,13 +809,15 @@ Future<void> syncItem(context, model) async {
         await barcodeRequest(  "$transferProtocol",
           _baseUsername,
           _username);
-        await itemPriceRequest(
-        "$transferProtocol",
-        _baseUsername,
-      );
+      
       await batchRequest("$transferProtocol",
           _baseUsername,
           _username);
+      await itemRequest(
+          "$transferProtocol",
+           _baseUsername,
+          _username
+        );
        await salesPersonRequest(
         "$transferProtocol",
         _baseUsername,
