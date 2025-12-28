@@ -904,7 +904,7 @@ Future<void> repeatSync(context) async {
           await submitInvoiceRequest() ;
           await errorInvoiceRequest();
         }});
-  Timer.periodic(Duration(minutes: 8), (Timer timer) async{
+  Timer.periodic(Duration(minutes: 5), (Timer timer) async{
     if (hasInternet) {
       if (isSyncing) return; 
       isSyncing = true;
@@ -928,7 +928,7 @@ Future<void> repeatSync(context) async {
       await pricingRulesRequest(
       "$transferProtocol", 
       _baseUsername, _username);
-      await fetchItemQueries.fetchFromItem();
+      itemListdata = await fetchItemQueries.fetchFromItem();
       await fetchItemQueries.fetchFromBatch();
       await fetchItemQueries.fetchFromBarcode();
       
