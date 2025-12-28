@@ -176,7 +176,7 @@ Future<List<UOM>> fetchFromUOM(itemCode) async {
    final conn = await getDatabase();
   try {
     
-    final queryResult = await conn.query("SELECT * FROM ItemPrice WHERE item_code = '$itemCode';");
+    final queryResult = await conn.query("SELECT * FROM UOM WHERE item_code =? ;", [itemCode]);
 
     UOMListdata = queryResult
       .map((row) => UOM.fromJson(row.fields))
@@ -185,7 +185,7 @@ Future<List<UOM>> fetchFromUOM(itemCode) async {
    
     return UOMListdata;
   } catch (e) {
-    logErrorToFile("Error fetching data from Item Price Table: $e");
+    logErrorToFile("Error fetching data from UOM Table: $e");
     return [];
   }
   finally{
