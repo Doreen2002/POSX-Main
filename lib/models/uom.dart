@@ -2,7 +2,6 @@ class UOM {
  String name;
  String itemCode;
  String uom;
- String? custom_uom_print_name;
 double? conversionFactor;
 
 
@@ -12,7 +11,7 @@ UOM({
   required this.itemCode,
   required this.uom,
   required this.conversionFactor,
-  this.custom_uom_print_name
+  
    
 
 
@@ -30,8 +29,7 @@ factory UOM.fromJson(Map<String , dynamic> json)
     name: (json['name'] ?? '').toString(),
     itemCode: (json['item_code'] ?? '').toString(),
     uom: (json['uom'] ?? '').toString(),
-    conversionFactor: parseConversion(json['conversion_factor']),
-    custom_uom_print_name : json['custom_uom_print_name']?.toString()
+    conversionFactor: parseConversion(json['conversion_factor'])
   );
 }
 Map <String , dynamic> toJson(){
