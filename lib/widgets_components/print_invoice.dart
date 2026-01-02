@@ -322,7 +322,7 @@ import 'package:pdf/widgets.dart' as pw;
                                             pw.Container(
                                               child: pw.Text(payments[index]['mode_of_payment'],style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 4)),
                                             ),
-                                            pw.SizedBox(width: 5.w,),
+                                           
                                             pw.Container(
                                               child: pw.Text(
                                               payments[index]['amount']  

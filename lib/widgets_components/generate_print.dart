@@ -334,7 +334,7 @@ import 'package:flutter/foundation.dart';
                                             pw.Container(
                                               child: pw.Text(payments[index].name,style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 4)),
                                             ),
-                                            pw.SizedBox(width: 30.w,),
+                                            
                                             pw.Container(
                                               child: pw.Text(
                                               (double.tryParse(payments[index].controller.text) ?? 0.0)
