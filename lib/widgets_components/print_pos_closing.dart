@@ -17,7 +17,7 @@ import 'package:pdf/widgets.dart' as pw;
     pdf.addPage(
 
         pw.MultiPage(
-        pageFormat: PdfPageFormat(80 * PdfPageFormat.mm, 300 * PdfPageFormat.mm),
+        pageFormat: PdfPageFormat(48 * PdfPageFormat.mm, 300 * PdfPageFormat.mm),
         build: (pw.Context context) {
           return [
           pw.Center(
@@ -103,7 +103,7 @@ import 'package:pdf/widgets.dart' as pw;
                                                               pw.Container(
                                                                 child: pw.Text(payments[index]['mode_of_payment'],style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 6)),
                                                               ),
-                                                              pw.SizedBox(width: 30.w,),
+                                                             
                                                               pw.Container(
                                                                 child: pw.Text(
                                                                 payments[index]['amount']  
