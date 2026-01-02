@@ -185,7 +185,7 @@ import 'package:pdf/widgets.dart' as pw;
                               pw.Container( child: pw.Text(item['stock_uom'] ?? "", style: itemStyle)),
                               pw.Container( child: pw.Text((item['qty'] ?? 0).toString(), style: itemStyle)),
                               pw.Container( child: pw.Text((item['rate'] ?? 0).toStringAsFixed(model.decimalPoints), style: itemStyle)),
-                              pw.Container( child: pw.Text((item['discount_amount'] ?? 0).toStringAsFixed(3), style: itemStyle)),
+                              pw.Container( child: pw.Text((item['discount_amount'] ?? 0).toStringAsFixed(model.decimalPoints), style: itemStyle)),
                               pw.Container( child: pw.Text((item['price_list_rate']).toStringAsFixed(model.decimalPoints), style: itemStyle)),
                               pw.Container( child: pw.Text((taxAmount).toStringAsFixed(model.decimalPoints), style: itemStyle)),
                               pw.Container( child: pw.Text((item['net_amount'] ?? 0).toStringAsFixed(model.decimalPoints), style: itemStyle)),

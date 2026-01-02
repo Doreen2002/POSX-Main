@@ -14,18 +14,18 @@ import 'package:flutter/foundation.dart';
   Future<Uint8List> generateNewPrintFormatPdf(PdfPageFormat format, CartItemScreenController model, invoice_no) async {
     final pdf = pw.Document();
     final now = DateTime.now();
-    final itemStyle = pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 6);
+    final itemStyle = pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 4);
 
     pdf.addPage(
 
         pw.MultiPage(
-        pageFormat: PdfPageFormat(80 * PdfPageFormat.mm, 300 * PdfPageFormat.mm),
+        pageFormat: PdfPageFormat(48 * PdfPageFormat.mm, 300 * PdfPageFormat.mm),
         build: (pw.Context context) {
           return [
           pw.Center(
             child: pw.Container(
               width: 1.sw,
-              padding: pw.EdgeInsets.only(top: 20.h,bottom: 20.h,left: 2,right: 2),
+              padding: pw.EdgeInsets.only(top: 10.h,bottom: 10.h,left: 2,right: 2),
               decoration: pw.BoxDecoration(
                 borderRadius: pw.BorderRadius.all(pw.Radius.circular(10.r)),
                 color: PdfColors.white,
@@ -38,30 +38,30 @@ import 'package:flutter/foundation.dart';
                     child: pw.Column(
                       crossAxisAlignment: pw.CrossAxisAlignment.center,
                       children: [
-                        // pw.Text('INVOICE',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 8)),
+                        // pw.Text('INVOICE',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
                         // pw.SizedBox(height: 5),
-                        pw.Text(UserPreference.getString(PrefKeys.companyName) ?? "",style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 12)),
+                        pw.Text(UserPreference.getString(PrefKeys.companyName) ?? "",style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
                         
                         // Phone Number from Settings
                         if (UserPreference.getString(PrefKeys.receiptPhoneNumber)?.isNotEmpty ?? false)
                         
                           pw.Text(
                             'Tel: ${UserPreference.getString(PrefKeys.receiptPhoneNumber)}',
-                            style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 8),
+                            style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 4),
                           ),
                         if (UserPreference.getString(PrefKeys.companyEmail)?.isNotEmpty ?? false)
                         pw.Text(
                             'Email: ${UserPreference.getString(PrefKeys.companyEmail)}',
-                            style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 8),
+                            style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 4),
                           ),
                         pw.SizedBox(height: 10),
                         if (UserPreference.getString(PrefKeys.crNO)?.isNotEmpty ?? false)
-                        pw.Text('CR.NO: ${UserPreference.getString(PrefKeys.crNO) ?? ""}' ,style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 7)),
+                        pw.Text('CR.NO: ${UserPreference.getString(PrefKeys.crNO) ?? ""}' ,style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 4)),
                         if (UserPreference.getString(PrefKeys.taxID)?.isNotEmpty ?? false)
                 
-                        pw.Text('VAT: ${UserPreference.getString(PrefKeys.taxID) ?? ""}' ,style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 7)),
+                        pw.Text('VAT: ${UserPreference.getString(PrefKeys.taxID) ?? ""}' ,style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
                         if (UserPreference.getString(PrefKeys.companyAddress)?.isNotEmpty ?? false)
-                        pw.Text(UserPreference.getString(PrefKeys.companyAddress) ?? "",style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 7)),
+                        pw.Text(UserPreference.getString(PrefKeys.companyAddress) ?? "",style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 4)),
                       ],
                     ),
                   ),
@@ -73,7 +73,7 @@ import 'package:flutter/foundation.dart';
                         color: PdfColors.black,
                       ),
                       child: pw.Center(
-                        child: pw.Text('TAX INVOICE',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 8,color: PdfColors.white)),
+                        child: pw.Text('TAX INVOICE',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4,color: PdfColors.white)),
                       )
                   ),
                   pw.SizedBox(height: 10,),
@@ -83,28 +83,28 @@ import 'package:flutter/foundation.dart';
                       pw.Row(
                           mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                           children: [
-                            pw.Text('Date: ${DateFormat('dd-MM-yyyy').format(now)}',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 6)),
-                            pw.Text('Time: ${DateFormat('hh:mm a').format(now)}',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 6)),
+                            pw.Text('Date: ${DateFormat('dd-MM-yyyy').format(now)}',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
+                            pw.Text('Time: ${DateFormat('hh:mm a').format(now)}',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
                           ]
                       ),
                       pw.Row(
                           mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                           children: [
-                            pw.Text('Customer  : ${model.customerData.name}',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 6)),
-                             pw.Text('Customer Name : ${model.customerListController.text}',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 6)),
+                            pw.Text('Customer  : ${model.customerData.name}',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
+                             pw.Text('Customer Name : ${model.customerListController.text}',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
                           ]
                       ),
                       pw.Row(
                           mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                           children: [
-                            pw.Text('Served By: ${model.salesListController.text}',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 6)),
+                            pw.Text('Served By: ${model.salesListController.text}',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
                       pw.Text('Reference: $invoice_no'
-                          ,style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 6)),
+                          ,style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
                           ]
                       ),
                        
                      
-                      // pw.Text('Customer Mobile : ${model.getCustomerToPref()}',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 6)),
+                      // pw.Text('Customer Mobile : ${model.getCustomerToPref()}',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
 
                     ],
                   ),
@@ -123,55 +123,55 @@ import 'package:flutter/foundation.dart';
                               children: [
                                  pw.Container(
                                
-                                  width: 20,
-                                  child: pw.Text('Item Name',textAlign: pw.TextAlign.center,style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 6)),
+                                  width: 10.w,
+                                  child: pw.Text('Item Name',textAlign: pw.TextAlign.center,style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
                                 ),
                                 pw.Row(
                                     children: [
                                       pw.Container(
-                                  width: 20,
-                                  child: pw.Text('Code',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 6)),
+                                  width: 4.w,
+                                  child: pw.Text('Code',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
                                 ),
                                 pw.SizedBox(width: 5,),
                                 pw.Container(
-                                  width: 20,
-                                  child: pw.Text('Unit',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 6)),
+                                  width: 4.w,
+                                  child: pw.Text('Unit',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
                                 ),
                                 pw.SizedBox(width: 5),
                                 pw.Container(
-                                  width: 20,
-                                  child: pw.Text('Qty',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 6)),
+                                  width: 4.w,
+                                  child: pw.Text('Qty',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
                                 ),
                                 pw.SizedBox(width: 5),
                                 pw.Container(
-                                  width: 20,
+                                  width: 4.w,
                                   // width: 20.w,
-                                  child: pw.Text('Price',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 6)),
+                                  child: pw.Text('Price',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
                                 ),
                                 pw.SizedBox(width: 5),
                                 pw.Container(
-                                  width: 20,
+                                  width: 4.w,
                                   // width: 20.w,
-                                  child: pw.Text('Disc',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 6)),
+                                  child: pw.Text('Disc',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
                                 ),
                                 pw.SizedBox(width: 5),
                                 pw.Container(
-                                  width: 20,
+                                  width: 4.w,
                                   // width: 20.w,
-                                  child: pw.Text('Rate',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 6)),
+                                  child: pw.Text('Rate',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
                                 ),
                                 pw.SizedBox(width: 5),
                                 if (UserPreference.getBool(PrefKeys.isVatEnabled) ?? false)
                                 pw.Container(
-                                  width: 20,
+                                  width: 4.w,
                                   // width: 20.w,
-                                  child: pw.Text('VAT ',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 6)),
+                                  child: pw.Text('VAT ',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
                                 ),
                                 pw.SizedBox(width: 5),
                                 pw.Container(
-                                  width: 20,
+                                  width: 4.w,
                                   // width: 20.w,
-                                  child: pw.Text('Value',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 6)),
+                                  child: pw.Text('Value',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
                                 ),
                                     ]
                                 )
@@ -195,14 +195,14 @@ import 'package:flutter/foundation.dart';
                             mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                             children:[
                             
-                              pw.Container(width: 30, child: pw.Text(item.itemCode ?? "", style: itemStyle)),
-                          pw.Container(width: 30, child: pw.Text(item.stockUom ?? "", style: itemStyle)),
-                          pw.Container(width: 10, child: pw.Text(item.qty.toString(), style: itemStyle)),
-                          pw.Container(width: 30, child: pw.Text((item.newNetRate ?? 0).toStringAsFixed(model.decimalPoints), style: itemStyle)),
-                          pw.Container(width: 30, child: pw.Text((item.singleItemDiscAmount ?? 0).toStringAsFixed(3), style: itemStyle)),
-                          pw.Container(width: 35, child: pw.Text(item.itemTotal.toStringAsFixed(model.decimalPoints), style: itemStyle)),
+                              pw.Container( child: pw.Text(item.itemCode ?? "", style: itemStyle)),
+                          pw.Container( child: pw.Text(item.stockUom ?? "", style: itemStyle)),
+                          pw.Container( child: pw.Text(item.qty.toString(), style: itemStyle)),
+                          pw.Container( child: pw.Text((item.newNetRate ?? 0).toStringAsFixed(model.decimalPoints), style: itemStyle)),
+                          pw.Container( child: pw.Text((item.singleItemDiscAmount ?? 0).toStringAsFixed(model.decimalPoints), style: itemStyle)),
+                          pw.Container( child: pw.Text(item.itemTotal.toStringAsFixed(model.decimalPoints), style: itemStyle)),
                           if (UserPreference.getBool(PrefKeys.isVatEnabled) ?? false) pw.Container(width: 35, child: pw.Text((item.vatValueAmount ?? 0).toStringAsFixed(model.decimalPoints), style: itemStyle)),
-                          pw.Container(width: 30, child: pw.Text((item.totalWithVatPrev ?? 0).toStringAsFixed(model.decimalPoints), style: itemStyle)),
+                          pw.Container( child: pw.Text((item.totalWithVatPrev ?? 0).toStringAsFixed(model.decimalPoints), style: itemStyle)),
                           ] ),
                         
                         ],
@@ -221,7 +221,7 @@ import 'package:flutter/foundation.dart';
                                 crossAxisAlignment: pw.CrossAxisAlignment.start,
                                 children: [
                                   pw.Container(
-                                    child: pw.Text('T-Qty : ${model.totalQTy}',style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 6)),
+                                    child: pw.Text('T-Qty : ${model.totalQTy}',style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 4)),
                                   ),
                                 ]
                             )
@@ -235,11 +235,11 @@ import 'package:flutter/foundation.dart';
                                       mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                                       children: [
                                         pw.Container(
-                                          child: pw.Text('Gross Amount',style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 6)),
+                                          child: pw.Text('Gross Amount',style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 4)),
                                         ),
                                         pw.Container(
                                           child: pw.Text(model.grossTotal.toStringAsFixed(model.decimalPoints)
-                                              ,style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 6)),
+                                              ,style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 4)),
                                         ),
                                       ]
                                   ),
@@ -248,14 +248,14 @@ import 'package:flutter/foundation.dart';
                                       mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                                       children: [
                                         pw.Container(
-                                          child: pw.Text('Discount',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 6)),
+                                          child: pw.Text('Discount',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
                                         ),
                                         pw.Container(
                                           child: pw.Text(
                                                model.allItemsDiscountAmount.text.isNotEmpty
                                                   ? ' ${double.parse(model.allItemsDiscountAmount.text).toStringAsFixed(model.decimalPoints)}'
                                                   : model.allItemsDiscountPercent.text.isNotEmpty ?  '${double.parse(model.allItemsDiscountAmount.text).toStringAsFixed(model.decimalPoints)}' : '0.000'
-                                              ,style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 6)),
+                                              ,style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
                                         ),
                                       ]
                                   ),
@@ -264,10 +264,10 @@ import 'package:flutter/foundation.dart';
                                       mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                                       children: [
                                         pw.Container(
-                                          child: pw.Text('Amount ${(UserPreference.getBool(PrefKeys.isVatEnabled) ?? false) ? "Excl. VAT": "" } ',style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 6)),
+                                          child: pw.Text('Amount ${(UserPreference.getBool(PrefKeys.isVatEnabled) ?? false) ? "Excl. VAT": "" } ',style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 4)),
                                         ),
                                         pw.Container(
-                                          child: pw.Text(model.netTotal.toStringAsFixed(model.decimalPoints),style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 6)),
+                                          child: pw.Text(model.netTotal.toStringAsFixed(model.decimalPoints),style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 4)),
                                         ),
                                       ]
                                   ),
@@ -277,10 +277,10 @@ import 'package:flutter/foundation.dart';
                                       mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                                       children: [
                                         pw.Container(
-                                          child: pw.Text('VAT Amount',style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 6)),
+                                          child: pw.Text('VAT Amount',style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 4)),
                                         ),
                                         pw.Container(
-                                          child: pw.Text(model.vatTotal.toStringAsFixed(model.decimalPoints),style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 6)),
+                                          child: pw.Text(model.vatTotal.toStringAsFixed(model.decimalPoints),style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 4)),
                                         ),
                                       ]
                                   ),
@@ -290,10 +290,10 @@ import 'package:flutter/foundation.dart';
                                       mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                                       children: [
                                         pw.Container(
-                                          child: pw.Text('SubTotal ${(UserPreference.getBool(PrefKeys.isVatEnabled) ?? false) ? "Inc. VAT": "" }',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 6)),
+                                          child: pw.Text('SubTotal ${(UserPreference.getBool(PrefKeys.isVatEnabled) ?? false) ? "Inc. VAT": "" }',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
                                         ),
                                         pw.Container(
-                                          child: pw.Text(model.grandTotal.toStringAsFixed(model.decimalPoints),style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 6)),
+                                          child: pw.Text(model.grandTotal.toStringAsFixed(model.decimalPoints),style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
                                         ),
                                       ]
                                   ),
@@ -310,7 +310,7 @@ import 'package:flutter/foundation.dart';
                         color: PdfColors.black,
                       ),
                       child: pw.Center(
-                        child: pw.Text('Payment Breakup',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 6,color: PdfColors.white)),
+                        child: pw.Text('Payment Breakup',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4,color: PdfColors.white)),
                       )
                   ),
                   pw.SizedBox(height: 10,),
@@ -332,14 +332,14 @@ import 'package:flutter/foundation.dart';
                                           children: [
                                           
                                             pw.Container(
-                                              child: pw.Text(payments[index].name,style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 6)),
+                                              child: pw.Text(payments[index].name,style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 4)),
                                             ),
                                             pw.SizedBox(width: 30.w,),
                                             pw.Container(
                                               child: pw.Text(
                                               (double.tryParse(payments[index].controller.text) ?? 0.0)
                                                   .toStringAsFixed(model.decimalPoints),
-                                              style: pw.TextStyle(fontWeight: pw.FontWeight.normal, fontSize: 6),
+                                              style: pw.TextStyle(fontWeight: pw.FontWeight.normal, fontSize: 4),
                                             )
                                             )
                                           ]
@@ -357,12 +357,12 @@ import 'package:flutter/foundation.dart';
                       mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                       children: [
                         pw.Container(
-                          child: pw.Text('Total Paid',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 7)),
+                          child: pw.Text('Total Paid',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
                         ),
                         pw.Container(
                           child: pw.Text(
                             model.paidAmount.toStringAsFixed(model.decimalPoints),
-                            style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 7),
+                            style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 4),
                           ),
                         ),
                       ]
@@ -380,7 +380,7 @@ import 'package:flutter/foundation.dart';
                                 color: PdfColors.black,
                               ),
                               child: pw.Center(
-                                child: pw.Text('Change',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 6,color: PdfColors.white)),
+                                child: pw.Text('Change',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4,color: PdfColors.white)),
                               )
                           ),
                         ),
@@ -394,7 +394,7 @@ import 'package:flutter/foundation.dart';
                                 // color: PdfColors.black,
                               ),
                               child: pw.Center(
-                                child: pw.Text(((model.paidAmount - model.grandTotal ) > 0 ? (model.paidAmount - model.grandTotal ) : 0).toStringAsFixed(model.decimalPoints),style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 6)),
+                                child: pw.Text(((model.paidAmount - model.grandTotal ) > 0 ? (model.paidAmount - model.grandTotal ) : 0).toStringAsFixed(model.decimalPoints),style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
                               )
                           ),
                         ),
@@ -410,7 +410,7 @@ import 'package:flutter/foundation.dart';
                         if (UserPreference.getString(PrefKeys.receiptPhoneNumber)?.isNotEmpty ?? false)
                           pw.Text(
                             'Tel: ${UserPreference.getString(PrefKeys.receiptPhoneNumber)}',
-                            style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 7),
+                            style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 4),
                           ),
                         if (UserPreference.getString(PrefKeys.receiptPhoneNumber)?.isNotEmpty ?? false)
                           pw.SizedBox(height: 5),
@@ -418,7 +418,7 @@ import 'package:flutter/foundation.dart';
                         // Custom Footer Text from Settings
                         pw.Text(
                           UserPreference.getString(PrefKeys.receiptFooterText) ?? 'Thank you for your business!',
-                          style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 6),
+                          style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 4),
                           textAlign: pw.TextAlign.center,
                         ),
                       ],
