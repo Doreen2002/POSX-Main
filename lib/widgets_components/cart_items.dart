@@ -15,7 +15,7 @@ import '../widgets_components/additional_discount.dart';
 Widget cartDesign(BuildContext context, CartItemScreenController model, isSalesReturn) {
   model.selectedItemIndex =
       model.cartItems.isEmpty ? -1 : model.selectedItemIndex;
-  final currencyPrecision = 3;
+  final currencyPrecision = model.decimalPoints;
   model.isCheckOutScreen == false
       ? model.isCheckOutScreenText = 'Submit Payment'
       : model.isCheckOutScreenText = 'Edit Cart';
