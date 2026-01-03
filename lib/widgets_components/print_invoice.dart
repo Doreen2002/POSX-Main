@@ -50,7 +50,7 @@ import 'package:pdf/widgets.dart' as pw;
                   ),
                   pw.SizedBox(height: 5.h,),
                   pw.Container(
-                      padding: pw.EdgeInsets.only(top: 3.h,bottom: 3.h),
+                      padding: pw.EdgeInsets.only(top: 6,bottom: 6),
                       decoration: const pw.BoxDecoration(
                         border: pw.Border(bottom:pw.BorderSide(color: PdfColors.grey400)),
                         color: PdfColors.black,
@@ -300,9 +300,9 @@ import 'package:pdf/widgets.dart' as pw;
                         child: pw.Text('Payment Breakup',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4,color: PdfColors.white)),
                       )
                   ),
-                  pw.SizedBox(height: 5.h,),
+              
                   pw.Container(
-                      height: salesInvoice['paymentModes'].length  * 20.h,
+             
                     
                       child: pw.Column(
                           children: [
@@ -312,7 +312,7 @@ import 'package:pdf/widgets.dart' as pw;
                                   final payments = salesInvoice['paymentModes'];
                                   return pw.Container(
                                   
-                                      height: 20.h,
+                                      height: 10.h,
                                       child: pw.Row(
                                           mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                                           
@@ -337,7 +337,7 @@ import 'package:pdf/widgets.dart' as pw;
                           ]
                       )
                   ),
-                  pw.SizedBox(height: 5.h,),
+                 
                   pw.Row(
                       children: [
                         pw.Expanded(

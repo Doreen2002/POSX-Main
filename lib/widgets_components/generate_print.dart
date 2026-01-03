@@ -315,7 +315,7 @@ import 'package:flutter/foundation.dart';
                   ),
                 
                   pw.Container(
-                      height: model.paymentModes.where((item)=> (double.tryParse( item.controller.text) ?? 0) > 0).toList().length  * 20.h,
+                      // height: model.paymentModes.where((item)=> (double.tryParse( item.controller.text) ?? 0) > 0).toList().length  * 20.h,
                       // color: PdfColors.blue,
                       child: pw.Column(
                           children: [
@@ -325,7 +325,7 @@ import 'package:flutter/foundation.dart';
                                   final payments = model.paymentModes.where((item)=> (double.tryParse( item.controller.text) ?? 0) > 0).toList();
                                   return pw.Container(
                                   
-                                      height: 20.h,
+                                      height: 10.h,
                                       child: pw.Row(
                                           mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                                           // crossAxisAlignment: pw.CrossAxisAlignment.start,
