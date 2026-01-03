@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
@@ -23,7 +24,7 @@ import 'package:pdf/widgets.dart' as pw;
           pw.Center(
             child: pw.Container(
             
-              padding: pw.EdgeInsets.only(top: 10.h,bottom: 10.h,left: 2,right: 2),
+              padding: pw.EdgeInsets.only(top: 1.h,bottom: 1.h,left: 2,right: 2),
               decoration: pw.BoxDecoration(
                 borderRadius: pw.BorderRadius.all(pw.Radius.circular(10.r)),
                 color: PdfColors.white,
@@ -47,9 +48,9 @@ import 'package:pdf/widgets.dart' as pw;
                       ],
                     ),
                   ),
-                  pw.SizedBox(height: 10,),
+                  pw.SizedBox(height: 5.h,),
                   pw.Container(
-                      padding: pw.EdgeInsets.only(top: 8,bottom: 8),
+                      padding: pw.EdgeInsets.only(top: 3.h,bottom: 3.h),
                       decoration: const pw.BoxDecoration(
                         border: pw.Border(bottom:pw.BorderSide(color: PdfColors.grey400)),
                         color: PdfColors.black,
@@ -58,7 +59,7 @@ import 'package:pdf/widgets.dart' as pw;
                         child: pw.Text('Tax Invoice',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4,color: PdfColors.white)),
                       )
                   ),
-                  pw.SizedBox(height: 10,),
+                  pw.SizedBox(height: 5.h,),
                   pw.Column(
                     crossAxisAlignment: pw.CrossAxisAlignment.start,
                     children: [
@@ -92,7 +93,7 @@ import 'package:pdf/widgets.dart' as pw;
 
                     ],
                   ),
-                  pw.SizedBox(height: 10,),
+                  pw.SizedBox(height: 5.h,),
                   pw.Container(
                       padding: pw.EdgeInsets.only(top: 8.h,bottom: 8.h),
                       decoration: const pw.BoxDecoration(
@@ -164,7 +165,7 @@ import 'package:pdf/widgets.dart' as pw;
                           ]
                       )
                   ),
-                  pw.SizedBox(height: 10),
+                  pw.SizedBox(height: 5.h),
                   ...salesInvoice['items'].map((item) {
                     double rate = double.tryParse(item['price_list_rate'].toString()) ?? 0.0;
                       double taxRate = double.tryParse(item['item_tax_rate'].toString()) ?? 0.0;
@@ -209,10 +210,7 @@ import 'package:pdf/widgets.dart' as pw;
                                   pw.Container(
                                     child: pw.Text('T-Qty : ${salesInvoice['totalQty']}',style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 4)),
                                   ),
-                                  pw.SizedBox(width: 4.w,),
-                                  pw.Container(
-                                    child: pw.Text('Customer Signature :',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 6)),
-                                  ),
+                                  
                                 ]
                             )
                         ),
@@ -248,7 +246,7 @@ import 'package:pdf/widgets.dart' as pw;
                                         ),
                                       ]
                                   ),
-                                  pw.SizedBox(height: 10.h,),
+                                  pw.SizedBox(height: 5.h,),
                                   pw.Row(
                                       mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                                       children: [
@@ -260,7 +258,8 @@ import 'package:pdf/widgets.dart' as pw;
                                         ),
                                       ]
                                   ),
-                                  pw.SizedBox(height: 10.h,),
+                                  pw.SizedBox(height: 5.h,),
+                                  if(UserPreference.getBool(PrefKeys.isVatEnabled) ?? false)
                                   pw.Row(
                                       mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                                       children: [
@@ -272,7 +271,7 @@ import 'package:pdf/widgets.dart' as pw;
                                         ),
                                       ]
                                   ),
-                                  pw.SizedBox(height: 10.h,),
+                                  pw.SizedBox(height: 3.h,),
                                   pw.Divider(color: PdfColors.black,),
                                   pw.Row(
                                       mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
@@ -290,7 +289,7 @@ import 'package:pdf/widgets.dart' as pw;
                         ),
                       ]
                   ),
-                  pw.SizedBox(height: 20.h,),
+                  pw.SizedBox(height: 5.h,),
                   pw.Container(
                       padding: pw.EdgeInsets.only(top: 8.h,bottom: 8.h),
                       decoration: const pw.BoxDecoration(
@@ -301,7 +300,7 @@ import 'package:pdf/widgets.dart' as pw;
                         child: pw.Text('Payment Breakup',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4,color: PdfColors.white)),
                       )
                   ),
-                  pw.SizedBox(height: 10,),
+                  pw.SizedBox(height: 5.h,),
                   pw.Container(
                       height: salesInvoice['paymentModes'].length  * 20.h,
                     
@@ -338,7 +337,7 @@ import 'package:pdf/widgets.dart' as pw;
                           ]
                       )
                   ),
-                  pw.SizedBox(height: 20.h,),
+                  pw.SizedBox(height: 5.h,),
                   pw.Row(
                       children: [
                         pw.Expanded(
@@ -369,7 +368,7 @@ import 'package:pdf/widgets.dart' as pw;
                         ),
                       ]
                   ),
-                  pw.SizedBox(height: 20.h,),
+                  pw.SizedBox(height: 5.h,),
                   pw.Align(
                     alignment: pw.Alignment.topCenter,
                     child: pw.Column(
