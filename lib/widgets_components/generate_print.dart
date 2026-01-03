@@ -25,7 +25,7 @@ import 'package:flutter/foundation.dart';
           pw.Center(
             child: pw.Container(
               width: 1.sw,
-              padding: pw.EdgeInsets.only(top: 10.h,bottom: 10.h,left: 2,right: 2),
+              padding: pw.EdgeInsets.only(top: 3.h,bottom: 3.h,left: 2,right: 2),
               decoration: pw.BoxDecoration(
                 borderRadius: pw.BorderRadius.all(pw.Radius.circular(10.r)),
                 color: PdfColors.white,
@@ -54,7 +54,7 @@ import 'package:flutter/foundation.dart';
                             'Email: ${UserPreference.getString(PrefKeys.companyEmail)}',
                             style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 4),
                           ),
-                        pw.SizedBox(height: 10),
+                        pw.SizedBox(height: 5.h),
                         if (UserPreference.getString(PrefKeys.crNO)?.isNotEmpty ?? false)
                         pw.Text('CR.NO: ${UserPreference.getString(PrefKeys.crNO) ?? ""}' ,style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 4)),
                         if (UserPreference.getString(PrefKeys.taxID)?.isNotEmpty ?? false)
@@ -65,9 +65,9 @@ import 'package:flutter/foundation.dart';
                       ],
                     ),
                   ),
-                  pw.SizedBox(height: 10,),
+                  pw.SizedBox(height: 5.h,),
                   pw.Container(
-                      padding: pw.EdgeInsets.only(top: 8,bottom: 8),
+                      padding: pw.EdgeInsets.only(top: 6,bottom: 6),
                       decoration: const pw.BoxDecoration(
                         border: pw.Border(bottom:pw.BorderSide(color: PdfColors.grey400)),
                         color: PdfColors.black,
@@ -76,7 +76,7 @@ import 'package:flutter/foundation.dart';
                         child: pw.Text('TAX INVOICE',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4,color: PdfColors.white)),
                       )
                   ),
-                  pw.SizedBox(height: 10,),
+                  pw.SizedBox(height: 5.h),
                   pw.Column(
                     crossAxisAlignment: pw.CrossAxisAlignment.start,
                     children: [
@@ -108,7 +108,7 @@ import 'package:flutter/foundation.dart';
 
                     ],
                   ),
-                  pw.SizedBox(height: 10,),
+                  pw.SizedBox(height: 5.h),
                   pw.Container(
                       padding: pw.EdgeInsets.only(top: 8.h,bottom: 8.h,left: 3.w,right: 3.w),
                       decoration: const pw.BoxDecoration(
@@ -181,7 +181,7 @@ import 'package:flutter/foundation.dart';
                           ]
                       )
                   ),
-                  pw.SizedBox(height: 10),
+                  pw.SizedBox(height: 5.h),
                   ...model.cartItems.map((item) {
                     item.vatValueAmount = item.vatValue != null || item.vatValue == 0? ((item.newRate ?? 0) * item.qty   * (item.vatValue ?? 0) / 100) : 0.0;
                     return pw.Container(
@@ -243,7 +243,7 @@ import 'package:flutter/foundation.dart';
                                         ),
                                       ]
                                   ),
-                                  pw.SizedBox(height: 10.h,),
+                                  pw.SizedBox(height: 5.h,),
                                   pw.Row(
                                       mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                                       children: [
@@ -259,7 +259,7 @@ import 'package:flutter/foundation.dart';
                                         ),
                                       ]
                                   ),
-                                  pw.SizedBox(height: 10.h,),
+                                  pw.SizedBox(height: 5.h,),
                                   pw.Row(
                                       mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                                       children: [
@@ -271,7 +271,7 @@ import 'package:flutter/foundation.dart';
                                         ),
                                       ]
                                   ),
-                                  pw.SizedBox(height: 10.h,),
+                                  pw.SizedBox(height: 5.h,),
                                     
                                   if (UserPreference.getBool(PrefKeys.isVatEnabled) ?? false) pw.Row(
                                       mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
@@ -284,7 +284,7 @@ import 'package:flutter/foundation.dart';
                                         ),
                                       ]
                                   ),
-                                  pw.SizedBox(height: 10.h,),
+                                  if (UserPreference.getBool(PrefKeys.isVatEnabled) ?? false) pw.SizedBox(height: 5.h,),
                                   pw.Divider(color: PdfColors.black,),
                                   pw.Row(
                                       mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
@@ -302,7 +302,7 @@ import 'package:flutter/foundation.dart';
                         ),
                       ]
                   ),
-                  pw.SizedBox(height: 20.h,),
+                  pw.SizedBox(height: 5.h,),
                   pw.Container(
                       padding: pw.EdgeInsets.only(top: 8.h,bottom: 8.h),
                       decoration: const pw.BoxDecoration(
@@ -313,7 +313,7 @@ import 'package:flutter/foundation.dart';
                         child: pw.Text('Payment Breakup',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4,color: PdfColors.white)),
                       )
                   ),
-                  pw.SizedBox(height: 10,),
+                
                   pw.Container(
                       height: model.paymentModes.where((item)=> (double.tryParse( item.controller.text) ?? 0) > 0).toList().length  * 20.h,
                       // color: PdfColors.blue,
@@ -324,7 +324,7 @@ import 'package:flutter/foundation.dart';
                                 itemBuilder: (context,index){
                                   final payments = model.paymentModes.where((item)=> (double.tryParse( item.controller.text) ?? 0) > 0).toList();
                                   return pw.Container(
-                                    // color: PdfColors.pink,
+                                  
                                       height: 20.h,
                                       child: pw.Row(
                                           mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
@@ -345,12 +345,14 @@ import 'package:flutter/foundation.dart';
                                           ]
                                       )
                                   );
+                                 
                                 }
                             ),
                           ]
-                      )
+                      ),
+                     
                   ),
-                  pw.SizedBox(height: 10.h,),
+                
                   pw.Divider(color: PdfColors.grey400,),
                   // Total Paid Row
                   pw.Row(
@@ -367,9 +369,9 @@ import 'package:flutter/foundation.dart';
                         ),
                       ]
                   ),
-                  pw.SizedBox(height: 10.h,),
+                
                   pw.Divider(color: PdfColors.black,),
-                  pw.SizedBox(height: 10.h,),
+              
                   pw.Row(
                       children: [
                         pw.Expanded(
@@ -400,7 +402,7 @@ import 'package:flutter/foundation.dart';
                         ),
                       ]
                   ),
-                  pw.SizedBox(height: 20.h,),
+                  
                   pw.Align(
                     alignment: pw.Alignment.topCenter,
                     child: pw.Column(
