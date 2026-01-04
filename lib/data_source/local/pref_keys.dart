@@ -26,7 +26,7 @@ class PrefKeys {
   static const String password = "password";
   static const String cookies = "cookies";
   static const String deviceID = "deviceID";
-  static const double printFormatWidth = 77;
+  static const String printFormatWidth = "77";
   static const String licenseKey = "licenseKey";
   static const String allowNegativeStock = "allowNegativeStock";
   static const String openingEntry = "openingEntry";

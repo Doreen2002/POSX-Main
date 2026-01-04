@@ -1,7 +1,11 @@
 
 
+
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:offline_pos/widgets_components/decimal_input_formatter.dart';
 import 'package:printing/printing.dart';
 
 
@@ -24,6 +28,7 @@ class ReceiptPrinterSection extends StatefulWidget {
         final TextEditingController _emailController = TextEditingController();
         final TextEditingController _addressController = TextEditingController();
         final TextEditingController  _cprController = TextEditingController();
+        final TextEditingController  _printFormatWidth = TextEditingController();
         bool? _isVatEnabled ;
       List<String> _available = [];
       bool _scanning = false;
@@ -40,6 +45,7 @@ class ReceiptPrinterSection extends StatefulWidget {
           _addressController.text = UserPreference.getString(PrefKeys.companyAddress) ?? '';
            _cprController.text = UserPreference.getString(PrefKeys.crNO) ?? '';
           _isVatEnabled = UserPreference.getBool(PrefKeys.isVatEnabled) ?? false;
+          _printFormatWidth.text = (UserPreference.getDouble(PrefKeys.printFormatWidth.toString()) ?? 60).toString();
           setState(() {});
         });
       }
@@ -53,6 +59,7 @@ class ReceiptPrinterSection extends StatefulWidget {
         _emailController.dispose();
         _addressController.dispose();
         _cprController.dispose();
+        _printFormatWidth.dispose();
        
         super.dispose();
       }
@@ -88,8 +95,8 @@ class ReceiptPrinterSection extends StatefulWidget {
         await UserPreference.putString(PrefKeys.companyAddress, _addressController.text);
         await UserPreference.putString(PrefKeys.crNO, _cprController.text);
         await UserPreference.putBool(PrefKeys.isVatEnabled,  _isVatEnabled ?? false);
+        await UserPreference.putDouble(PrefKeys.printFormatWidth,  double.parse(_printFormatWidth.text ));
          setState(() {
-          
         });
         }
 
@@ -265,7 +272,8 @@ class ReceiptPrinterSection extends StatefulWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                   
-                  Expanded(child: Row(children: [
+                  Expanded(
+                      flex: 5,child: Row(children: [
                     SizedBox(width:110,  child:const Text('Is Vat Enabled', style: TextStyle(fontWeight: FontWeight.bold))),
                   Checkbox(value:_isVatEnabled ?? false, onChanged: (value){
                     setState(() {
@@ -274,12 +282,39 @@ class ReceiptPrinterSection extends StatefulWidget {
                   })
                   ],)),
 
-                    ElevatedButton.icon(onPressed: ()async{await _savePrintFormatSettings();},  label: Text( 'Save', ), style: ElevatedButton.styleFrom(
+                  Expanded(
+                    flex: 2,
+                        child: Row(
+                          children: [
+                            SizedBox(width:180,  child:const Text('Print Format Width (mm)', style: TextStyle(fontWeight: FontWeight.bold))),
+                            SizedBox(width: 8.w),
+                            Expanded(
+                              
+                              child: TextField(
+                                controller: _printFormatWidth,
+                                inputFormatters: [
+                                DecimalTextInputFormatter(decimalRange: 2),
+                                LengthLimitingTextInputFormatter(5),
+                                ],
+                                decoration: const InputDecoration(
+                                  border: OutlineInputBorder(),
+                                ),
+                                onChanged: (v) async {
+                                
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(width: 8.w),
+                     ElevatedButton.icon(onPressed: ()async{await _savePrintFormatSettings();},  label: Text( 'Save', ), style: ElevatedButton.styleFrom(
               backgroundColor: Color(0xFF2B3691),
               foregroundColor: Colors.white,
               
               padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 12.w),
             ),), 
+                    
 
                   
                 ],),),

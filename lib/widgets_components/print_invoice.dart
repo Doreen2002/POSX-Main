@@ -18,7 +18,7 @@ import 'package:pdf/widgets.dart' as pw;
     pdf.addPage(
 
         pw.MultiPage(
-        pageFormat: PdfPageFormat( (UserPreference.getDouble(PrefKeys.printFormatWidth.toString()) ?? 77).toDouble() * PdfPageFormat.mm, 300 * PdfPageFormat.mm),
+        pageFormat: PdfPageFormat( (UserPreference.getDouble(PrefKeys.printFormatWidth.toString()) ?? 60).toDouble() * PdfPageFormat.mm, 300 * PdfPageFormat.mm),
         build: (pw.Context context) {
           return [
           pw.Center(
@@ -107,54 +107,55 @@ import 'package:pdf/widgets.dart' as pw;
                               mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                               children: [
                                  pw.Container(
-                                  width: 10.w,
+                                
                         
                                   child: pw.Text('Item Name',textAlign: pw.TextAlign.center,style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
                                 ),
                                 pw.Row(
+                                  mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                                     children: [
                                       pw.Container(
-                                        width: 4.w,
+                                     
                                   child: pw.Text('Code',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
                                 ),
-                                pw.SizedBox(width: 5,),
+                               
                                 pw.Container(
-                                   width: 4.w,
+                                  
                                   child: pw.Text('Unit',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
                                 ),
-                                pw.SizedBox(width: 5),
+                                
                                 pw.Container(
-                                   width: 4.w,
+                       
                                   child: pw.Text('Qty',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
                                 ),
-                                pw.SizedBox(width: 5),
+                                
                                 pw.Container(
                           
-                                   width: 4.w,
+                                  
                                   child: pw.Text('Price',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
                                 ),
-                                pw.SizedBox(width: 5),
+                                
                                 pw.Container(
                           
-                                   width: 4.w,
+                                   
                                   child: pw.Text('Disc',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
                                 ),
-                                pw.SizedBox(width: 5),
+                               
                                 pw.Container(
                           
-                                   width: 4.w,
+                                   
                                   child: pw.Text('Rate',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
                                 ),
-                                pw.SizedBox(width: 5),
+                              
                                 pw.Container(
                           
-                                 width: 4.w,
+                                 
                                   child: pw.Text('VAT',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
                                 ),
-                                pw.SizedBox(width: 5),
+                                
                                 pw.Container(
                           
-                                   width: 4.w,
+                               
                                   child: pw.Text('Value',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
                                 ),
                                     ]
