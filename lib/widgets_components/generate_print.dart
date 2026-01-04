@@ -19,7 +19,7 @@ import 'package:flutter/foundation.dart';
     pdf.addPage(
 
         pw.MultiPage(
-        pageFormat: PdfPageFormat((UserPreference.getDouble(PrefKeys.printFormatWidth.toString()) ?? 77).toDouble() * PdfPageFormat.mm, 300 * PdfPageFormat.mm),
+        pageFormat: PdfPageFormat((UserPreference.getDouble(PrefKeys.printFormatWidth.toString()) ?? 60).toDouble() * PdfPageFormat.mm, 300 * PdfPageFormat.mm),
         build: (pw.Context context) {
           return [
           pw.Center(
@@ -123,53 +123,54 @@ import 'package:flutter/foundation.dart';
                               children: [
                                  pw.Container(
                                
-                                  width: 10.w,
+                                 
                                   child: pw.Text('Item Name',textAlign: pw.TextAlign.center,style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
                                 ),
                                 pw.Row(
+                                  mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                                     children: [
                                       pw.Container(
-                                  width: 4.w,
+                               
                                   child: pw.Text('Code',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
                                 ),
-                                pw.SizedBox(width: 5,),
+                            
                                 pw.Container(
-                                  width: 4.w,
+                               
                                   child: pw.Text('Unit',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
                                 ),
-                                pw.SizedBox(width: 5),
+                               
                                 pw.Container(
-                                  width: 4.w,
+                               
                                   child: pw.Text('Qty',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
                                 ),
-                                pw.SizedBox(width: 5),
+                               
                                 pw.Container(
-                                  width: 4.w,
+                               
                                   // width: 20.w,
                                   child: pw.Text('Price',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
                                 ),
-                                pw.SizedBox(width: 5),
+                               
                                 pw.Container(
-                                  width: 4.w,
+                               
                                   // width: 20.w,
                                   child: pw.Text('Disc',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
                                 ),
-                                pw.SizedBox(width: 5),
+                               
                                 pw.Container(
-                                  width: 4.w,
+                               
                                   // width: 20.w,
                                   child: pw.Text('Rate',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
                                 ),
-                                pw.SizedBox(width: 5),
+                               
                                 if (UserPreference.getBool(PrefKeys.isVatEnabled) ?? false)
                                 pw.Container(
-                                  width: 4.w,
+                               
                                   // width: 20.w,
                                   child: pw.Text('VAT ',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
                                 ),
-                                pw.SizedBox(width: 5),
+                               
                                 pw.Container(
-                                  width: 4.w,
+                               
                                   // width: 20.w,
                                   child: pw.Text('Value',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
                                 ),
@@ -199,7 +200,7 @@ import 'package:flutter/foundation.dart';
                           pw.Container( child: pw.Text(item.stockUom ?? "", style: itemStyle)),
                           pw.Container( child: pw.Text(item.qty.toString(), style: itemStyle)),
                           pw.Container( child: pw.Text((item.newNetRate ?? 0).toStringAsFixed(model.decimalPoints), style: itemStyle)),
-                          pw.Container( child: pw.Text((item.singleItemDiscAmount ?? 0).toStringAsFixed(model.decimalPoints), style: itemStyle)),
+                          pw.Container(  child: pw.Text((item.singleItemDiscAmount ?? 0).toStringAsFixed(model.decimalPoints), style: itemStyle)),
                           pw.Container( child: pw.Text(item.itemTotal.toStringAsFixed(model.decimalPoints), style: itemStyle)),
                           if (UserPreference.getBool(PrefKeys.isVatEnabled) ?? false) pw.Container(width: 35, child: pw.Text((item.vatValueAmount ?? 0).toStringAsFixed(model.decimalPoints), style: itemStyle)),
                           pw.Container( child: pw.Text((item.totalWithVatPrev ?? 0).toStringAsFixed(model.decimalPoints), style: itemStyle)),
