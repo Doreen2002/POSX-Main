@@ -17,7 +17,7 @@ import 'package:pdf/widgets.dart' as pw;
     pdf.addPage(
 
         pw.MultiPage(
-        pageFormat: PdfPageFormat((UserPreference.getDouble(PrefKeys.printFormatWidth.toString()) ?? 77).toDouble() * PdfPageFormat.mm, 300 * PdfPageFormat.mm),
+        pageFormat: PdfPageFormat((UserPreference.getDouble(PrefKeys.printFormatWidth.toString()) ?? 60).toDouble() * PdfPageFormat.mm, 300 * PdfPageFormat.mm),
         build: (pw.Context context) {
           return [
           pw.Center(
