@@ -12,13 +12,12 @@ import 'package:pdf/widgets.dart' as pw;
 
   Future<Uint8List> generateSalesInvoicePrint(PdfPageFormat format, CartItemScreenController model,  salesInvoice) async {
     final pdf = pw.Document();
-    final now = DateTime.now();
     final itemStyle = pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 4);
-
+   double  _printWidth =(UserPreference.getDouble(PrefKeys.printFormatWidth) ?? 0) > 0 ? (UserPreference.getDouble(PrefKeys.printFormatWidth.toString())  ?? 60).toDouble() : 60;
     pdf.addPage(
 
         pw.MultiPage(
-        pageFormat: PdfPageFormat( (UserPreference.getDouble(PrefKeys.printFormatWidth.toString()) ?? 60).toDouble() * PdfPageFormat.mm, 300 * PdfPageFormat.mm),
+        pageFormat: PdfPageFormat( _printWidth * PdfPageFormat.mm, 300 * PdfPageFormat.mm),
         build: (pw.Context context) {
           return [
           pw.Center(

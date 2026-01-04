@@ -36,6 +36,7 @@ class ReceiptPrinterSection extends StatefulWidget {
       @override
       void initState() {
         super.initState();
+        double  _printWidth =(UserPreference.getDouble(PrefKeys.printFormatWidth) ?? 0) > 0 ? (UserPreference.getDouble(PrefKeys.printFormatWidth.toString())  ?? 60).toDouble() : 60;
         UserPreference.getInstance().then((_) {
           
           _companyNameController.text = UserPreference.getString(PrefKeys.companyName) ?? '';
@@ -45,7 +46,7 @@ class ReceiptPrinterSection extends StatefulWidget {
           _addressController.text = UserPreference.getString(PrefKeys.companyAddress) ?? '';
            _cprController.text = UserPreference.getString(PrefKeys.crNO) ?? '';
           _isVatEnabled = UserPreference.getBool(PrefKeys.isVatEnabled) ?? false;
-          _printFormatWidth.text = (UserPreference.getDouble(PrefKeys.printFormatWidth.toString()) ?? 60).toString();
+          _printFormatWidth.text = _printWidth.toString();
           setState(() {});
         });
       }
