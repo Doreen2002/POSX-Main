@@ -120,7 +120,7 @@ import 'package:pdf/widgets.dart' as pw;
                                 ),
                                
                                  pw.Expanded(
-                                  flex: 1,
+                                  flex: 2,
                                   child: pw.Text('Unit',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
                                 ),
                                 
