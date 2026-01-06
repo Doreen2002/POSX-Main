@@ -48,13 +48,13 @@ import 'package:pdf/widgets.dart' as pw;
                   pw.Column(
                     crossAxisAlignment: pw.CrossAxisAlignment.start,
                     children: [
-                    pw.Text( 'Start Date Time: ${DateFormat('dd-MM-yyyy').format(DateTime.tryParse(closingEntry['startDate'] ?? '') ?? DateTime.now())} ${DateFormat('hh:mm a').format(DateTime.tryParse(closingEntry['startDate'] ?? '') ?? DateTime.now())}',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
+                    pw.Text( 'Start Date Time: ${DateFormat('dd-MM-yyyy').format(DateTime.tryParse(closingEntry['startDate'] ?? '') ?? DateTime.now())} ${DateFormat('hh:mm a').format(DateTime.tryParse(closingEntry['startDate'] ?? '') ?? DateTime.now())}',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 7)),
                     pw.SizedBox(height: 3),
-                    pw.Text( 'End Date Time: ${DateFormat('dd-MM-yyyy').format(DateTime.tryParse(closingEntry['endDate'] ?? '') ?? DateTime.now())} ${DateFormat('hh:mm a').format(DateTime.tryParse(closingEntry['endDate'] ?? '') ?? DateTime.now())}',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
+                    pw.Text( 'End Date Time: ${DateFormat('dd-MM-yyyy').format(DateTime.tryParse(closingEntry['endDate'] ?? '') ?? DateTime.now())} ${DateFormat('hh:mm a').format(DateTime.tryParse(closingEntry['endDate'] ?? '') ?? DateTime.now())}',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 7)),
                     pw.SizedBox(height: 3),
-                    pw.Text( 'Cashier: ${closingEntry['cashier'] }',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
+                    pw.Text( 'Cashier: ${closingEntry['cashier'] }',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 7)),
                     pw.SizedBox(height: 3),
-                    pw.Text('Document: ${closingEntry['closingEntryName'] } ',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
+                    pw.Text('Document: ${closingEntry['closingEntryName'] } ',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 7)),
   
                     ],
                   ),
@@ -77,7 +77,7 @@ import 'package:pdf/widgets.dart' as pw;
                                       children: [
                                         pw.Divider(color: PdfColors.black,),
                                         pw.Container(
-                                          child: pw.Text('Sales Report ',style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 4)),
+                                          child: pw.Text('Sales Report ',style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 7)),
                                         ),
                                         pw.Divider(color: PdfColors.black,),
                                          
@@ -99,14 +99,14 @@ import 'package:pdf/widgets.dart' as pw;
                                                             children: [
                                                             
                                                               pw.Container(
-                                                                child: pw.Text(payments[index]['mode_of_payment'],style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 4)),
+                                                                child: pw.Text(payments[index]['mode_of_payment'],style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 7)),
                                                               ),
                                                              
                                                               pw.Container(
                                                                 child: pw.Text(
                                                                 payments[index]['amount']  
                                                                     .toStringAsFixed(model.decimalPoints),
-                                                                style: pw.TextStyle(fontWeight: pw.FontWeight.normal, fontSize: 4),
+                                                                style: pw.TextStyle(fontWeight: pw.FontWeight.normal, fontSize: 7),
                                                               )
                                                               )
                                                             ]
@@ -123,13 +123,13 @@ import 'package:pdf/widgets.dart' as pw;
                                       mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                                       children: [
                                         pw.Container(
-                                          child: pw.Text('Net Sales',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
+                                          child: pw.Text('Net Sales',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 7)),
                                         ),
                                         pw.Container(
                                           child: pw.Text(
                                                closingEntry['netTotal'].toStringAsFixed(model.decimalPoints)
                                                
-                                              ,style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
+                                              ,style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 7)),
                                         ),
                                       ]
                                   ),
@@ -138,10 +138,10 @@ import 'package:pdf/widgets.dart' as pw;
                                       mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                                       children: [
                                         pw.Container(
-                                          child: pw.Text('TAX Total',style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 4)),
+                                          child: pw.Text('TAX Total',style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 7)),
                                         ),
                                         pw.Container(
-                                          child: pw.Text(closingEntry['vatTotal'].toStringAsFixed(model.decimalPoints),style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 4)),
+                                          child: pw.Text(closingEntry['vatTotal'].toStringAsFixed(model.decimalPoints),style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 7)),
                                         ),
                                       ]
                                   ),
@@ -150,11 +150,11 @@ import 'package:pdf/widgets.dart' as pw;
                                        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                                         children: [
                                           pw.Container(
-                                          child: pw.Text('Grand Sales ',style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 4)),
+                                          child: pw.Text('Grand Sales ',style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 7)),
                                         ),
                                         pw.Container(
                                           child: pw.Text(closingEntry['grandTotal'].toStringAsFixed(model.decimalPoints)
-                                              ,style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 4)),
+                                              ,style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 7)),
                                         ),
                                         ]
                                     ),
@@ -163,7 +163,7 @@ import 'package:pdf/widgets.dart' as pw;
                                        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                                         children: [
                                           pw.Container(
-                                          child: pw.Text('Cash Report ',style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 4)),
+                                          child: pw.Text('Cash Report ',style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 7)),
                                         ),
                                         
                                         ]
@@ -173,11 +173,11 @@ import 'package:pdf/widgets.dart' as pw;
                                        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                                         children: [
                                           pw.Container(
-                                          child: pw.Text('OPENING CASH',style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 4)),
+                                          child: pw.Text('OPENING CASH',style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 7)),
                                         ),
                                         pw.Container(
                                           child: pw.Text(closingEntry['openingAmount'].toStringAsFixed(model.decimalPoints)
-                                              ,style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 4)),
+                                              ,style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 7)),
                                         ),
                                         ]
                                     ),
@@ -186,11 +186,11 @@ import 'package:pdf/widgets.dart' as pw;
                                        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                                         children: [
                                           pw.Container(
-                                          child: pw.Text('CLOSING CASH ',style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 4)),
+                                          child: pw.Text('CLOSING CASH ',style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 7)),
                                         ),
                                         pw.Container(
                                           child: pw.Text(closingEntry['closingAmount'].toStringAsFixed(model.decimalPoints)
-                                              ,style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 4)),
+                                              ,style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 7)),
                                         ),
                                         ]
                                     ),
@@ -199,11 +199,11 @@ import 'package:pdf/widgets.dart' as pw;
                                        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                                         children: [
                                           pw.Container(
-                                          child: pw.Text('DISCOUNT',style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 4)),
+                                          child: pw.Text('DISCOUNT',style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 7)),
                                         ),
                                         pw.Container(
                                           child: pw.Text(closingEntry['invoiceDiscount'].toStringAsFixed(model.decimalPoints)
-                                              ,style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 4)),
+                                              ,style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 7)),
                                         ),
                                         ]
                                     ),
@@ -212,11 +212,11 @@ import 'package:pdf/widgets.dart' as pw;
                                        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                                         children: [
                                           pw.Container(
-                                          child: pw.Text('QUANTITY SOLD',style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 4)),
+                                          child: pw.Text('QUANTITY SOLD',style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 7)),
                                         ),
                                         pw.Container(
                                           child: pw.Text(closingEntry['totalQTy'].toStringAsFixed(model.decimalPoints)
-                                              ,style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 4)),
+                                              ,style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 7)),
                                         ),
                                         ]
                                     ),
@@ -225,11 +225,11 @@ import 'package:pdf/widgets.dart' as pw;
                                        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                                         children: [
                                           pw.Container(
-                                          child: pw.Text('TOTAL INVOICES',style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 4)),
+                                          child: pw.Text('TOTAL INVOICES',style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 7)),
                                         ),
                                         pw.Container(
                                           child: pw.Text(closingEntry['totalInvoices'].toStringAsFixed(model.decimalPoints)
-                                              ,style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 4)),
+                                              ,style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 7)),
                                         ),
                                         ]
                                     ),
@@ -238,11 +238,11 @@ import 'package:pdf/widgets.dart' as pw;
                                        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                                         children: [
                                           pw.Container(
-                                          child: pw.Text('AVG SALES/ INVOICES',style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 4)),
+                                          child: pw.Text('AVG SALES/ INVOICES',style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 7)),
                                         ),
                                         pw.Container(
                                           child: pw.Text(closingEntry['averageSales'].toStringAsFixed(model.decimalPoints)
-                                              ,style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 4)),
+                                              ,style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 7)),
                                         ),
                                         ]
                                     ),
@@ -252,7 +252,7 @@ import 'package:pdf/widgets.dart' as pw;
                                        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                                         children: [
                                           pw.Container(
-                                          child: pw.Text('POS CLOSING CURRENCY DENOMINATION',style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 4)),
+                                          child: pw.Text('POS CLOSING CURRENCY DENOMINATION',style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 7)),
                                         ),
                                         
                                         ]
@@ -264,13 +264,13 @@ import 'package:pdf/widgets.dart' as pw;
                                        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                                         children: [
                                           pw.Container(
-                                          child: pw.Text('Denomination Value',style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 4)),
+                                          child: pw.Text('Denomination Value',style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 7)),
                                         ),
                                         pw.Container(
-                                          child: pw.Text('Count',style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 4)),
+                                          child: pw.Text('Count',style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 7)),
                                         ),
                                         pw.Container(
-                                          child: pw.Text('Total',style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 4)),
+                                          child: pw.Text('Total',style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 7)),
                                         ),
                                         
                                         ]
@@ -295,18 +295,18 @@ import 'package:pdf/widgets.dart' as pw;
                                                             children: [
                                                             
                                                               pw.Container(
-                                                                child: pw.Text(denominations[index]['denomination_value'].toStringAsFixed(model.decimalPoints),style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 4)),
+                                                                child: pw.Text(denominations[index]['denomination_value'].toStringAsFixed(model.decimalPoints),style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 7)),
                                                               ),
                                                              
                                                               pw.Container(
-                                                                child: pw.Text(denominations[index]['count'].toString(),style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 4)),
+                                                                child: pw.Text(denominations[index]['count'].toString(),style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 7)),
                                                               ),
                                                              
                                                               pw.Container(
                                                                 child: pw.Text(
                                                                 denominations[index]['total_denomination_value']  
                                                                     .toStringAsFixed(model.decimalPoints),
-                                                                style: pw.TextStyle(fontWeight: pw.FontWeight.normal, fontSize: 4),
+                                                                style: pw.TextStyle(fontWeight: pw.FontWeight.normal, fontSize: 7),
                                                               )
                                                               )
                                                             ]
@@ -326,11 +326,11 @@ import 'package:pdf/widgets.dart' as pw;
                                        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                                         children: [
                                           pw.Container(
-                                          child: pw.Text('Total ',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
+                                          child: pw.Text('Total ',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 7)),
                                         ),
                                         pw.Container(
                                           child: pw.Text(closingEntry['totalDenominations'].toStringAsFixed(model.decimalPoints)
-                                              ,style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
+                                              ,style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 7)),
                                         ),
                                         ]
                                    ) : pw.Container(),
@@ -341,11 +341,11 @@ import 'package:pdf/widgets.dart' as pw;
                                        mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                                         children: [
                                           pw.Container(
-                                          child: pw.Text('Comment ',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
+                                          child: pw.Text('Comment ',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 7)),
                                         ),
                                         pw.Container(
                                           child: pw.Text(closingEntry['comment']
-                                              ,style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
+                                              ,style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 7)),
                                         ),
                                         ]
                                    ) : pw.Container(),

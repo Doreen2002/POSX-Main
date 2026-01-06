@@ -12,7 +12,7 @@ import 'package:pdf/widgets.dart' as pw;
 
   Future<Uint8List> generateSalesInvoicePrint(PdfPageFormat format, CartItemScreenController model,  salesInvoice) async {
     final pdf = pw.Document();
-    final itemStyle = pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 4);
+    final itemStyle = pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 7);
    double  _printWidth =(UserPreference.getDouble(PrefKeys.printFormatWidth) ?? 0) > 0 ? (UserPreference.getDouble(PrefKeys.printFormatWidth.toString())  ?? 60).toDouble() : 60;
     pdf.addPage(
 
@@ -38,12 +38,22 @@ import 'package:pdf/widgets.dart' as pw;
                       crossAxisAlignment: pw.CrossAxisAlignment.center,
                       children: [
                        
-                       if((UserPreference.getString(PrefKeys.companyName) ?? "").isNotEmpty) pw.Text(UserPreference.getString(PrefKeys.companyName) ?? "",style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
-                      
-                        pw.SizedBox(height: 10),
-                        if((UserPreference.getString(PrefKeys.crNO) ?? "").isNotEmpty) pw.Text('CR.NO: ${UserPreference.getString(PrefKeys.crNO) ?? ""}' ,style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 4)),
-                        if((UserPreference.getString(PrefKeys.taxID) ?? "").isNotEmpty) pw.Text('VAT: ${UserPreference.getString(PrefKeys.taxID) ?? ""}' ,style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
-                         if((UserPreference.getString(PrefKeys.companyAddress) ?? "").isNotEmpty)pw.Text(UserPreference.getString(PrefKeys.companyAddress) ?? "",style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 4)),
+                       if((UserPreference.getString(PrefKeys.companyName) ?? "").isNotEmpty) pw.Text(UserPreference.getString(PrefKeys.companyName) ?? "",style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 7)),
+                        if (UserPreference.getString(PrefKeys.receiptPhoneNumber)?.isNotEmpty ?? false)
+                        
+                          pw.Container(child:pw.Text(
+                            'Tel: ${UserPreference.getString(PrefKeys.receiptPhoneNumber)}',
+                            style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 7),
+                          )),
+                        if (UserPreference.getString(PrefKeys.companyEmail)?.isNotEmpty ?? false)
+                        pw.Container(child:pw.Text(
+                            'Email: ${UserPreference.getString(PrefKeys.companyEmail)}',
+                            style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 7),
+                          )),
+                        
+                        if((UserPreference.getString(PrefKeys.crNO) ?? "").isNotEmpty) pw.Text('CR.NO: ${UserPreference.getString(PrefKeys.crNO) ?? ""}' ,style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 7)),
+                        if((UserPreference.getString(PrefKeys.taxID) ?? "").isNotEmpty) pw.Text('VAT: ${UserPreference.getString(PrefKeys.taxID) ?? ""}' ,style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 7)),
+                         if((UserPreference.getString(PrefKeys.companyAddress) ?? "").isNotEmpty)pw.Text(UserPreference.getString(PrefKeys.companyAddress) ?? "",style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 7)),
                       ],
                     ),
                   ),
@@ -55,7 +65,7 @@ import 'package:pdf/widgets.dart' as pw;
                         color: PdfColors.black,
                       ),
                       child: pw.Center(
-                        child: pw.Text('Tax Invoice',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4,color: PdfColors.white)),
+                        child: pw.Text('Tax Invoice',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 7,color: PdfColors.white)),
                       )
                   ),
                   pw.SizedBox(height: 5.h,),
@@ -65,26 +75,26 @@ import 'package:pdf/widgets.dart' as pw;
                       pw.Row(
                           mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                           children: [
-                            pw.Expanded(child:pw.Text( 'Date: ${DateFormat('dd-MM-yyyy').format(DateTime.tryParse(salesInvoice['postingDate'] ?? '') ?? DateTime.now())}',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4))),
-                            pw.Expanded(child:pw.Text('Time: ${DateFormat('hh:mm a').format(DateTime.tryParse(salesInvoice['postingDate'] ?? '') ?? DateTime.now())}',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4))),
+                            pw.Expanded(child:pw.Text( 'Date: ${DateFormat('dd-MM-yyyy').format(DateTime.tryParse(salesInvoice['postingDate'] ?? '') ?? DateTime.now())}',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 7))),
+                            pw.Expanded(child:pw.Text('Time: ${DateFormat('hh:mm a').format(DateTime.tryParse(salesInvoice['postingDate'] ?? '') ?? DateTime.now())}',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 7))),
                           ]
                       ),
                       pw.SizedBox(height: 3,),
                       pw.Row(
                           mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                           children: [
-                            pw.Expanded(child: pw.Text('Customer : ${salesInvoice['customer']}',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),),
+                            pw.Expanded(child: pw.Text('Customer : ${salesInvoice['customer']}',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 7)),),
                             
-                            pw.Expanded(child:pw.Text('Customer Name: ${salesInvoice['customerName']}',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)))
+                            pw.Expanded(child:pw.Text('Customer Name: ${salesInvoice['customerName']}',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 7)))
                           ]
                       ),
                       pw.SizedBox(height: 3,),
                       pw.Row(
                           mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                           children: [
-                           pw.Expanded(child: pw.Text('Served By: ${salesInvoice['served_by']}',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4))),
+                           pw.Expanded(child: pw.Text('Served By: ${salesInvoice['served_by']}',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 7))),
                       pw.Expanded(child: pw.Text('Reference: ${salesInvoice['invoice_no']}'
-                          ,style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4))),
+                          ,style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 7))),
                           ]
                       ),
                        
@@ -109,54 +119,54 @@ import 'package:pdf/widgets.dart' as pw;
                                  pw.Container(
                                 
                         
-                                  child: pw.Text('Item Name',textAlign: pw.TextAlign.center,style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
+                                  child: pw.Text('Item Name',textAlign: pw.TextAlign.center,style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 7)),
                                 ),
                                 pw.Row(
                                   mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                                     children: [
                                       pw.Expanded(
                                      flex: 2,
-                                  child: pw.Text('Code',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
+                                  child: pw.Text('Code',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 7)),
                                 ),
                                
                                  pw.Expanded(
                                   flex: 2,
-                                  child: pw.Text('Unit',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
+                                  child: pw.Text('Unit',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 7)),
                                 ),
                                 
                                  pw.Expanded(
-                                  flex: 1,
-                                  child: pw.Text('Qty',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
+                                  flex: 2,
+                                  child: pw.Text('Qty',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 7)),
                                 ),
                                 
                                  pw.Expanded(
                                   flex: 2,
                                   
-                                  child: pw.Text('Price',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
+                                  child: pw.Text('Price',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 7)),
                                 ),
                                 
                                  pw.Expanded(
                                   flex: 2,
                                    
-                                  child: pw.Text('Disc',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
+                                  child: pw.Text('Disc',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 7)),
                                 ),
                                
                                  pw.Expanded(
                                   flex: 2,
                                    
-                                  child: pw.Text('Rate',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
+                                  child: pw.Text('Rate',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 7)),
                                 ),
                               
                                  pw.Expanded(
                                   flex: 2,
                                  
-                                  child: pw.Text('VAT',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
+                                  child: pw.Text('VAT',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 7)),
                                 ),
                                 
                                  pw.Expanded(
                                   flex: 2,
                                
-                                  child: pw.Text('Value',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
+                                  child: pw.Text('Value',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 7)),
                                 ),
                                     ]
                                 )
@@ -209,7 +219,7 @@ import 'package:pdf/widgets.dart' as pw;
                                 crossAxisAlignment: pw.CrossAxisAlignment.start,
                                 children: [
                                   pw.Container(
-                                    child: pw.Text('T-Qty : ${salesInvoice['totalQty']}',style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 4)),
+                                    child: pw.Text('T-Qty : ${salesInvoice['totalQty']}',style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 7)),
                                   ),
                                   
                                 ]
@@ -224,11 +234,11 @@ import 'package:pdf/widgets.dart' as pw;
                                       mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                                       children: [
                                         pw.Container(
-                                          child: pw.Text('Gross Amount',style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 4)),
+                                          child: pw.Text('Gross Amount',style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 7)),
                                         ),
                                         pw.Container(
                                           child: pw.Text(salesInvoice['grossTotal'].toStringAsFixed(model.decimalPoints)
-                                              ,style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 4)),
+                                              ,style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 7)),
                                         ),
                                       ]
                                   ),
@@ -236,14 +246,14 @@ import 'package:pdf/widgets.dart' as pw;
                                   pw.Row(
                                       mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                                       children: [
-                                        pw.Container(
-                                          child: pw.Text('Discount',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
+                                        pw.Expanded(
+                                          child: pw.Text('Discount',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 7)),
                                         ),
-                                        pw.Container(
+                                        pw.Expanded(
                                           child: pw.Text(
                                                salesInvoice['discountAmount'].toStringAsFixed(model.decimalPoints)
                                                
-                                              ,style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
+                                              ,style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 7)),
                                         ),
                                       ]
                                   ),
@@ -251,11 +261,11 @@ import 'package:pdf/widgets.dart' as pw;
                                   pw.Row(
                                       mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                                       children: [
-                                        pw.Container(
-                                          child: pw.Text('Amount  ${(UserPreference.getBool(PrefKeys.isVatEnabled) ?? false) ? "Excl.VAT": "" } ',style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 4)),
+                                        pw.Expanded(
+                                          child: pw.Text('Amount  ${(UserPreference.getBool(PrefKeys.isVatEnabled) ?? false) ? "Excl.VAT": "" } ',style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 7)),
                                         ),
-                                        pw.Container(
-                                          child: pw.Text(salesInvoice['netTotal'].toStringAsFixed(model.decimalPoints),style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 4)),
+                                        pw.Expanded(
+                                          child: pw.Text(salesInvoice['netTotal'].toStringAsFixed(model.decimalPoints),style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 7)),
                                         ),
                                       ]
                                   ),
@@ -264,11 +274,11 @@ import 'package:pdf/widgets.dart' as pw;
                                   pw.Row(
                                       mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                                       children: [
-                                       if(UserPreference.getBool(PrefKeys.isVatEnabled) ?? false) pw.Container(
-                                          child: pw.Text('VAT Amount',style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 4)),
+                                       if(UserPreference.getBool(PrefKeys.isVatEnabled) ?? false) pw.Expanded(
+                                          child: pw.Text('VAT Amount',style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 7)),
                                         ),
-                                       if(UserPreference.getBool(PrefKeys.isVatEnabled) ?? false) pw.Container(
-                                          child: pw.Text(salesInvoice['vatTotal'].toStringAsFixed(model.decimalPoints),style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 4)),
+                                       if(UserPreference.getBool(PrefKeys.isVatEnabled) ?? false) pw.Expanded(
+                                          child: pw.Text(salesInvoice['vatTotal'].toStringAsFixed(model.decimalPoints),style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 7)),
                                         ),
                                       ]
                                   ),
@@ -277,11 +287,11 @@ import 'package:pdf/widgets.dart' as pw;
                                   pw.Row(
                                       mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                                       children: [
-                                        pw.Container(
-                                          child: pw.Text('SubTotal  ${(UserPreference.getBool(PrefKeys.isVatEnabled) ?? false) ? "Inc. VAT": "" } ',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
+                                        pw.Expanded(
+                                          child: pw.Text('SubTotal  ${(UserPreference.getBool(PrefKeys.isVatEnabled) ?? false) ? "Inc. VAT": "" } ',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 7)),
                                         ),
-                                        pw.Container(
-                                          child: pw.Text(salesInvoice['grandTotal'].toStringAsFixed(model.decimalPoints),style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
+                                        pw.Expanded(
+                                          child: pw.Text(salesInvoice['grandTotal'].toStringAsFixed(model.decimalPoints),style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 7)),
                                         ),
                                       ]
                                   ),
@@ -298,7 +308,7 @@ import 'package:pdf/widgets.dart' as pw;
                         color: PdfColors.black,
                       ),
                       child: pw.Center(
-                        child: pw.Text('Payment Breakup',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4,color: PdfColors.white)),
+                        child: pw.Text('Payment Breakup',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 7,color: PdfColors.white)),
                       )
                   ),
               
@@ -320,14 +330,14 @@ import 'package:pdf/widgets.dart' as pw;
                                           children: [
                                           
                                             pw.Expanded(
-                                              child: pw.Text(payments[index]['mode_of_payment'],style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 4)),
+                                              child: pw.Text(payments[index]['mode_of_payment'],style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 7)),
                                             ),
                                            
                                            pw.Expanded(
                                               child: pw.Text(
                                               payments[index]['amount']  
                                                   .toStringAsFixed(model.decimalPoints),
-                                              style: pw.TextStyle(fontWeight: pw.FontWeight.normal, fontSize: 4),
+                                              style: pw.TextStyle(fontWeight: pw.FontWeight.normal, fontSize: 7),
                                             )
                                             )
                                           ]
@@ -349,7 +359,7 @@ import 'package:pdf/widgets.dart' as pw;
                                 color: PdfColors.black,
                               ),
                               child: pw.Center(
-                                child: pw.Text('Change',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4,color: PdfColors.white)),
+                                child: pw.Text('Change',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 7,color: PdfColors.white)),
                               )
                           ),
                         ),
@@ -363,7 +373,7 @@ import 'package:pdf/widgets.dart' as pw;
                                 // color: PdfColors.black,
                               ),
                               child: pw.Center(
-                                child: pw.Text(salesInvoice['change_amount'].toStringAsFixed(model.decimalPoints),style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
+                                child: pw.Text(salesInvoice['change_amount'].toStringAsFixed(model.decimalPoints),style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 7)),
                               )
                           ),
                         ),
@@ -378,9 +388,9 @@ import 'package:pdf/widgets.dart' as pw;
                       if(UserPreference.getString(PrefKeys.taxID) != '')  pw.Text('VAT: ${UserPreference.getString(PrefKeys.taxID) ?? ""}' ,style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 7)),
                        if(UserPreference.getString(PrefKeys.companyName)!= '') pw.Text('${UserPreference.getString(PrefKeys.companyName) ?? ""}' ,style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 7)),
                         if(UserPreference.getString(PrefKeys.companyAddress) != '') pw.Text(UserPreference.getString(PrefKeys.companyAddress) ?? "",style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 7)),
-                        pw.Text('PLEASE REFER TO THE EXCHANGE POLICY',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
-                        pw.Text('PRICE INCLUDING VAT ',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4)),
-                        pw.Text('!!!THANK YOU!!!',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 4.sp)),
+                        pw.Text('PLEASE REFER TO THE EXCHANGE POLICY',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 7)),
+                        pw.Text('PRICE INCLUDING VAT ',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 7)),
+                        pw.Text('!!!THANK YOU!!!',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 7.sp)),
                       ],
                     ),
                   ),
