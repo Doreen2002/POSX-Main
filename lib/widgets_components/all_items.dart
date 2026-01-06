@@ -289,8 +289,8 @@ Future<void> addItemsToCartTable(model, context, item, {scan=false}) async {
     await UserPreference.getInstance();
    int allowNegativeStock = UserPreference.getInt(PrefKeys.allowNegativeStock) ?? 0;
     String searchedBatch = model.searchController.text.isNotEmpty ? model.searchController.text.toLowerCase() : item.itemCode!.toLowerCase();
+    if (item.openingStock > 0 || (item.openingStock <= 0 && allowNegativeStock == 1)) {
      
-    if (item.openingStock > 0 || (item.openingStock == 0 && allowNegativeStock == 1)) {
       if (item.hasBatchNo == 1 && searchedBatch.isNotEmpty) {
        
         final searchMatchedBatch = OptimizedDataManager.getBatchByCode(
@@ -303,7 +303,7 @@ Future<void> addItemsToCartTable(model, context, item, {scan=false}) async {
         ) : TempItem(name: '', itemCode: '', );
         
         if ((searchMatchedBatch.batchId ).isNotEmpty) {
-          if ((searchMatchedBatch.batchQty ?? 0) > 0 || ((searchMatchedBatch.batchQty ?? 0) == 0 && allowNegativeStock == 1)) {
+          if ((searchMatchedBatch.batchQty ?? 0) > 0 || ((searchMatchedBatch.batchQty ?? 0) < 1 && allowNegativeStock == 1)) {
           
             await model.addItemsToCart(
               Item(

@@ -305,7 +305,7 @@ Future<void>  initializePaymentModes(List<PaymentModeTypeAheadModel> jsonData) a
       }
       if(cartItem.itemCode == item.itemCode)
       {
-        if ((cartItem.hasBatchNo == 0 && (cartItem.qty < (item.openingStock ?? 0)) || allowNegativeStock == 1) || (cartItem.itemCode == item.itemCode && cartItem.hasBatchNo == 1 && cartItem.batchNumberSeries == item.batchNumberSeries && (cartItem.qty < (item.batchQty ?? 0) || allowNegativeStock ==1)) ) {
+        if ((cartItem.hasBatchNo == 0 && (cartItem.qty < (item.openingStock ?? 0)) && allowNegativeStock == 1) || (cartItem.itemCode == item.itemCode && cartItem.hasBatchNo == 1 && cartItem.batchNumberSeries == item.batchNumberSeries && (cartItem.qty < (item.batchQty ?? 0) && allowNegativeStock ==1)) ) {
          
           if(cartItem.hasBatchNo != 1)
           {
