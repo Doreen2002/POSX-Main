@@ -21,7 +21,7 @@ import 'package:pdf/widgets.dart' as pw;
           pw.Center(
             child: pw.Container(
               
-             
+             width: _printWidth * PdfPageFormat.mm * 0.9,
               padding: pw.EdgeInsets.only(top: 20.h,bottom: 20.h,left: 2,right: 2),
               decoration: pw.BoxDecoration(
                 borderRadius: pw.BorderRadius.all(pw.Radius.circular(10.r)),
