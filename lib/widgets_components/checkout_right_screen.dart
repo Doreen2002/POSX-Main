@@ -291,6 +291,7 @@ Widget checkOutRightSide(context, CartItemScreenController model) {
                                                         value,
                                                         modeOfPaymentList[index],
                                                         modeOfPaymentList,
+                                                        model
                                                       );
                                                       updatePayment(
                                                         model,
@@ -350,7 +351,7 @@ Widget checkOutRightSide(context, CartItemScreenController model) {
                                           ? (model.grandTotal -
                                               model.paidAmount)
                                           : 0.0)
-                                      .toStringAsFixed(3),
+                                      .toStringAsFixed(model.decimalPoints),
 
                                   fontSize: 5.sp,
                                   fontWeight: FontWeight.bold,
@@ -415,8 +416,8 @@ Widget checkOutRightSide(context, CartItemScreenController model) {
                                       model.paidAmount > model.grandTotal
                                           ? (model.paidAmount! -
                                                   model.grandTotal)
-                                              .toStringAsFixed(3)
-                                          : '0.000',
+                                              .toStringAsFixed(model.decimalPoints)
+                                          : 0.toStringAsFixed(model.decimalPoints),
                                   fontWeight: FontWeight.bold,
                                   fontSize: 5.sp,
                                   color: Colors.black,
@@ -755,6 +756,7 @@ void paymentCalculation(
   String value,
   PaymentModeTypeAheadModel currentModel,
   modeOfPaymentList,
+  model
 ) {
   double inputValue = double.tryParse(value) ?? 0.0;
 
@@ -776,19 +778,19 @@ void paymentCalculation(
 
     // Prevent negative value
     if (newValue >= 0) {
-      previousAmountModel.controller?.text = newValue.toStringAsFixed(3);
+      previousAmountModel.controller?.text = newValue.toStringAsFixed(model.decimalPoints);
     } else {
       previousAmountModel.controller?.text = '0.000';
       // Put remaining in current field
       currentModel.controller?.text = (inputValue - prevValue).toStringAsFixed(
-        3,
+        model.decimalPoints
       );
       return;
     }
   }
 
   // Step 3: Set value in the current model
-  currentModel.controller?.text = inputValue.toStringAsFixed(3);
+  currentModel.controller?.text = inputValue.toStringAsFixed(model.decimalPoints);
 }
 
 /// Handle barcode scan on payment page (for customer QR detection)

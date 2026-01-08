@@ -406,7 +406,7 @@ Future<TempItem?> parseWeightScaleBarcode(String barcode, dynamic model) async {
     String itemDisplayName;
     if (valueType == "weight") {
       final weight = rawValue / divisor;
-      itemDisplayName = "${foundItem.itemName} (${weight.toStringAsFixed(3)}kg)";
+      itemDisplayName = "${foundItem.itemName} (${weight.toStringAsFixed(model.decimalPoints)}kg)";
     } else {
       // Default to price
       final totalPrice = rawValue / divisor;

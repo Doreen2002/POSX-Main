@@ -49,7 +49,7 @@ Future<List<TempPOSProfileModel>> posProfileRequest(String httpType, String frap
               await UserPreference.putString(PrefKeys.walkInCustomer, item['customer'] ?? "");
               await UserPreference.putString(PrefKeys.branchID, item['custom_pos_id'] ?? "");
               await UserPreference.putString(PrefKeys.currency, item['currency']);
-              await UserPreference.putString (PrefKeys.currencyPrecision, item['currency_precision'].toString());
+              // await UserPreference.putString (PrefKeys.currencyPrecision, item['currency_precision'].toString());
               await UserPreference.putString(PrefKeys.posProfileName, item['name']);
               await UserPreference.putString(PrefKeys.country, item['country']);
               await UserPreference.putString(PrefKeys.applyDiscountOn, item['apply_discount_on']);

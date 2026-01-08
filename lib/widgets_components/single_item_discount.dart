@@ -48,7 +48,7 @@ Widget singleItemDiscountScreen(
   String? batchNo,
   String? serialNo,
 }) {
-  final currencyPrecision = 3;
+  int currencyPrecision = UserPreference.getInt(PrefKeys.currencyPrecision) ?? 2;
   
   return Visibility(
     visible: model.itemDiscountVisible == true,

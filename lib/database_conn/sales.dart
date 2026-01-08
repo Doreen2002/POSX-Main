@@ -182,7 +182,7 @@ Future<List<Map<String, dynamic>>> fetchGroupedInvoiceData() async {
     }).toList(),
         'payments': paymentRows.map((p) {
         final payment = Map<String, dynamic>.from(p.fields);
-        payment['amount']= double.parse(double.parse(payment['amount'].toString()).toStringAsFixed(int.tryParse(UserPreference.getString(PrefKeys.currencyPrecision) ?? "3") ?? 3));
+        payment['amount']= double.parse(double.parse(payment['amount'].toString()).toStringAsFixed(UserPreference.getInt(PrefKeys.currencyPrecision)  ?? 2));
         payment['base_amount'] =  payment['amount']  ;
     
         return payment;

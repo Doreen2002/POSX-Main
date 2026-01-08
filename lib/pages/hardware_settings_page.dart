@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:offline_pos/pages/items_cart.dart';
 import 'package:offline_pos/widgets_components/backup_settings_section.dart';
 import '../common_utils/app_colors.dart';
 import '../widgets_components/cash_drawer_section.dart';
@@ -15,6 +16,26 @@ class HardwareSettingsPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.grey.shade50,
       appBar: AppBar(
+        leading: IconButton(
+        icon: const Icon(Icons.arrow_back),
+        onPressed: () {
+         bool isHomePage =
+                      ModalRoute.of(context)?.settings.name == 'CartItemScreen';
+
+                  if (!isHomePage) {
+                    Navigator.push(
+                      context,
+                      _noAnimationRoute(
+                        CartItemScreen(runInit: false),
+                        name: 'CartItemScreen',
+                      ),
+                    );
+                  }
+         
+        },
+      ),
+
+
         title: 
             Container(
               decoration: BoxDecoration(
@@ -102,4 +123,13 @@ class HardwareSettingsPage extends StatelessWidget {
       ),
     );
   }
+}
+
+Route _noAnimationRoute(Widget page, {String? name}) {
+  return PageRouteBuilder(
+    settings: name != null ? RouteSettings(name: name) : null,
+    pageBuilder: (_, __, ___) => page,
+    transitionDuration: Duration.zero,
+    reverseTransitionDuration: Duration.zero,
+  );
 }

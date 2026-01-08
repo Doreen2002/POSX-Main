@@ -198,9 +198,9 @@ class PricingRuleEvaluationService {
   
   /// Get decimal points from preferences
   static int _getDecimalPoints() {
-    return int.tryParse(
-      UserPreference.getString(PrefKeys.currencyPrecision) ?? "3",
-    ) ?? 3;
+    return 
+      UserPreference.getInt(PrefKeys.currencyPrecision) ?? 2;
+    
   }
   
   /// Check if manual discount should be blocked for item

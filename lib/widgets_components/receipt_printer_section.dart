@@ -5,8 +5,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:offline_pos/controllers/item_screen_controller.dart';
 import 'package:offline_pos/widgets_components/decimal_input_formatter.dart';
 import 'package:printing/printing.dart';
+import 'package:provider/provider.dart';
 
 
 import '../widgets_components/auto_persist.dart';
@@ -29,14 +31,20 @@ class ReceiptPrinterSection extends StatefulWidget {
         final TextEditingController _addressController = TextEditingController();
         final TextEditingController  _cprController = TextEditingController();
         final TextEditingController  _printFormatWidth = TextEditingController();
+        final TextEditingController  _currencyPrecision = TextEditingController();
         bool? _isVatEnabled ;
       List<String> _available = [];
       bool _scanning = false;
 
       @override
       void initState() {
+        
         super.initState();
         double  _printWidth =(UserPreference.getDouble(PrefKeys.printFormatWidth) ?? 0) > 0 ? (UserPreference.getDouble(PrefKeys.printFormatWidth.toString())  ?? 60).toDouble() : 60;
+        int _currPrecision =
+            UserPreference.getInt(PrefKeys.currencyPrecision) ?? 2;
+
+
         UserPreference.getInstance().then((_) {
           
           _companyNameController.text = UserPreference.getString(PrefKeys.companyName) ?? '';
@@ -47,6 +55,8 @@ class ReceiptPrinterSection extends StatefulWidget {
            _cprController.text = UserPreference.getString(PrefKeys.crNO) ?? '';
           _isVatEnabled = UserPreference.getBool(PrefKeys.isVatEnabled) ?? false;
           _printFormatWidth.text = _printWidth.toString();
+          
+          _currencyPrecision.text = _currPrecision.toString();
           setState(() {});
         });
       }
@@ -61,6 +71,7 @@ class ReceiptPrinterSection extends StatefulWidget {
         _addressController.dispose();
         _cprController.dispose();
         _printFormatWidth.dispose();
+        _currencyPrecision.dispose();
        
         super.dispose();
       }
@@ -88,6 +99,7 @@ class ReceiptPrinterSection extends StatefulWidget {
 
         Future<void> _savePrintFormatSettings()
         async{
+        
         await UserPreference.getInstance();
         await UserPreference.putString(PrefKeys.companyName, _companyNameController.text);
         await UserPreference.putString(PrefKeys.taxID, _taxIDController.text);
@@ -97,7 +109,10 @@ class ReceiptPrinterSection extends StatefulWidget {
         await UserPreference.putString(PrefKeys.crNO, _cprController.text);
         await UserPreference.putBool(PrefKeys.isVatEnabled,  _isVatEnabled ?? false);
         await UserPreference.putDouble(PrefKeys.printFormatWidth,  double.parse(_printFormatWidth.text ));
+        await UserPreference.putInt(PrefKeys.currencyPrecision,int.tryParse(_currencyPrecision.text ) ?? 2 );
+       
          setState(() {
+          
         });
         }
 
@@ -105,6 +120,7 @@ class ReceiptPrinterSection extends StatefulWidget {
 
       @override
       Widget build(BuildContext context) {
+         
         return Card(
           child: Padding(
             padding: EdgeInsets.all(12.w),
@@ -274,7 +290,7 @@ class ReceiptPrinterSection extends StatefulWidget {
                   children: [
                   
                   Expanded(
-                      flex: 5,child: Row(children: [
+                      flex: 2,child: Row(children: [
                     SizedBox(width:110,  child:const Text('Is Vat Enabled', style: TextStyle(fontWeight: FontWeight.bold))),
                   Checkbox(value:_isVatEnabled ?? false, onChanged: (value){
                     setState(() {
@@ -282,16 +298,42 @@ class ReceiptPrinterSection extends StatefulWidget {
                     });
                   })
                   ],)),
-
+                  Expanded(
+                    flex: 2,
+                        child: Row(
+                          children: [
+                            SizedBox(width:180,  child:const Text('Currency Precision', style: TextStyle(fontWeight: FontWeight.bold))),
+                            SizedBox(width: 2.w),
+                            SizedBox(
+                              width:  30.w,
+                              child: TextField(
+                                textAlign: TextAlign.center,
+                                controller: _currencyPrecision,
+                                inputFormatters: [
+                                DecimalTextInputFormatter(decimalRange: 0),
+                                LengthLimitingTextInputFormatter(5),
+                                ],
+                                decoration: const InputDecoration(
+                                  border: OutlineInputBorder(),
+                                ),
+                                onChanged: (v) async {
+                                
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                   Expanded(
                     flex: 2,
                         child: Row(
                           children: [
                             SizedBox(width:180,  child:const Text('Print Format Width (mm)', style: TextStyle(fontWeight: FontWeight.bold))),
-                            SizedBox(width: 8.w),
-                            Expanded(
-                              
+                             SizedBox(width: 2.w),
+                             SizedBox(
+                              width:  30.w,
                               child: TextField(
+                                textAlign: TextAlign.center,
                                 controller: _printFormatWidth,
                                 inputFormatters: [
                                 DecimalTextInputFormatter(decimalRange: 2),

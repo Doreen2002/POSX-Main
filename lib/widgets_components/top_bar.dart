@@ -507,7 +507,7 @@ Widget buildTopBarContent(
                           ),
                           SingleText(
                             text:
-                                "  ${UserPreference.getString(PrefKeys.currency).toString()}  ${(model.customerData.loyaltyPointsAmount == null || model.customerData.loyaltyPointsAmount!.isNaN) ? "0.00" : model.customerData.loyaltyPointsAmount!.toStringAsFixed(model.decimalPoints)}",
+                                "  ${UserPreference.getString(PrefKeys.currency).toString()}  ${(model.customerData.loyaltyPointsAmount == null || model.customerData.loyaltyPointsAmount!.isNaN) ? "0" : model.customerData.loyaltyPointsAmount!.toStringAsFixed(model.decimalPoints)}",
 
                             fontSize:3.5.sp,
                             color: Color.fromARGB(255, 14, 15, 14),

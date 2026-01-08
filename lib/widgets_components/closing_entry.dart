@@ -184,7 +184,7 @@ Widget closingEntryDialog(BuildContext context, model) {
                                           ),
                                         ),
                                         Text(
-                                          '${UserPreference.getString(PrefKeys.currency)} ${(entry.amount ?? 0.000).toStringAsFixed(model.decimalPoints)}',
+                                          '${UserPreference.getString(PrefKeys.currency)} ${(entry.amount ?? 0).toStringAsFixed(model.decimalPoints)}',
                                           style: TextStyle(
                                             fontSize: 4.5.sp,
                                             fontWeight: FontWeight.w600,
@@ -296,8 +296,8 @@ Widget closingEntryDialog(BuildContext context, model) {
                                             sortedDenominationList[i]
                                                         .denominationValue >=
                                                     1
-                                                ? '${UserPreference.getString(PrefKeys.currency)} ${sortedDenominationList[i].denominationValue.toStringAsFixed(3)}'
-                                                : '${UserPreference.getString(PrefKeys.currency)} ${(sortedDenominationList[i].denominationValue.toStringAsFixed(3))}',
+                                                ? '${UserPreference.getString(PrefKeys.currency)} ${sortedDenominationList[i].denominationValue.toStringAsFixed(model.decimalPoints)}'
+                                                : '${UserPreference.getString(PrefKeys.currency)} ${(sortedDenominationList[i].denominationValue.toStringAsFixed(model.decimalPoints))}',
                                             style: TextStyle(
                                               fontSize: 4.5.sp,
                                               fontWeight: FontWeight.w600,
@@ -359,7 +359,7 @@ Widget closingEntryDialog(BuildContext context, model) {
                                           child: Padding(
                                             padding: EdgeInsets.only(left: 8.w),
                                             child: Text(
-                                              '${UserPreference.getString(PrefKeys.currency)} ${rowTotals[i].toStringAsFixed(3)}',
+                                              '${UserPreference.getString(PrefKeys.currency)} ${rowTotals[i].toStringAsFixed(model.decimalPoints)}',
                                               style: TextStyle(
                                                 fontSize: 4.5.sp,
                                                 fontWeight: FontWeight.bold,
@@ -400,7 +400,7 @@ Widget closingEntryDialog(BuildContext context, model) {
                                     Expanded(
                                       flex: 2,
                                       child: Text(
-                                        '${UserPreference.getString(PrefKeys.currency)} ${grandTotal.toStringAsFixed(3)}',
+                                        '${UserPreference.getString(PrefKeys.currency)} ${grandTotal.toStringAsFixed(model.decimalPoints)}',
                                         textAlign:
                                             TextAlign
                                                 .left, // aligns with row totals

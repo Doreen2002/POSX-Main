@@ -294,7 +294,7 @@ Future<void> createPayment(model, conn, invoiceNo, {isReturn=0}) async {
     Payments pm = Payments();
     pm.name = invoiceNo;
     pm.modeOfPayment = element.name ?? "";
-    pm.amount = double.parse(double.parse(element.controller.text ?? '0.000').toStringAsFixed(model.decimalPoints));
+    pm.amount = double.parse(double.parse(element.controller.text ?? '0').toStringAsFixed(model.decimalPoints));
     pm.amount = isReturn  ? (pm.amount ?? 0) * -1 : pm.amount;
     pm.openingEntry = UserPreference.getString(PrefKeys.openingEntry);
     temp2.add(pm);

@@ -33,7 +33,7 @@ Widget priceCheckModal(
   model,
   void Function(void Function()) setState,
 ) {
-  final currencyPrecision = 3;
+  final currencyPrecision = UserPreference.getInt(PrefKeys.currencyPrecision) ?? 2;
   return Container(
     width: 150.w,
     height: 570.h,
