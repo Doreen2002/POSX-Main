@@ -447,7 +447,7 @@ Future<List<Item>> addItemsToCart(Item item, {from_hold=false}) async {
     
     return cartItems;
   } catch (e) {
-    print("error $e");
+    logErrorToFile("error $e");
     return <Item>[];
   }
 }

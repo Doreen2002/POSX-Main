@@ -47,7 +47,6 @@ Future<bool> activateLicenseRequest(String httpType, String frappeInstance, Stri
   } catch (e) {
       await UserPreference.putBool(PrefKeys.licenseActivated, false);
     logErrorToFile("❌ Error: $e");
-    print("❌ Error: $e");
     return false;
   }
 }

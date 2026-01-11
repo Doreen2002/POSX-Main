@@ -14,6 +14,7 @@ import 'package:offline_pos/models/item_model.dart';
 import 'package:offline_pos/models/item.dart';
 import 'package:offline_pos/widgets_components/complete_order_dialog.dart';
 import 'package:offline_pos/utils/below_cost_validator.dart';
+import 'package:offline_pos/widgets_components/log_error_to_file.dart';
 import 'package:quickalert/quickalert.dart';
 import '../common_utils/app_colors.dart';
 import '../common_widgets/single_text.dart';
@@ -759,7 +760,7 @@ Widget singleItemDiscountScreen(
                                           model.notifyListeners();
                                         }
                                       } catch (e) {
-                                        print("$e");
+                                        logErrorToFile("$e");
                                       }
                                     },
                             child: Container(
@@ -1150,7 +1151,7 @@ Widget singleItemDiscountScreen(
                             await model.playBeepSound();
                             model.notifyListeners();
                           } catch (e) {
-                            print("$e");
+                          logErrorToFile  ("$e");
                           }
                         },
                         style: ElevatedButton.styleFrom(
@@ -1433,7 +1434,6 @@ void onChageDiscountAmount(model, val, selectedItemIndex, context) {
 
 Future<void> onChangeItemQTY(value, model, selectedItemIndex) async{
   try{
-    print("changing ");
   final selectedItemModel = model.cartItems[selectedItemIndex];
   int _value = int.tryParse(value.isNotEmpty ? value : "0") ?? 0;
  
@@ -1495,7 +1495,7 @@ Future<void> onChangeItemQTY(value, model, selectedItemIndex) async{
   }
   catch(e)
   {
-    print("error change qty $e");
+    logErrorToFile("error change qty $e");
   }
 
 }

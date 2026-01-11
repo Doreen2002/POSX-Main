@@ -55,7 +55,7 @@ Future<dynamic> insertTableCustomer({required List<TempCustomerData> d}) async {
 
     return true;
   } catch (e) {
-    print("Error inserting data into Customer table: $e");
+    logErrorToFile("Error inserting data into Customer table: $e");
 
   
     return null;

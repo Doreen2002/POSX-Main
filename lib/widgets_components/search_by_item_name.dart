@@ -5,6 +5,7 @@ import 'package:offline_pos/controllers/item_screen_controller.dart';
 import 'package:offline_pos/database_conn/create_pos_table.dart';
 import 'package:offline_pos/database_conn/dbsync.dart';
 import 'package:offline_pos/widgets_components/all_items.dart';
+import 'package:offline_pos/widgets_components/log_error_to_file.dart';
 
 
   final TextEditingController _controller = TextEditingController();
@@ -96,7 +97,7 @@ import 'package:offline_pos/widgets_components/all_items.dart';
               await addItemsToCartTable(model, context, item);
               }
             } catch (e) {
-              print("Error processing selection: $e");
+              logErrorToFile("Error processing selection: $e");
             }
             finally
             {

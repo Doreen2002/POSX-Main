@@ -130,15 +130,15 @@ Future<List<TempPOSProfileModel>> posProfileRequest(String httpType, String frap
         return items;
       } else {
       
-        print("⚠️ No pos profile found: $body");
+        logErrorToFile("⚠️ No pos profile found: $body");
         return [];
       }
     } else {
-      print("❌ Failed to fetch pos profile: ${response.statusCode}, body: ${response.body}");
+      logErrorToFile("❌ Failed to fetch pos profile: ${response.statusCode}, body: ${response.body}");
       return [];
     }
   } catch (e) {
-    print("❌ Error: $e");
+    logErrorToFile("❌ Error: $e");
     
     return [];
   }

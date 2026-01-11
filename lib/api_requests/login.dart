@@ -98,7 +98,6 @@ Future<bool> loginRequest(
       );
       modeOfPaymentList.modeOfPaymentList = await fetchFromModeofPayment();
       Future.delayed(Duration(seconds: 4), ()async{
-      print("Fetching Data after login...");
       await itemPriceRequest(httpType, _baseUsername);
       await uomRequest(httpType, _baseUsername);
       await batchRequest(httpType, _baseUsername, _username);
@@ -129,7 +128,7 @@ Future<bool> loginRequest(
   }
  }
  catch(e){
-    print("Error in login request: $e");
+    logErrorToFile("Error in login request: $e");
     return false;
   }
 

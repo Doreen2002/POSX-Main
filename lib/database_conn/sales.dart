@@ -24,7 +24,7 @@ Future<bool> createSalesInvoiceTable() async {
     isCreatedDB = true;
    
   } catch (e) {
-    print("Error creating sales invoice table $e");
+    logErrorToFile("Error creating sales invoice table $e");
     isCreatedDB = false;
   }
   finally
