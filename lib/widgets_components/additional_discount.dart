@@ -17,7 +17,6 @@ Widget additionalDiscountField(
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 30),
     child: DottedBorder(
-      color: AppColors.cartTextColor,
       child: SizedBox(
         width: 160.w,
         child: Container(
