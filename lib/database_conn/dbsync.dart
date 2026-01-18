@@ -47,7 +47,7 @@ Future<void> dbSync(context, notifyListeners)async {
   await UserPreference.getInstance();
       bool hasInternet = await InternetConnection().hasInternetAccess;
   try {
-    if (hasInternet) {
+    if (!hasInternet) {
       onofflineSync(context);
       return;
     } else if (hasInternet) {
