@@ -6,7 +6,7 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.7.2
+  sdk: ">=3.7.0 <4.0.0"
 
 dependencies:
   flutter:
@@ -14,9 +14,9 @@ dependencies:
 
   # Core
   cupertino_icons: ^1.0.8
-  google_fonts: ^7.0.0
+  google_fonts: ^6.1.0
   auto_size_text: ^3.0.0
-  math_expressions: ^3.1.0
+  math_expressions: ^2.6.0
   flutter_screenutil: ^5.9.0
   uuid: ^4.3.3
 
@@ -76,7 +76,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^6.0.0
+  flutter_lints: ^5.0.0
 
 
 flutter:
