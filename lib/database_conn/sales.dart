@@ -384,8 +384,8 @@ Future<bool> updateSalesInvoiceErrorFinal(String invoiceName, String status, Str
   final conn = await getDatabase();
   try {
     await conn.query(
-      "UPDATE SalesInvoice SET status = '$status', messageStatus = '$message' WHERE name = ?",
-      [invoiceName],
+     "UPDATE SalesInvoice SET status = ?, messageStatus = ? WHERE name = ?",
+      [status, message, invoiceName]
     );
 
    
