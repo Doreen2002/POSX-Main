@@ -187,8 +187,8 @@ void onlineSync(context, notifyListeners)async {
   }
 
   else  if (UserPreference.getBool(PrefKeys.isOfflinePOSSetup) == false) {
-    await sync();
-    await Future.delayed(const Duration(seconds: 360), ()async{
+  
+    Future.delayed(const Duration(seconds: 360), ()async{
       customerDataList = await fetchFromCustomer();
     itemListdata = await fetchFromItem();
     salesPersonList = await fetchFromSalesPerson();
@@ -208,6 +208,8 @@ void onlineSync(context, notifyListeners)async {
 
   }
     }); 
+
+    await sync();
     
   }
 
