@@ -9,11 +9,11 @@ Future<bool> createTableItem() async {
 
 await conn.query("""
     CREATE TABLE IF NOT EXISTS Item (
-        name varchar(20) PRIMARY KEY,
-        item_code varchar(20),
-        item_name varchar(50),
-        item_group varchar(20),
-        stock_uom varchar(20),
+        name varchar(255) PRIMARY KEY,
+        item_code varchar(255),
+        item_name LongText,
+        item_group LongText,
+        stock_uom varchar(255),
         is_stock_item INTEGER,
         opening_stock FLOAT,
         new_rate FLOAT,
@@ -24,7 +24,7 @@ await conn.query("""
         itemvat INTEGER,
         custom_is_vat_inclusive INTEGER,
         vat_exclusive_rate FLOAT,
-        plu varchar(10),
+        plu varchar(255),
         modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     );
 """);
