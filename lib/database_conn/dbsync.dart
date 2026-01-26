@@ -867,6 +867,7 @@ Future<void> syncItem(model) async {
       ),
     ],
   );
+   model.refresh();
   model.notifyListeners();
  
   ScaffoldMessenger.of(context).hideCurrentSnackBar();
