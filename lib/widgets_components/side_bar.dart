@@ -115,7 +115,7 @@ Widget SideBar(BuildContext context, CartItemScreenController model) {
               ElevatedButton(
                 onPressed: () async {
                   Navigator.pop(context); // close popup
-                  await syncInvoice(context, model);
+                  await syncInvoice(model);
                 },
                 child: Text('Sync Invoice'),
               ),
@@ -123,7 +123,7 @@ Widget SideBar(BuildContext context, CartItemScreenController model) {
               ElevatedButton(
                 onPressed: () async {
                   Navigator.pop(context);
-                 await syncItem(context, model);
+                 await syncItem(model);
                 },
                 child: Text('Sync Item'),
               ),
@@ -131,7 +131,7 @@ Widget SideBar(BuildContext context, CartItemScreenController model) {
               ElevatedButton(
                 onPressed: () async {
                   Navigator.pop(context);
-                 await syncCustomer(context, model);
+                 await syncCustomer( model);
                 },
                 child: Text('Sync Customer'),
               ),
@@ -139,7 +139,7 @@ Widget SideBar(BuildContext context, CartItemScreenController model) {
               ElevatedButton(
                 onPressed: () async {
                   Navigator.pop(context);
-                  await syncClosingOpeningVoucher(context, model);
+                  await syncClosingOpeningVoucher( model);
                 },
                 child: Text('Sync Opening & Closing Vouchers'),
               ),

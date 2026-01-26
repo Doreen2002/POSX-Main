@@ -407,7 +407,8 @@ Future <void> sync() async {
 }
 
 //sync function
-Future<void> syncData(context, model) async {
+Future<void> syncData( model) async {
+  BuildContext context = model.context;
   try{
    String _baseUsername = UserPreference.getString(PrefKeys.baseUrl) ?? "";
     String  _username =   UserPreference.getString(PrefKeys.userName) ?? "";
@@ -529,7 +530,8 @@ Future<void> syncData(context, model) async {
   }
 }
 
-Future<void> syncClosingOpeningVoucher(context, model) async {
+Future<void> syncClosingOpeningVoucher( model) async {
+  BuildContext context = model.context;
   try{
    String _baseUsername = UserPreference.getString(PrefKeys.baseUrl) ?? "";
     String  _username =   UserPreference.getString(PrefKeys.userName) ?? "";
@@ -612,7 +614,8 @@ Future<void> syncClosingOpeningVoucher(context, model) async {
   }
 }
 
-Future<void> syncInvoice(context, model) async {
+Future<void> syncInvoice(model) async {
+  BuildContext context = model.context;
   try{
    String _baseUsername = UserPreference.getString(PrefKeys.baseUrl) ?? "";
     String  _username =   UserPreference.getString(PrefKeys.userName) ?? "";
@@ -692,7 +695,8 @@ Future<void> syncInvoice(context, model) async {
     model.notifyListeners();
   }
 }
-Future<void> syncCustomer(context, model) async {
+Future<void> syncCustomer( model) async {
+  BuildContext context = model.context;
   try{
    String _baseUsername = UserPreference.getString(PrefKeys.baseUrl) ?? "";
     String  _username =   UserPreference.getString(PrefKeys.userName) ?? "";
@@ -777,8 +781,10 @@ Future<void> syncCustomer(context, model) async {
     model.notifyListeners();
   }
 }
-Future<void> syncItem(context, model) async {
+Future<void> syncItem(model) async {
+  BuildContext context = model.context;
   try{
+  
    String _baseUsername = UserPreference.getString(PrefKeys.baseUrl) ?? "";
     String  _username =   UserPreference.getString(PrefKeys.userName) ?? "";
   ScaffoldMessenger.of(context).showSnackBar(
