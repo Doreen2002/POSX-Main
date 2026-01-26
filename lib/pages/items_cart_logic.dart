@@ -88,83 +88,6 @@ Future<bool> holdCartItem(model) async {
 }
 
 Future<void> scanItems(model, context, value) async {
-  // **PRIORITY 1: Check if scanned code is a customer QR**
-  final customerQR = await detectCustomerQR(value);
-  if (customerQR != null) {
-    // Auto-switch to scanned customer
-    model.selectedCustomer = customerQR;
-    
-    // Play success beep
-    if (model.playBeepSound != null) {
-      await model.playBeepSound();
-    }
-    
-    // Show success dialog
-    showDialog(
-      context: context,
-      barrierDismissible: true,
-      builder: (BuildContext context) {
-        // Auto-dismiss after 1.5 seconds
-        Future.delayed(Duration(milliseconds: 1500), () {
-          if (Navigator.of(context).canPop()) {
-            Navigator.of(context).pop();
-          }
-        });
-        
-        return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
-          child: Container(
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(
-                  Icons.check_circle,
-                  color: Color(0xFF018644),
-                  size: 48,
-                ),
-                const SizedBox(height: 12),
-                Text(
-                  'Customer Selected',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF2B3691),
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  customerQR.customerName ?? customerQR.name ?? '',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.black87,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-    
-    // Clear search field and return focus to item search
-    model.searchController.clear();
-    model.autoFocusSearchItem = true;
-    model.hasFocus = '';
-    model.searchFocusNode.requestFocus();
-    model.notifyListeners();
-    
-    logErrorToFile("Customer switched via QR scan: ${customerQR.name}");
-    return; // Exit - customer QR handled, don't process as item
-  }
-  
-  // **PRIORITY 2: Regular item scanning logic**
   if (model.filteredItems.length == 1) {
       final item = model.filteredItems[0];
       await getPosOpening();
@@ -177,11 +100,6 @@ Future<void> scanItems(model, context, value) async {
       if (posOpeningList.isNotEmpty) {
        await  addItemsToCartTable(model, context, item);
       }
-
-      
-
-     
-   
     }
     else {  
     showDialog(
