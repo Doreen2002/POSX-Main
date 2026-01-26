@@ -800,11 +800,28 @@ Future<void> syncItem(model) async {
  if (hasInternet)
     { 
         await createMissingTables();  
+        await itemRequest(
+          "$transferProtocol",
+           _baseUsername,
+          _username
+        );
+        model.refresh();
+        model.notifyListeners();
+        ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          backgroundColor:Color(0xFF018644),
+          content: Text(
+            'Syncing Item Table Complete, Syncing Related Item Data...',
+            style: TextStyle(color: Colors.white, fontSize: 16),
+          ),
+        ),
+      );
         await posProfileRequest(
           "$transferProtocol",
           _baseUsername,
           _username
         );
+
         await itemPriceRequest(
         "$transferProtocol",
         _baseUsername,
@@ -857,7 +874,7 @@ Future<void> syncItem(model) async {
         const SnackBar(
           backgroundColor:Color(0xFF018644),
           content: Text(
-            'Syncing Item Data Complete',
+            'Syncing Related Item Data Complete',
             style: TextStyle(color: Colors.white, fontSize: 16),
           ),
         ),

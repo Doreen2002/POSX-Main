@@ -53,7 +53,6 @@ try {
   bool  _playSound  = UserPreference.getBool(PrefKeys.disableBeep) ?? false;
   if(!_playSound)
   {
-      await _audioPlayer.stop();
   await Future.delayed(const Duration(milliseconds: 50)); 
   await _audioPlayer.play(AssetSource('sounds/barcode_beep.wav'));
   }
