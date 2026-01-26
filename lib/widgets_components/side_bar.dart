@@ -147,7 +147,7 @@ Widget SideBar(BuildContext context, CartItemScreenController model) {
               ElevatedButton(
                 onPressed: () async {
                   Navigator.pop(context);
-                  await syncData(context, model);
+                  await syncData( model);
                 },
                 child: Text('Sync All Data'),
               ),

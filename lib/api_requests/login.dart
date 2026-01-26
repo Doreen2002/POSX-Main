@@ -97,24 +97,7 @@ Future<bool> loginRequest(
         
       );
       modeOfPaymentList.modeOfPaymentList = await fetchFromModeofPayment();
-      Future.delayed(Duration(seconds: 4), ()async{
-      await itemPriceRequest(httpType, _baseUsername);
-      await uomRequest(httpType, _baseUsername);
-      await batchRequest(httpType, _baseUsername, _username);
-      await barcodeRequest(httpType, _baseUsername,  _username);
-      await itemRequest(
-      "$transferProtocol",
-      _baseUsername,
-        _username
-      );
-      await customerRequest(
-
-      "$transferProtocol",
-      _baseUsername,
-
-      );
-
-      });
+      
       return true;
     } else {
       logErrorToFile("⚠️ Login response was not 'Logged In': $body");
