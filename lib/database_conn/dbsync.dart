@@ -43,6 +43,7 @@ List pricingRuleBrandListdata = [];
 
 BuildContext? dialogContext ;
 
+
 Future<void> dbSync(context, notifyListeners)async {
   await UserPreference.getInstance();
       bool hasInternet = await InternetConnection().hasInternetAccess;
@@ -407,7 +408,7 @@ Future <void> sync() async {
 }
 
 //sync function
-Future<void> syncData( model) async {
+Future<void> syncData( model, context) async {
   BuildContext context = model.context;
   try{
    String _baseUsername = UserPreference.getString(PrefKeys.baseUrl) ?? "";
@@ -530,7 +531,7 @@ Future<void> syncData( model) async {
   }
 }
 
-Future<void> syncClosingOpeningVoucher( model) async {
+Future<void> syncClosingOpeningVoucher( model, context) async {
   BuildContext context = model.context;
   try{
    String _baseUsername = UserPreference.getString(PrefKeys.baseUrl) ?? "";
@@ -614,8 +615,7 @@ Future<void> syncClosingOpeningVoucher( model) async {
   }
 }
 
-Future<void> syncInvoice(model) async {
-  BuildContext context = model.context;
+Future<void> syncInvoice(model, context) async {
   try{
    String _baseUsername = UserPreference.getString(PrefKeys.baseUrl) ?? "";
     String  _username =   UserPreference.getString(PrefKeys.userName) ?? "";
@@ -695,7 +695,7 @@ Future<void> syncInvoice(model) async {
     model.notifyListeners();
   }
 }
-Future<void> syncCustomer( model) async {
+Future<void> syncCustomer( model, context) async {
   BuildContext context = model.context;
   try{
    String _baseUsername = UserPreference.getString(PrefKeys.baseUrl) ?? "";
@@ -781,8 +781,7 @@ Future<void> syncCustomer( model) async {
     model.notifyListeners();
   }
 }
-Future<void> syncItem(model) async {
-  BuildContext context = model.context;
+Future<void> syncItem(model, context) async {
   try{
   
    String _baseUsername = UserPreference.getString(PrefKeys.baseUrl) ?? "";
@@ -805,8 +804,7 @@ Future<void> syncItem(model) async {
            _baseUsername,
           _username
         );
-        model.refresh();
-        model.notifyListeners();
+        await model.refreshItemsTables();
         ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           backgroundColor:Color(0xFF018644),
@@ -816,12 +814,14 @@ Future<void> syncItem(model) async {
           ),
         ),
       );
-        await posProfileRequest(
-          "$transferProtocol",
+       
+        await barcodeRequest(  "$transferProtocol",
           _baseUsername,
-          _username
-        );
-
+          _username);
+      
+      await batchRequest("$transferProtocol",
+          _baseUsername,
+          _username);
         await itemPriceRequest(
         "$transferProtocol",
         _baseUsername,
@@ -831,13 +831,7 @@ Future<void> syncItem(model) async {
            _baseUsername,
          
         );
-        await barcodeRequest(  "$transferProtocol",
-          _baseUsername,
-          _username);
-      
-      await batchRequest("$transferProtocol",
-          _baseUsername,
-          _username);
+        
       await itemRequest(
           "$transferProtocol",
            _baseUsername,
@@ -847,6 +841,11 @@ Future<void> syncItem(model) async {
         "$transferProtocol",
         _baseUsername,
       );
+       await posProfileRequest(
+          "$transferProtocol",
+          _baseUsername,
+          _username
+        );
       
   itemListdata = await fetchFromItem();
   batchListdata = await fetchFromBatch();
@@ -867,10 +866,9 @@ Future<void> syncItem(model) async {
       ),
     ],
   );
-   model.refresh();
-  model.notifyListeners();
- 
-  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+  
+
+  await model.refreshItemsTables();
    ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           backgroundColor:Color(0xFF018644),
@@ -880,10 +878,12 @@ Future<void> syncItem(model) async {
           ),
         ),
       );
-  }
-  }
+  
+    }
+    }
+
   catch(e)
-  {
+  { 
      ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           backgroundColor:Color(0xFF018644),
@@ -893,12 +893,15 @@ Future<void> syncItem(model) async {
           ),
         ),
       );
+ 
   }
   finally
   {
     model.syncDataLoading = false;
     isSyncing = false;
-    model.notifyListeners();
+    await model.refreshItemsTables();
+ 
+
   }
 }
 

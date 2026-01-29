@@ -287,6 +287,27 @@ class _CartItemScreenState extends State<CartItemScreen> {
                                           ),
                                         ),
                                       ),
+                                      
+                                           Center(
+                                            child: IconButton( onPressed: ()async{
+                                              await model.refreshItemsTables();
+                                               ScaffoldMessenger.of(context).showSnackBar(
+                                              const SnackBar(
+                                                backgroundColor:Color(0xFF018644),
+                                                content: Text(
+                                                  'Item Data Refreshed...',
+                                                  style: TextStyle(color: Colors.white, fontSize: 16),
+                                                ),
+                                              ),
+                                            );
+                                            }, icon:  const Icon(
+                                              
+                                                Icons.refresh,
+                                                color: Color(0xFF2B3691),
+                                              ))
+                                          ),
+                                        
+                                      
                                     ],
                                   ),
 

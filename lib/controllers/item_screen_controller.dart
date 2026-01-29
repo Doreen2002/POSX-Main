@@ -868,6 +868,11 @@ void refresh() async {
   notifyListeners();
 }
 
+Future<void> refreshItemsTables() async {
+  await reloadItems();
+  notifyListeners();
+}
+
 int? batchTableQty;
 String? batchTableBatchNo;
 }

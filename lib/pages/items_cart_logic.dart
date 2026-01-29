@@ -165,7 +165,10 @@ Future<void> scanItems(model, context, value) async {
 }
 
 Future<void> searchItems(model, val) async {
- 
+  itemListdata = await fetchQueries.fetchFromItem();
+  fetchQueries.batchListdata = await fetchQueries.fetchFromBatch();
+  fetchQueries.barcodeListdata = await fetchQueries.fetchFromBarcode();
+
   final searchVal = val.toLowerCase();
 
   // **NEW: Weight Scale Barcode Detection**
@@ -182,7 +185,6 @@ Future<void> searchItems(model, val) async {
     // If weight scale parsing failed, continue with regular scanning
   }
 
-  // **EXISTING: Regular Barcode Scanning Logic (Preserved)**
   final itemMapByName = {
     for (var item in itemListdata) (item.itemName ?? '').toLowerCase(): item
   };

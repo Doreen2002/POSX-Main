@@ -106,7 +106,7 @@ Widget SideBar(BuildContext context, CartItemScreenController model) {
               child: _menuItem('assets/ico/sync.png', 'Sync', () {
               showDialog(
               context: context,
-              builder: (context) {
+              builder: (BuildContext dialogcontext) {
               return AlertDialog(
               title: Text('Select Sync Option'),
               content: Column(
@@ -114,40 +114,40 @@ Widget SideBar(BuildContext context, CartItemScreenController model) {
               children: [
               ElevatedButton(
                 onPressed: () async {
-                  Navigator.pop(context); // close popup
-                  await syncInvoice(model);
+                  Navigator.pop(dialogcontext); // close popup
+                  await syncInvoice(model, context);
                 },
                 child: Text('Sync Invoice'),
               ),
               SizedBox(height: 8),
               ElevatedButton(
                 onPressed: () async {
-                  Navigator.pop(context);
-                 await syncItem(model);
+                  Navigator.pop(dialogcontext);
+                 await syncItem(model, context);
                 },
                 child: Text('Sync Item'),
               ),
               SizedBox(height: 8),
               ElevatedButton(
                 onPressed: () async {
-                  Navigator.pop(context);
-                 await syncCustomer( model);
+                  Navigator.pop(dialogcontext);
+                 await syncCustomer( model, context);
                 },
                 child: Text('Sync Customer'),
               ),
               SizedBox(height: 8),
               ElevatedButton(
                 onPressed: () async {
-                  Navigator.pop(context);
-                  await syncClosingOpeningVoucher( model);
+                  Navigator.pop(dialogcontext);
+                  await syncClosingOpeningVoucher( model, context);
                 },
                 child: Text('Sync Opening & Closing Vouchers'),
               ),
               SizedBox(height: 8),
               ElevatedButton(
                 onPressed: () async {
-                  Navigator.pop(context);
-                  await syncData( model);
+                  Navigator.pop(dialogcontext);
+                  await syncData( model, context);
                 },
                 child: Text('Sync All Data'),
               ),
@@ -259,7 +259,7 @@ Widget SideBar(BuildContext context, CartItemScreenController model) {
               Padding(
                 padding: EdgeInsets.only(bottom: 8.h),
                 child: SingleText(
-                  text: 'v1.0.29',
+                  text: 'v1.0.30',
                   fontSize: 4.sp,
                   color: Colors.grey,
                 ),
