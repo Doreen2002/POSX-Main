@@ -34,7 +34,7 @@ Future<bool> holdCartItem(model) async {
     final date = DateTime.now().toString();
     final vat = model.vatTotal;
     await fetchQueries.fetchFromItem();
-    itemListdata = fetchQueries.itemListdata;
+    model.itemListdata = fetchQueries.itemListdata;
     await insertIntoHoldCart(
       HoldCart(
         name: name,
@@ -165,9 +165,6 @@ Future<void> scanItems(model, context, value) async {
 }
 
 Future<void> searchItems(model, val) async {
-  itemListdata = await fetchQueries.fetchFromItem();
-  fetchQueries.batchListdata = await fetchQueries.fetchFromBatch();
-  fetchQueries.barcodeListdata = await fetchQueries.fetchFromBarcode();
 
   final searchVal = val.toLowerCase();
 
@@ -186,22 +183,22 @@ Future<void> searchItems(model, val) async {
   }
 
   final itemMapByName = {
-    for (var item in itemListdata) (item.itemName ?? '').toLowerCase(): item
+    for (var item in model.itemListdata) (item.itemName ?? '').toLowerCase(): item
   };
   final itemMapByCode = {
-    for (var item in itemListdata) (item.itemCode ?? '').toLowerCase(): item
+    for (var item in model.itemListdata) (item.itemCode ?? '').toLowerCase(): item
   };
   final itemMapByPLU = {
-    for (var item in itemListdata) (item.plu ?? '').toLowerCase(): item
+    for (var item in model.itemListdata) (item.plu ?? '').toLowerCase(): item
   };
   final itemMapByBatchSeries = {
-    for (var item in itemListdata) (item.batchNumberSeries ?? '').toLowerCase(): item
+    for (var item in model.itemListdata) (item.batchNumberSeries ?? '').toLowerCase(): item
   };
   final batchMap = {
-    for (var batch in fetchQueries.batchListdata) batch.batchId.toLowerCase(): batch
+    for (var batch in model.batchListdata) batch.batchId.toLowerCase(): batch
   };
   final barcodeMap = {
-    for (var barcode in fetchQueries.barcodeListdata) barcode.barcode.toLowerCase(): barcode
+    for (var barcode in model.barcodeListdata) barcode.barcode.toLowerCase(): barcode
   };
   
   model.filteredItems = [

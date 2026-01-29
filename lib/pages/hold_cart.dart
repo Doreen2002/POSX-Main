@@ -275,7 +275,7 @@ class _HoldCartListPageState extends State<HoldCartListPage> {
                                                       vatValue /
                                                       100)*qty);
                                               
-                                                final matchItem = await itemListdata
+                                                final matchItem = await model.itemListdata
                                                     .firstWhere(
                                                       (mitem) =>
                                                           mitem.name ==

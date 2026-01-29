@@ -53,7 +53,7 @@ class _AllItemsWidgetState extends State<AllItemsWidget> {
               height: 5.sh,
               width: 50.sw,
               child: GridView.builder(
-                itemCount: itemListdata.length,
+                itemCount: model.itemListdata.length,
                 controller: model.allItemsScrollController,
                 physics: const BouncingScrollPhysics(),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -63,7 +63,7 @@ class _AllItemsWidgetState extends State<AllItemsWidget> {
                   childAspectRatio: 1.0,
                 ),
                 itemBuilder: (context, index) {
-                  final item = itemListdata[index];
+                  final item = model.itemListdata[index];
 
                   return GestureDetector(
                     onTap: () async {
@@ -129,7 +129,7 @@ class _AllItemsWidgetState extends State<AllItemsWidget> {
                       if (posOpeningList.isNotEmpty) {
                         addItemsToCartTable(model, context, item);
                       }
-                      itemListdata = await batch.fetchFromItem();
+                      model.itemListdata = await batch.fetchFromItem();
 
                       model.searchController.text = '';
 

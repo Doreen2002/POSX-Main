@@ -240,13 +240,9 @@ class _CartItemScreenState extends State<CartItemScreen> {
                                           },
                                           onSubmitted: (value) async {
                                             try {
-                                              
+                                           
                                               searchItems(model, value);
                                               await scanItems(model, context, value);
-                                            
-                                            
-                                              
-                                            
                                             } catch (e) {
                                               logErrorToFile(
                                                 "search field enter error $e",

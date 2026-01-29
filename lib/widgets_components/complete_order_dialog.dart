@@ -274,7 +274,7 @@ Future<void> createInvoiceItem(model, conn, invoiceNo, {isReturn=0}) async {
   }
   await insertTableSalesInvoiceItem(conn, ici: temp);
   await updateItemsStockDetails(model.cartItems);
-  itemListdata = await batch.fetchFromItem();
+  model.itemListdata = await batch.fetchFromItem();
   }
   catch (e)
   {

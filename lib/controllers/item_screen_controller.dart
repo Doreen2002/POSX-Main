@@ -34,7 +34,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:offline_pos/database_conn/get_payment.dart' as getPayment;
 import 'dart:math';
-
+import 'package:offline_pos/models/barcode.dart';
 import 'package:audioplayers/audioplayers.dart';
 
 final AudioPlayer _audioPlayer = AudioPlayer();
@@ -46,7 +46,9 @@ BuildContext? context;
 }
 bool isSyncing = false;
 class CartItemScreenController extends ItemScreenController {
-
+List<TempItem> itemListdata = [];
+List<BatchListModel> batchListdata = [];
+List<BarcodeModel> barcodeListdata = [];
 Future<void> playBeepSound() async {
 try {
   await UserPreference.getInstance();
@@ -454,7 +456,7 @@ bool _isInitialized = false;
 String hasFocus = '';
 void initialise(runInit, customer,  customcartItems) async {
   searchFocusNode.requestFocus();
-  
+  await refreshItemsTables();
 
   try {
         FocusManager.instance.addListener(() {
@@ -869,7 +871,9 @@ void refresh() async {
 }
 
 Future<void> refreshItemsTables() async {
-  await reloadItems();
+  itemListdata = await fetchItemQueries.fetchFromItem();
+  batchListdata = await fetchItemQueries.fetchFromBatch();
+  barcodeListdata = await fetchItemQueries.fetchFromBarcode();
   notifyListeners();
 }
 
@@ -931,7 +935,6 @@ Timer.periodic(Duration(minutes: 5), (Timer timer) async{
     await pricingRulesRequest(
     "$transferProtocol", 
     _baseUsername, _username);
-    itemListdata = await fetchItemQueries.fetchFromItem();
     await fetchItemQueries.fetchFromBatch();
     await fetchItemQueries.fetchFromBarcode();
     

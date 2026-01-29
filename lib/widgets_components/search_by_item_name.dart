@@ -4,6 +4,7 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:offline_pos/controllers/item_screen_controller.dart';
 import 'package:offline_pos/database_conn/create_pos_table.dart';
 import 'package:offline_pos/database_conn/dbsync.dart';
+import 'package:offline_pos/models/item_model.dart';
 import 'package:offline_pos/widgets_components/all_items.dart';
 import 'package:offline_pos/widgets_components/log_error_to_file.dart';
 
@@ -58,10 +59,14 @@ import 'package:offline_pos/widgets_components/log_error_to_file.dart';
                 child: child,
               ),
           suggestionsCallback: (pattern) async {
+          try{
             if (pattern.trim().isEmpty) {
               return []; 
             }
-            return itemListdata
+            final List<TempItem> items =
+              model.itemListdata.cast<TempItem>();
+            List <String> suggestions =
+            items
                 .where(
                   (item) =>
                       (item.itemName ?? "").toLowerCase().contains(
@@ -71,8 +76,15 @@ import 'package:offline_pos/widgets_components/log_error_to_file.dart';
                 .map((item) => item.itemName.toString())
                 .take(4)
                 .toList();
+            return suggestions;
+           
+          }
+          catch(e){
+            logErrorToFile("Error fetching suggestions for pattern $pattern: $e");
+            return [];
+            
+          }
           },
-
           itemBuilder: (context, suggestion) {
             return ListTile(
               title: Text(suggestion, style: TextStyle(fontSize: 5.sp)),
@@ -84,7 +96,7 @@ import 'package:offline_pos/widgets_components/log_error_to_file.dart';
               _controller.text = suggestion;
             });
             try {
-              final item = itemListdata.firstWhere(
+              final item = model.itemListdata.firstWhere(
                 (item) => item.itemName == suggestion,
                 orElse: () => throw Exception('Item not found'),
               );

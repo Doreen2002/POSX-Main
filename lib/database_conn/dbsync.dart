@@ -35,7 +35,6 @@ List itemGroupdata = [];
 List customerDataList = [];
 List modeOfPaymentList = [];
 List posProfileList = [];
-List itemListdata = [];
 List pricingRuleListdata = [];
 List pricingRuleItemListdata = [];
 List pricingRuleItemGroupListdata = [];
@@ -846,11 +845,6 @@ Future<void> syncItem(model, context) async {
           _baseUsername,
           _username
         );
-      
-  itemListdata = await fetchFromItem();
-  batchListdata = await fetchFromBatch();
-  barcodeListdata = await fetchFromBarcode();
-  itemPriceListdata = await  fetchFromItemPrice();
   salesPersonList = await fetchFromSalesPerson();
   modeOfPaymentList = await fetchFromModeofPayment();
   posProfileList = await fetchFromPosProfile();
