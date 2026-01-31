@@ -77,18 +77,11 @@ Future<bool> createSalesInvoiceItemTable() async {
 Future<bool> updateSalesInvoiceItemTable() async {
  bool isUpdatedDB = false;
    final conn = await getDatabase();
-  try {
+
     try {
       await conn.query("ALTER TABLE SalesInvoiceItem ADD COLUMN barcode varchar(255)");
     } catch (e) {
-      
-    }
-    
-    
-    isUpdatedDB = true;
-
-  } catch (e) {
-    logErrorToFile("Error updating sales invoice Invoice table $e");
+    logErrorToFile("Error updating invoice Invoice table $e");
     isUpdatedDB = false;
   }
   finally{
@@ -205,6 +198,7 @@ Future<List<Map<String, dynamic>>> fetchGroupedInvoiceData() async {
     'discount_source': fields['discount_source'],
     'stock_uom': fields['stock_uom'],
     'uom': fields['stock_uom'],
+    'barcode': fields['barcode'],
    
       };
     }).toList(),
@@ -255,8 +249,8 @@ Future<dynamic> insertTableSalesInvoiceItem(conn, {List<Items>? ici})async {
     
     dynamic res;
       for (var element in ici!) {
-      var insertItemQuery = 'INSERT INTO SalesInvoiceItem (name,item_code,item_name,item_group,stock_uom,rate,qty,batch_no,serial_no,item_tax_rate,price_list_rate,base_price_list_rate,amount,net_rate,net_amount,discount_percentage,discount_amount, custom_is_vat_inclusive,applied_pricing_rule_id,applied_pricing_rule_title,discount_source) ';
-      res = conn.query('''$insertItemQuery VALUE('${element.name}','${element.itemCode}','${element.itemName}','${element.itemGroup}','${element.stockUom}','${element.rate}','${element.qty}','${element.batchNo}','${element.serialNo}','${element.itemTaxRate}','${element.priceListRate}','${element.basePriceListRate}','${element.amount}','${element.netRate}','${element.netAmount}','${element.discountPercentage}','${element.discountAmount}' , '${element.customVATInclusive}','${element.appliedPricingRuleId ?? ''}','${element.appliedPricingRuleTitle ?? ''}','${element.discountSource ?? ''}')''');
+      var insertItemQuery = 'INSERT INTO SalesInvoiceItem (name,item_code,item_name,item_group,stock_uom,rate,qty,batch_no,serial_no,item_tax_rate,price_list_rate,base_price_list_rate,amount,net_rate,net_amount,discount_percentage,discount_amount, custom_is_vat_inclusive,applied_pricing_rule_id,applied_pricing_rule_title,discount_source, barcode) ';
+      res = conn.query('''$insertItemQuery VALUES('${element.name}','${element.itemCode}','${element.itemName}','${element.itemGroup}','${element.stockUom}','${element.rate}','${element.qty}','${element.batchNo}','${element.serialNo}','${element.itemTaxRate}','${element.priceListRate}','${element.basePriceListRate}','${element.amount}','${element.netRate}','${element.netAmount}','${element.discountPercentage}','${element.discountAmount}' , '${element.customVATInclusive}','${element.appliedPricingRuleId ?? ''}','${element.appliedPricingRuleTitle ?? ''}','${element.discountSource ?? ''}', '${element.barcode ?? ''}')''');
     }
     return res;
   } catch (e) {
@@ -608,6 +602,7 @@ Future<List<Item>> fetchSalesInvoiceItemDetailsToReturn(String name) async {
         fields['name'] = fields['item_code'];
         fields['stock_uom'] = fields['stock_uom'];
         fields['uom'] = fields['stock_uom'];
+        fields['barcode'] = fields['barcode'];
       
       }
       if (fields.containsKey('qty')) {

@@ -355,6 +355,7 @@ class Items {
   String? appliedPricingRuleId;
   String? appliedPricingRuleTitle;
   String? discountSource;
+  String? barcode;
   // double? actualBatchQty;
   // double? actualQty;
   // double? deliveredQty;
@@ -424,6 +425,7 @@ class Items {
     this.appliedPricingRuleId,
     this.appliedPricingRuleTitle,
     this.discountSource,
+    this.barcode
     // this.actualBatchQty,
     // this.actualQty,
     // this.deliveredQty,
@@ -495,6 +497,7 @@ class Items {
     appliedPricingRuleId = json['applied_pricing_rule_id'];
     appliedPricingRuleTitle = json['applied_pricing_rule_title'];
     discountSource = json['discount_source'];
+    barcode = json['barcode'];
     // actualBatchQty = json['actual_batch_qty'];
     // actualQty = json['actual_qty'];
     // deliveredQty = json['delivered_qty'];
@@ -566,6 +569,7 @@ class Items {
     data['applied_pricing_rule_id'] = appliedPricingRuleId;
     data['applied_pricing_rule_title'] = appliedPricingRuleTitle;
     data['discount_source'] = discountSource;
+    data['barcode'] = barcode;
     // data['actual_batch_qty'] = this.actualBatchQty;
     // data['actual_qty'] = this.actualQty;
     // data['delivered_qty'] = this.deliveredQty;
