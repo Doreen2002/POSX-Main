@@ -58,6 +58,12 @@ Future<bool> createSalesInvoiceItemTable() async {
     } catch (e) {
       // Column already exists
     }
+
+     try {
+      await conn.query("ALTER TABLE SalesInvoiceItem ADD COLUMN barcode varchar(255)");
+    } catch (e) {
+      // Column already exists
+    }
     
     isCreatedDB = true;
 
@@ -177,6 +183,8 @@ Future<List<Map<String, dynamic>>> fetchGroupedInvoiceData() async {
     'applied_pricing_rule_id': fields['applied_pricing_rule_id'],
     'applied_pricing_rule_title': fields['applied_pricing_rule_title'],
     'discount_source': fields['discount_source'],
+    'stock_uom': fields['stock_uom'],
+    'uom': fields['stock_uom'],
    
       };
     }).toList(),
@@ -578,6 +586,8 @@ Future<List<Item>> fetchSalesInvoiceItemDetailsToReturn(String name) async {
         fields['item_total'] = fields['net_amount'];
         fields['total_with_vat_prev'] = fields['net_amount'];
         fields['name'] = fields['item_code'];
+        fields['stock_uom'] = fields['stock_uom'];
+        fields['uom'] = fields['stock_uom'];
       
       }
       if (fields.containsKey('qty')) {

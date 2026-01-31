@@ -49,6 +49,7 @@ class Item {
   double? standardRate;  // Cost price from ERPNext Bin for below-cost validation (cached from TempItem)
   dynamic customVATInclusive;
   dynamic vatExclusiveRate;
+  String? barcode;
   
   // ✅ NEW: Pricing rule tracking fields
   bool? hasPricingRuleApplied;
@@ -106,6 +107,7 @@ class Item {
     this.appliedPricingRuleId,
     this.appliedPricingRuleTitle,
     this.discountSource = 'none',
+    this.barcode
   });
 
   factory Item.fromJson(Map<String, dynamic> json) => Item(
@@ -156,6 +158,7 @@ class Item {
     appliedPricingRuleId: json['applied_pricing_rule_id'],
     appliedPricingRuleTitle: json['applied_pricing_rule_title'],
     discountSource: json['discount_source'] ?? 'none',
+    barcode: json['barcode']
   );
 
   Map<String, dynamic> toJson() => {
@@ -206,5 +209,6 @@ class Item {
     'applied_pricing_rule_id': appliedPricingRuleId,
     'applied_pricing_rule_title': appliedPricingRuleTitle,
     'discount_source': discountSource,
+    'barcode':barcode
   };
 }
