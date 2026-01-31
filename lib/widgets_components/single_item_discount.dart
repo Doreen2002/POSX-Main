@@ -1130,18 +1130,13 @@ Widget singleItemDiscountScreen(
                           try {
                             final item = model.cartItems[selectedItemIndex];
                             
-                            item.qty = 0;
+                            model.cartItems.removeAt(selectedItemIndex);
                             model.discountCalculation(
                               model.allItemsDiscountAmount.text,
                               model.allItemsDiscountPercent.text,
                             );
                             model.itemDiscountVisible = false;
                             model.hasFocus = '';
-                            model.cartItems =
-                                model.cartItems
-                                    .where((item) => item.qty != 0)
-                                    .toList();
-
                             resetCalculations(model);
                             model.selectedItemIndex = -1;
                             model.discountCalculation(
