@@ -59,11 +59,7 @@ Future<bool> createSalesInvoiceItemTable() async {
       // Column already exists
     }
 
-     try {
-      await conn.query("ALTER TABLE SalesInvoiceItem ADD COLUMN barcode varchar(255)");
-    } catch (e) {
-      // Column already exists
-    }
+    
     
     isCreatedDB = true;
 
@@ -74,8 +70,32 @@ Future<bool> createSalesInvoiceItemTable() async {
   finally{
         await conn.close();
   }
-
+  
   return isCreatedDB;
+}
+
+Future<bool> updateSalesInvoiceItemTable() async {
+ bool isUpdatedDB = false;
+   final conn = await getDatabase();
+  try {
+    try {
+      await conn.query("ALTER TABLE SalesInvoiceItem ADD COLUMN barcode varchar(255)");
+    } catch (e) {
+      
+    }
+    
+    
+    isUpdatedDB = true;
+
+  } catch (e) {
+    logErrorToFile("Error updating sales invoice Invoice table $e");
+    isUpdatedDB = false;
+  }
+  finally{
+        await conn.close();
+  }
+  
+  return isUpdatedDB;
 }
 
 Future<bool> createSalesInvoicePayment() async {

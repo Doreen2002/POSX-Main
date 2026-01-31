@@ -143,4 +143,5 @@ async{
       await createHoldCartItemTable();
       await createLicenseTable();
       await UpdateBarcodeTable();
+      await updateSalesInvoiceItemTable();
 }
