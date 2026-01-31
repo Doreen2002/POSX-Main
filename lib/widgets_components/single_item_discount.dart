@@ -615,12 +615,23 @@ Widget singleItemDiscountScreen(
 
                                       model.cartItems[selectedItemIndex].stockUom = value.uom;
                       
-                                      model.cartItems[selectedItemIndex].newNetRate = itemPriceListdata.firstWhere(
+                                      double _newNetRate  = itemPriceListdata.firstWhere(
                                           (item) =>
                                               item.UOM.toLowerCase() == value.uom.toLowerCase() &&
                                               item.itemCode.toLowerCase() == model.cartItems[selectedItemIndex].itemCode.toLowerCase(),
                                           orElse: () => ItemPrice(name: '', itemCode: '', UOM: '', priceList: model.customerData.defaultPriceList ?? "", priceListRate: 0)
                                         ).priceListRate;
+                                      if (_newNetRate == 0) {
+                                        final converstionRate = await fetchFromUOM(model.cartItems[selectedItemIndex].itemCode);
+                                        if (converstionRate.isNotEmpty) {
+                                         converstionRate.where((uom)=> uom.uom.toLowerCase() == value.uom.toLowerCase()).forEach((uom) {
+                                            _newNetRate=
+                                                (model.cartItems[selectedItemIndex].newNetRate ?? 0) * (uom.conversionFactor ?? 1);
+                                          });
+                                        }
+                                       
+                                      }
+                                      model.cartItems[selectedItemIndex].newNetRate = _newNetRate;
                                       item.singleItemDiscAmount = (item.singleItemDiscPer ?? 0)/100 * (item.newNetRate ?? 0);
                                                   item.newRate =
                                             (item.newNetRate ?? 0) -
