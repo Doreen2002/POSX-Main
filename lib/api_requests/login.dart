@@ -142,4 +142,5 @@ async{
       await createHoldCartTable();
       await createHoldCartItemTable();
       await createLicenseTable();
+      await UpdateBarcodeTable();
 }

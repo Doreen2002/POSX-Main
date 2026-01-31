@@ -61,7 +61,7 @@ Future<bool> createTableBarcode() async {
   bool isCreatedDB = false;
    final conn = await getDatabase();
   try {
-    await conn.query( "CREATE TABLE IF NOT EXISTS Barcode (barcode varchar(255) PRIMARY KEY, item_code varchar(255), barcode_type varchar(255), uom varchar(255));");
+    await conn.query( "CREATE TABLE IF NOT EXISTS Barcode (barcode varchar(255) PRIMARY KEY, item_code varchar(255), barcode_type varchar(255), uom varchar(255), rate FLOAT);");
      isCreatedDB = true;
     
   } catch (e) {
@@ -74,6 +74,25 @@ Future<bool> createTableBarcode() async {
   }
 
   return isCreatedDB;
+}
+
+Future<bool> UpdateBarcodeTable() async {
+  bool isUpdatedDB = false;
+   final conn = await getDatabase();
+  try {
+   
+    await conn.query( "ALTER TABLE Barcode ADD COLUMN rate FLOAT;");
+    isUpdatedDB = true;
+    
+  } catch (e) {
+   logErrorToFile ("Error updating barcode table $e");
+    isUpdatedDB = false;
+  }
+  finally{
+    await conn.close();
+  }
+
+  return isUpdatedDB;
 }
 
 Future<bool> createTableBatch() async {
