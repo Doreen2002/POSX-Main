@@ -103,7 +103,7 @@ Widget checkOutRightSide(context, CartItemScreenController model) {
                       autofocus: true, // Auto-focus to capture barcode scans
                       onSubmitted: (value) async {
                         if (value.isNotEmpty) {
-                          await _handlePaymentPageBarcodeScan(context, model, value);
+                         
                           model.paymentBarcodeController.clear();
                           // Return focus to the barcode field
                           Future.delayed(Duration(milliseconds: 100), () {
@@ -793,90 +793,4 @@ void paymentCalculation(
   currentModel.controller?.text = inputValue.toStringAsFixed(model.decimalPoints);
 }
 
-/// Handle barcode scan on payment page (for customer QR detection)
-Future<void> _handlePaymentPageBarcodeScan(
-  BuildContext context,
-  CartItemScreenController model,
-  String scannedValue,
-) async {
-  try {
-    logErrorToFile('Payment page barcode scanned: $scannedValue');
 
-    // PRIORITY 1: Check if scanned value is a customer QR code
-    final customerQRResult = await detectCustomerQR(scannedValue);
-    
-    if (customerQRResult != null) {
-      // Customer QR detected - switch customer
-      logErrorToFile('Customer QR detected on payment page: ${customerQRResult.customerName}');
-      
-      // Play beep sound
-      await model.playBeepSound();
-      
-      // Update customer in the model
-      model.customerListController.text = customerQRResult.customerName ?? '';
-      model.customerData = customerQRResult;
-      model.notifyListeners();
-      
-      // Show success dialog with auto-dismiss
-      showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context) {
-          // Auto-dismiss after 1.5 seconds
-          Future.delayed(Duration(milliseconds: 1500), () {
-            if (Navigator.canPop(context)) {
-              Navigator.pop(context);
-            }
-          });
-          
-          return Dialog(
-            backgroundColor: Colors.white,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Container(
-              padding: EdgeInsets.all(24),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    Icons.check_circle,
-                    color: Colors.green,
-                    size: 48,
-                  ),
-                  SizedBox(height: 16),
-                  Text(
-                    'Customer Switched',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87,
-                    ),
-                  ),
-                  SizedBox(height: 8),
-                  Text(
-                    customerQRResult.customerName ?? '',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.black54,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-            ),
-          );
-        },
-      );
-      
-      logErrorToFile('Customer switched to: ${customerQRResult.customerName}');
-      return; // Exit early - customer QR processed
-    }
-    
-    // If not a customer QR, log and ignore (payment page only handles customer QR)
-    logErrorToFile('Not a customer QR code on payment page, ignoring: $scannedValue');
-    
-  } catch (e) {
-    logErrorToFile('Error handling payment page barcode scan: $e');
-  }
-}
