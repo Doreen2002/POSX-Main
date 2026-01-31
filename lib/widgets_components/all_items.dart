@@ -308,7 +308,6 @@ return  _newNetRate;
 catch(e)
 {
 logErrorToFile("Error setting rate $e");
-print("Error setting rate $e");
 return 0.0;
 }
 
