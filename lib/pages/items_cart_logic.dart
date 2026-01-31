@@ -165,8 +165,9 @@ Future<void> scanItems(model, context, value) async {
 }
 
 Future<void> searchItems(model, val) async {
-
-  final searchVal = val.toLowerCase();
+  try
+  {
+      final searchVal = val.toLowerCase();
 
   final itemMapByName = {
     for (var item in model.itemListdata) (item.itemName ?? '').toLowerCase(): item
@@ -186,15 +187,14 @@ Future<void> searchItems(model, val) async {
   final barcodeMap = {
     for (var barcode in model.barcodeListdata) barcode.barcode.toLowerCase(): barcode
   };
-  
+
   model.filteredItems = [
     if (itemMapByName.containsKey(searchVal)) itemMapByName[searchVal],
     if (itemMapByCode.containsKey(searchVal)) itemMapByCode[searchVal],
     if (itemMapByPLU.containsKey(searchVal)) itemMapByPLU[searchVal],
     if (itemMapByBatchSeries.containsKey(searchVal)) itemMapByBatchSeries[searchVal],
     if (barcodeMap.containsKey(searchVal) && barcodeMap[searchVal]?.itemCode != null)
-      itemMapByCode[barcodeMap[searchVal]?.itemCode.toLowerCase()]
-   
+      ..._getItemWithBarcodeUom(barcodeMap[searchVal], itemMapByCode),
   ].whereType().toList();
 
   if (model.filteredItems.length == 1) return;
@@ -212,8 +212,33 @@ Future<void> searchItems(model, val) async {
     final barcode = barcodeMap[searchVal];
     final relatedItem = itemMapByCode[barcode?.itemCode?.toLowerCase()];
     if (relatedItem != null && !model.filteredItems.contains(relatedItem)) {
+     
+      if (barcode?.uom != null && barcode!.uom!.isNotEmpty) {
+        relatedItem.stockUom = barcode.uom;
+      }
       model.filteredItems.add(relatedItem);
     }
   }
+  }
+  catch(e){
+    logErrorToFile("Error searching items for value $val: $e");
+    print("Error searching items for value $val: $e");
+  }
+
 }
 
+List<TempItem> _getItemWithBarcodeUom(dynamic barcode,  itemMapByCode) {
+  if (barcode == null) return [];
+  
+  final itemCode = (barcode.itemCode ?? '').toString().toLowerCase();
+  final item = itemMapByCode[itemCode];
+  
+  if (item == null) return [];
+  
+  if (barcode.uom != null && barcode.uom!.isNotEmpty) {
+    item.stockUom = barcode.uom;
+    
+  }
+  
+  return [item];
+}
