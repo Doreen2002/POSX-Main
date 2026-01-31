@@ -1,6 +1,7 @@
 import 'package:offline_pos/data_source/local/pref_keys.dart';
 import 'package:offline_pos/data_source/local/user_preference.dart';
 import 'package:offline_pos/models/item_model.dart';
+import 'package:offline_pos/models/item_price.dart';
 import 'package:offline_pos/utils/dialog_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -284,9 +285,39 @@ Future<void> showOpeningPOSDialog(context, model, item) async {
   model.notifyListeners();
 }
 
+Future<double> _setRate(itemCart)
+async {
+try{
+await batch.fetchFromItemPrice();
+double _newNetRate  = batch.itemPriceListdata.firstWhere(
+(item) =>
+item.itemCode.toLowerCase() ==itemCart.itemCode.toLowerCase() && item.UOM == itemCart.stockUom.toLowerCase(),
+orElse: () => ItemPrice(name: '', itemCode: '', UOM: '', priceList: "", priceListRate: 0)
+).priceListRate;
+if (_newNetRate == 0) {
+final converstionRate = await batch.fetchFromUOM(itemCart.itemCode);
+if (converstionRate.isNotEmpty) {
+converstionRate.where((uom)=> uom.uom.toLowerCase() == itemCart.stockUom.toLowerCase()).forEach((uom) {
+_newNetRate=
+(itemCart.standardRate ?? 0) * (uom.conversionFactor ?? 1);
+});
+}
+}
+return  _newNetRate;
+}
+catch(e)
+{
+logErrorToFile("Error setting rate $e");
+print("Error setting rate $e");
+return 0.0;
+}
+
+}
+
 Future<void> addItemsToCartTable(model, context, item, {scan=false}) async {
   try {
     await UserPreference.getInstance();
+    final _standardPrice = await _setRate(item);
    int allowNegativeStock = UserPreference.getInt(PrefKeys.allowNegativeStock) ?? 0;
     String searchedBatch = model.searchController.text.isNotEmpty ? model.searchController.text.toLowerCase() : item.itemCode!.toLowerCase();
     if (item.openingStock > 0 || (item.openingStock <= 0 && allowNegativeStock == 1)) {
@@ -314,16 +345,16 @@ Future<void> addItemsToCartTable(model, context, item, {scan=false}) async {
                 batchNumberSeries: searchMatchedBatch.batchId,
                 hasExpiryDate: item.hasExpiryDate,
                 hasBatchNo: item.hasBatchNo,
-                newNetRate: item.standardRate,
-                newRate: item.standardRate,
-                standardRate: item.standardRate,
+                newNetRate: _standardPrice,
+                newRate: _standardPrice,
+                standardRate: _standardPrice,
                 itemGroup: item.itemGroup,
                 stockUom: item.stockUom,
                 batchQty: searchMatchedBatch.batchQty,
                 image: item.image ?? '',
                 totalWithVatPrev:
-                    item.standardRate +
-                    item.itemvat / 100 * item.standardRate,
+                    _standardPrice +
+                    item.itemvat / 100 * _standardPrice,
                 singleItemDiscAmount: 0,
                 singleItemDiscPer: 0,
                 openingStock:
@@ -332,7 +363,7 @@ Future<void> addItemsToCartTable(model, context, item, {scan=false}) async {
                 maxDiscount: item.maxDiscount,
                 vatExclusiveRate: item.vatExclusiveRate,
                 customVATInclusive: item.customVATInclusive,
-                itemTotal: item.standardRate, 
+                itemTotal: _standardPrice, 
                 barcode: item.barcode,
                 hasPricingRuleApplied: false,
                 appliedPricingRuleId: null,
@@ -380,17 +411,17 @@ Future<void> addItemsToCartTable(model, context, item, {scan=false}) async {
                         batchNumberSeries: model.batchController.text,
                         hasExpiryDate: item.hasExpiryDate,
                         hasBatchNo: item.hasBatchNo,
-                        newNetRate: item.standardRate,
-                        standardRate: item.standardRate,
-                        newRate: item.standardRate,
+                        newNetRate: _standardPrice,
+                        standardRate: _standardPrice,
+                        newRate: _standardPrice,
                         itemGroup: item.itemGroup,
                         batchQty: matchedBatch.batchQty,
                         stockUom: item.stockUom,
                         image: item.image ?? '',
-                        itemTotal: item.standardRate, // Line total will be calculated (rate × qty)
+                        itemTotal: _standardPrice, // Line total will be calculated (rate × qty)
                         totalWithVatPrev:
-                            item.standardRate +
-                            item.itemvat / 100 * item.standardRate,
+                            _standardPrice +
+                            item.itemvat / 100 * _standardPrice,
                         singleItemDiscAmount: 0,
                         singleItemDiscPer: 0,
                         openingStock:
@@ -501,16 +532,16 @@ Future<void> addItemsToCartTable(model, context, item, {scan=false}) async {
             itemCode: item.itemCode,
             itemName: item.itemName,
             qty: 1,
-            newRate: item.standardRate,
-            newNetRate: item.standardRate,
+            newRate: _standardPrice,
+            newNetRate: _standardPrice,
             itemGroup: item.itemGroup,
             stockUom: item.stockUom,
             image: item.image ?? '',
             hasBatchNo: item.hasBatchNo,
-            itemTotal: item.standardRate,
-            standardRate: item.standardRate, // Line total will be calculated (rate × qty)
+            itemTotal: _standardPrice,
+            standardRate: _standardPrice, // Line total will be calculated (rate × qty)
             totalWithVatPrev:
-                item.standardRate + item.itemvat / 100 * item.standardRate,
+                _standardPrice + item.itemvat / 100 * _standardPrice,
             singleItemDiscAmount: 0,
             singleItemDiscPer: 0,
             openingStock: double.parse(item.openingStock.toString()).toInt(),
