@@ -247,6 +247,7 @@ Future<void> createInvoiceItem(model, conn, invoiceNo, {isReturn=0}) async {
     aa.netRate = element.totalWithVatPrev;
     aa.netAmount = element.totalWithVatPrev;
     aa.customVATInclusive =  0;
+    aa.barcode = element.barcode ?? "";
     aa.discountPercentage = element.singleItemDiscPer != null ? element.singleItemDiscPer?.toDouble() : 0.000;
     aa.discountAmount = element.singleItemDiscAmount != null ? element.singleItemDiscAmount?.toDouble() : 0.000;
     temp.add(aa);
