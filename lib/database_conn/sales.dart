@@ -40,7 +40,7 @@ Future<bool> createSalesInvoiceItemTable() async {
    final conn = await getDatabase();
   try {
   
-    await conn.query( "CREATE TABLE IF NOT EXISTS SalesInvoiceItem  (id INTEGER PRIMARY KEY AUTO_INCREMENT,name varchar(255),item_code varchar(255),item_name varchar(255),image varchar(255),stock_uom varchar(255),item_group varchar(255),rate FLOAT,qty int,batch_no varchar(255),serial_no varchar(255),item_tax_rate varchar(255),price_list_rate FLOAT,base_price_list_rate FLOAT,amount FLOAT,net_rate FLOAT,net_amount FLOAT,discount_percentage FLOAT,discount_amount FLOAT, custom_is_vat_inclusive INTEGER,applied_pricing_rule_id varchar(255),applied_pricing_rule_title varchar(255),discount_source varchar(255))");
+    await conn.query( "CREATE TABLE IF NOT EXISTS SalesInvoiceItem  (id INTEGER PRIMARY KEY AUTO_INCREMENT,name varchar(255),item_code varchar(255),item_name varchar(255),image varchar(255),stock_uom varchar(255),item_group varchar(255),rate FLOAT,qty int,batch_no varchar(255),serial_no varchar(255),item_tax_rate varchar(255),price_list_rate FLOAT,base_price_list_rate FLOAT,amount FLOAT,net_rate FLOAT,net_amount FLOAT,discount_percentage FLOAT,discount_amount FLOAT, custom_is_vat_inclusive INTEGER,applied_pricing_rule_id varchar(255),applied_pricing_rule_title varchar(255),discount_source varchar(255), barcode varchar(255))");
     
     // Add pricing rule columns to existing tables
     try {
