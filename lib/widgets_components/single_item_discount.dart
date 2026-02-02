@@ -1387,9 +1387,9 @@ Future<void> onChangeDiscountPercentage(model, val, selectedItemIndex, context) 
     }
 
     final itemAmount = model.cartItems[selectedItemIndex].newNetRate ?? 0.0;
-    final maxPercent = double.parse(model.singlediscountMaxPercent);
+    double  maxPercent = double.parse(model.singlediscountMaxPercent);
     final allowedAmount = (itemAmount * double.parse(val)) / 100;
-
+    maxPercent == 0 ? maxPercent = 100 : maxPercent;
     model.singlediscountAmountController.text = allowedAmount.toStringAsFixed(
       model.decimalPoints,
     );
@@ -1400,7 +1400,7 @@ Future<void> onChangeDiscountPercentage(model, val, selectedItemIndex, context) 
       DialogUtils.showError(
         context: context,
         title:
-            'MAX allowed discount percent: ${model.singlediscountMaxPercent}%',
+            'MAX allowed discount percent: ${maxPercent}%',
         message: 'Please enter a discount percent within the allowed limit.',
       );
     }
