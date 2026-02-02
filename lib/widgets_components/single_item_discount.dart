@@ -996,13 +996,15 @@ Widget singleItemDiscountScreen(
                             double maxAmount = double.parse(
                               model.singlediscountMaxAmount,
                             );
+                            
                             double enteredPercent = double.parse(
                               model.singlediscountPercentController.text,
                             );
                             double maxPercent = double.parse(
                               model.singlediscountMaxPercent,
                             ) ;
-
+                            maxAmount == 0 ? maxAmount = (item.newNetRate ?? 0): maxAmount;
+                            maxPercent == 0 ? maxPercent = 100 : maxPercent;
                             //  Stop execution if validation fails
                             if (enteredAmount > maxAmount) {
                               discountAlert(
@@ -1417,18 +1419,19 @@ void onChageDiscountAmount(model, val, selectedItemIndex, context) {
   final itemAmount = model.cartItems[selectedItemIndex].newNetRate ?? 0.0;
   final maxDiscount = model.cartItems[selectedItemIndex].maxDiscount ?? 0.0;
   final allowedDiscount = (100 / itemAmount) * double.parse(val);
-
+  double _discountAmount = double.tryParse(model.singlediscountMaxAmount) ?? 0;
+  _discountAmount == 0 ? _discountAmount = itemAmount : _discountAmount;
   model.singlediscountPercentController.text = allowedDiscount.toStringAsFixed(
     model.decimalPoints,
   );
   bool _isDialogShowing = false;
 
-  if (double.parse(val) > double.parse(model.singlediscountMaxAmount)) {
+  if (double.parse(val) > _discountAmount) {
     if (!_isDialogShowing) {
       _isDialogShowing = true;
       DialogUtils.showError(
         context: context,
-        title: 'MAX allowed discount amount: ${(( double.tryParse(model.singlediscountMaxAmount) ?? 0) * (int.tryParse(model.singleqtyController.text)??0)).toStringAsFixed(model.decimalPoints)}',
+        title: 'MAX allowed discount amount: ${(_discountAmount * (int.tryParse(model.singleqtyController.text)??0)).toStringAsFixed(model.decimalPoints)}',
         message: 'Please enter a discount amount within the allowed limit.',
       );
       _isDialogShowing = false;
