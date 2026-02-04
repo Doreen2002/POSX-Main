@@ -291,7 +291,7 @@ try{
 await batch.fetchFromItemPrice();
 double _newNetRate  = batch.itemPriceListdata.firstWhere(
 (item) =>
-item.itemCode.toLowerCase() ==itemCart.itemCode.toLowerCase() && item.UOM == itemCart.stockUom.toLowerCase(),
+item.itemCode.toLowerCase() ==itemCart.itemCode.toLowerCase() && item.UOM.toLowerCase()== itemCart.stockUom.toLowerCase(),
 orElse: () => ItemPrice(name: '', itemCode: '', UOM: '', priceList: "", priceListRate: 0)
 ).priceListRate;
 if (_newNetRate == 0) {
