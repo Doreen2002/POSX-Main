@@ -146,7 +146,7 @@ Future<List<TempPOSProfileModel>> posProfileRequest(String httpType, String frap
       return [];
     }
   } catch (e) {
-    print("❌ Error: $e");
+    logErrorToFile("❌ Error: $e");
     
     return [];
   }
