@@ -130,237 +130,237 @@ class ReceiptPrinterSection extends StatefulWidget {
              
               SizedBox(width: double.infinity, child: ElevatedButton.icon(onPressed: _scanning ? null : _scan, icon: _scanning ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2)) : const Icon(Icons.search, color: Color(0xFF2B3691),), label: Text(_scanning ? 'Scanning...' : 'Scan for Printers', style: TextStyle(color: Color(0xFF2B3691),),),)),
               SizedBox(height: 40.h),
-                SizedBox(width: double.infinity,  child:Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                   ElevatedButton.icon(onPressed: ()async{await _setPrinter();},  label: Text( 'Set Default Printer', ), style: ElevatedButton.styleFrom(
-              backgroundColor: Color(0xFF2B3691),
-              foregroundColor: Colors.white,
+            //     SizedBox(width: double.infinity,  child:Row(
+            //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //       children: [
+            //        ElevatedButton.icon(onPressed: ()async{await _setPrinter();},  label: Text( 'Set Default Printer', ), style: ElevatedButton.styleFrom(
+            //   backgroundColor: Color(0xFF2B3691),
+            //   foregroundColor: Colors.white,
               
-              padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 12.w),
-            ),),
-            Text("Default Printer : ${UserPreference.getString(PrefKeys.defaultPrinter)}", style: TextStyle(fontWeight:FontWeight.bold),)
-                ],)),
-                SizedBox(height: 80.h),
-                SizedBox(
-                  width: double.infinity,child:Text("Print Format Settings  ", textAlign: TextAlign.center,  style: TextStyle(fontSize: 6.sp, fontWeight: FontWeight.w600))),
-                 SizedBox(height: 20.h),
-                SizedBox(
-                  width: double.infinity,
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Row(
-                          children: [
-                            SizedBox(width:100,  child:const Text('Company Name', style: TextStyle(fontWeight: FontWeight.bold))),
-                            SizedBox(width: 8.w),
-                            Expanded(
-                              child: TextField(
-                                controller: _companyNameController,
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                ),
-                                onChanged: (v) async {
+            //   padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 12.w),
+            // ),),
+            // Text("Default Printer : ${UserPreference.getString(PrefKeys.defaultPrinter)}", style: TextStyle(fontWeight:FontWeight.bold),)
+            //     ],)),
+            //     SizedBox(height: 80.h),
+            //     SizedBox(
+            //       width: double.infinity,child:Text("Print Format Settings  ", textAlign: TextAlign.center,  style: TextStyle(fontSize: 6.sp, fontWeight: FontWeight.w600))),
+            //      SizedBox(height: 20.h),
+            //     SizedBox(
+            //       width: double.infinity,
+            //       child: Row(
+            //         children: [
+            //           Expanded(
+            //             child: Row(
+            //               children: [
+            //                 SizedBox(width:100,  child:const Text('Company Name', style: TextStyle(fontWeight: FontWeight.bold))),
+            //                 SizedBox(width: 8.w),
+            //                 Expanded(
+            //                   child: TextField(
+            //                     controller: _companyNameController,
+            //                     decoration: const InputDecoration(
+            //                       border: OutlineInputBorder(),
+            //                     ),
+            //                     onChanged: (v) async {
                                 
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(width: 12.w),
-                      Expanded(
-                        child: Row(
-                          children: [
-                           SizedBox(width:80,  child:const Text('TAX ID', style: TextStyle(fontWeight: FontWeight.bold))),
-                            SizedBox(width: 8.w),
-                            Expanded(
-                              child: TextField(
-                                controller: _taxIDController,
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                ),
-                                onChanged: (v) async {
+            //                     },
+            //                   ),
+            //                 ),
+            //               ],
+            //             ),
+            //           ),
+            //           SizedBox(width: 12.w),
+            //           Expanded(
+            //             child: Row(
+            //               children: [
+            //                SizedBox(width:80,  child:const Text('TAX ID', style: TextStyle(fontWeight: FontWeight.bold))),
+            //                 SizedBox(width: 8.w),
+            //                 Expanded(
+            //                   child: TextField(
+            //                     controller: _taxIDController,
+            //                     decoration: const InputDecoration(
+            //                       border: OutlineInputBorder(),
+            //                     ),
+            //                     onChanged: (v) async {
                                   
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 12.h),
+            //                     },
+            //                   ),
+            //                 ),
+            //               ],
+            //             ),
+            //           ),
+            //         ],
+            //       ),
+            //     ),
+            //     SizedBox(height: 12.h),
                 
-                SizedBox(
-                  width: double.infinity,
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Row(
-                          children: [
-                            SizedBox(width:100,  child:const Text('Mobile No', style: TextStyle(fontWeight: FontWeight.bold))),
-                            SizedBox(width: 8.w),
-                            Expanded(
-                              child: TextField(
-                                controller: _mobileNoNameController,
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                ),
-                                onChanged: (v) async {
+            //     SizedBox(
+            //       width: double.infinity,
+            //       child: Row(
+            //         children: [
+            //           Expanded(
+            //             child: Row(
+            //               children: [
+            //                 SizedBox(width:100,  child:const Text('Mobile No', style: TextStyle(fontWeight: FontWeight.bold))),
+            //                 SizedBox(width: 8.w),
+            //                 Expanded(
+            //                   child: TextField(
+            //                     controller: _mobileNoNameController,
+            //                     decoration: const InputDecoration(
+            //                       border: OutlineInputBorder(),
+            //                     ),
+            //                     onChanged: (v) async {
                                 
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(width: 12.w),
-                      Expanded(
-                        child: Row(
-                          children: [
-                            SizedBox(width:80,  child:const Text('Email', style: TextStyle(fontWeight: FontWeight.bold))),
-                            SizedBox(width: 8.w),
-                            Expanded(
-                              child: TextField(
-                                controller: _emailController,
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                ),
-                                onChanged: (v) async {
+            //                     },
+            //                   ),
+            //                 ),
+            //               ],
+            //             ),
+            //           ),
+            //           SizedBox(width: 12.w),
+            //           Expanded(
+            //             child: Row(
+            //               children: [
+            //                 SizedBox(width:80,  child:const Text('Email', style: TextStyle(fontWeight: FontWeight.bold))),
+            //                 SizedBox(width: 8.w),
+            //                 Expanded(
+            //                   child: TextField(
+            //                     controller: _emailController,
+            //                     decoration: const InputDecoration(
+            //                       border: OutlineInputBorder(),
+            //                     ),
+            //                     onChanged: (v) async {
                                   
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+            //                     },
+            //                   ),
+            //                 ),
+            //               ],
+            //             ),
+            //           ),
+            //         ],
+            //       ),
+            //     ),
                 
-                SizedBox(height: 12.h),
-                SizedBox(
-                  width: double.infinity,
-                  child: Row(
-                    children: [
-                      Expanded(child: Row(children: [
-                        SizedBox(width:100,  child:const Text('CPR NO', style: TextStyle(fontWeight: FontWeight.bold),)),
-                      SizedBox(width: 8.w),
-                      Expanded(
-                        child: TextField(
-                          controller: _cprController,
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                          ),
+            //     SizedBox(height: 12.h),
+            //     SizedBox(
+            //       width: double.infinity,
+            //       child: Row(
+            //         children: [
+            //           Expanded(child: Row(children: [
+            //             SizedBox(width:100,  child:const Text('CPR NO', style: TextStyle(fontWeight: FontWeight.bold),)),
+            //           SizedBox(width: 8.w),
+            //           Expanded(
+            //             child: TextField(
+            //               controller: _cprController,
+            //               decoration: const InputDecoration(
+            //                 border: OutlineInputBorder(),
+            //               ),
                         
-                          onChanged: (v) async {
+            //               onChanged: (v) async {
                            
-                          },
-                        ),
-                      ),
-                      ],)),
-                      SizedBox(width: 12.w),
-                      Expanded(child: Row(children: [
-                      SizedBox(width:100,  child:const Text('Address', style: TextStyle(fontWeight: FontWeight.bold),)),
-                      SizedBox(width: 8.w),
-                      Expanded(
-                        child: TextField(
-                          controller: _addressController,
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                          ),
-                          maxLines: 2,
-                          onChanged: (v) async {
+            //               },
+            //             ),
+            //           ),
+            //           ],)),
+            //           SizedBox(width: 12.w),
+            //           Expanded(child: Row(children: [
+            //           SizedBox(width:100,  child:const Text('Address', style: TextStyle(fontWeight: FontWeight.bold),)),
+            //           SizedBox(width: 8.w),
+            //           Expanded(
+            //             child: TextField(
+            //               controller: _addressController,
+            //               decoration: const InputDecoration(
+            //                 border: OutlineInputBorder(),
+            //               ),
+            //               maxLines: 2,
+            //               onChanged: (v) async {
                            
-                          },
-                        ),
-                      ),
-                      ],))
+            //               },
+            //             ),
+            //           ),
+            //           ],))
                       
-                    ],
-                  ),
-                ),
-                SizedBox(height: 12.h),
+            //         ],
+            //       ),
+            //     ),
+            //     SizedBox(height: 12.h),
                  
-                 SizedBox(   width: double.infinity,
-                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
+            //      SizedBox(   width: double.infinity,
+            //      child: Row(
+            //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //       children: [
                   
-                  Expanded(
-                      flex: 2,child: Row(children: [
-                    SizedBox(width:110,  child:const Text('Is Vat Enabled', style: TextStyle(fontWeight: FontWeight.bold))),
-                  Checkbox(value:_isVatEnabled ?? false, onChanged: (value){
-                    setState(() {
-                       _isVatEnabled = value ?? false;
-                    });
-                  })
-                  ],)),
-                  Expanded(
-                    flex: 2,
-                        child: Row(
-                          children: [
-                            SizedBox(width:180,  child:const Text('Currency Precision', style: TextStyle(fontWeight: FontWeight.bold))),
-                            SizedBox(width: 2.w),
-                            SizedBox(
-                              width:  30.w,
-                              child: TextField(
-                                textAlign: TextAlign.center,
-                                controller: _currencyPrecision,
-                                inputFormatters: [
-                                DecimalTextInputFormatter(decimalRange: 0),
-                                LengthLimitingTextInputFormatter(5),
-                                ],
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                ),
-                                onChanged: (v) async {
+            //       Expanded(
+            //           flex: 2,child: Row(children: [
+            //         SizedBox(width:110,  child:const Text('Is Vat Enabled', style: TextStyle(fontWeight: FontWeight.bold))),
+            //       Checkbox(value:_isVatEnabled ?? false, onChanged: (value){
+            //         setState(() {
+            //            _isVatEnabled = value ?? false;
+            //         });
+            //       })
+            //       ],)),
+            //       Expanded(
+            //         flex: 2,
+            //             child: Row(
+            //               children: [
+            //                 SizedBox(width:180,  child:const Text('Currency Precision', style: TextStyle(fontWeight: FontWeight.bold))),
+            //                 SizedBox(width: 2.w),
+            //                 SizedBox(
+            //                   width:  30.w,
+            //                   child: TextField(
+            //                     textAlign: TextAlign.center,
+            //                     controller: _currencyPrecision,
+            //                     inputFormatters: [
+            //                     DecimalTextInputFormatter(decimalRange: 0),
+            //                     LengthLimitingTextInputFormatter(5),
+            //                     ],
+            //                     decoration: const InputDecoration(
+            //                       border: OutlineInputBorder(),
+            //                     ),
+            //                     onChanged: (v) async {
                                 
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                  Expanded(
-                    flex: 2,
-                        child: Row(
-                          children: [
-                            SizedBox(width:180,  child:const Text('Print Format Width (mm)', style: TextStyle(fontWeight: FontWeight.bold))),
-                             SizedBox(width: 2.w),
-                             SizedBox(
-                              width:  30.w,
-                              child: TextField(
-                                textAlign: TextAlign.center,
-                                controller: _printFormatWidth,
-                                inputFormatters: [
-                                DecimalTextInputFormatter(decimalRange: 2),
-                                LengthLimitingTextInputFormatter(5),
-                                ],
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                ),
-                                onChanged: (v) async {
+            //                     },
+            //                   ),
+            //                 ),
+            //               ],
+            //             ),
+            //           ),
+            //       Expanded(
+            //         flex: 2,
+            //             child: Row(
+            //               children: [
+            //                 SizedBox(width:180,  child:const Text('Print Format Width (mm)', style: TextStyle(fontWeight: FontWeight.bold))),
+            //                  SizedBox(width: 2.w),
+            //                  SizedBox(
+            //                   width:  30.w,
+            //                   child: TextField(
+            //                     textAlign: TextAlign.center,
+            //                     controller: _printFormatWidth,
+            //                     inputFormatters: [
+            //                     DecimalTextInputFormatter(decimalRange: 2),
+            //                     LengthLimitingTextInputFormatter(5),
+            //                     ],
+            //                     decoration: const InputDecoration(
+            //                       border: OutlineInputBorder(),
+            //                     ),
+            //                     onChanged: (v) async {
                                 
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(width: 8.w),
-                     ElevatedButton.icon(onPressed: ()async{await _savePrintFormatSettings();},  label: Text( 'Save', ), style: ElevatedButton.styleFrom(
-              backgroundColor: Color(0xFF2B3691),
-              foregroundColor: Colors.white,
+            //                     },
+            //                   ),
+            //                 ),
+            //               ],
+            //             ),
+            //           ),
+            //           SizedBox(width: 8.w),
+            //          ElevatedButton.icon(onPressed: ()async{await _savePrintFormatSettings();},  label: Text( 'Save', ), style: ElevatedButton.styleFrom(
+            //   backgroundColor: Color(0xFF2B3691),
+            //   foregroundColor: Colors.white,
               
-              padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 12.w),
-            ),), 
+            //   padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 12.w),
+            // ),), 
                     
 
                   
-                ],),),
+            //     ],),),
                    SizedBox(height: 40.h),
               if (_available.isNotEmpty)
                 AutoPersist<String?>(prefKey: PrefKeys.receiptPrinterUrl, defaultValue: null, builder: (ctx, val, onChanged) {
