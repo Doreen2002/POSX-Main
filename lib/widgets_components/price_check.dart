@@ -23,20 +23,16 @@ final List<String> itemNames =
     itemListdata.map((item) => item.itemName.toString() ).toList();
 
 String? selectedItem;
-String rate = '0.00';
-dynamic stock = 0;
-double vat = 0;
-dynamic matchedItem = TempItem(name: '', itemCode: '');
+TempItem matchedItem = TempItem(name: '', itemCode: '', itemName: '', vatValue: 0, standardRate: 0, openingStock: 0, );
 
 Widget priceCheckModal(
   BuildContext context,
   model,
   void Function(void Function()) setState,
 ) {
-  final currencyPrecision = UserPreference.getInt(PrefKeys.currencyPrecision) ?? 2;
   return Container(
-    width: 150.w,
-    height: 570.h,
+    width:  160.w ,
+    height: (selectedItem ?? '').isEmpty ? 395.h  : 590.h,
     margin: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
     decoration: BoxDecoration(
       borderRadius: BorderRadius.all(Radius.circular(10.r)),
@@ -164,21 +160,22 @@ Widget priceCheckModal(
           onSelected: (suggestion) {
             selectedItem = suggestion;
             _controller.text = suggestion;
+            setState(() {
+            
+          
             matchedItem =
-                itemListdata
+                model.itemListdata
                     .where((item) => item.itemName == selectedItem)
                     .first;
-                     setState(() {
-            rate = matchedItem.standardRate.toString();
-            stock = matchedItem.openingStock;
-          });
-           
+                     
+           });
 
           },
         ),
         SizedBox(height: 3.h),
         if (selectedItem != null)
           Container(
+          
             padding: EdgeInsets.all(5.w),
             decoration: BoxDecoration(
               color: const Color(0xFFE1E6FD),
@@ -189,7 +186,17 @@ Widget priceCheckModal(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "$selectedItem",
+                  "${matchedItem.itemCode}",
+                  style: TextStyle(
+                    fontSize: 6.sp,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF2B3691),
+                  ),
+                ),
+
+                SizedBox(height: 1.h),
+                Text(
+                  "${matchedItem.itemName}",
                   style: TextStyle(
                     fontSize: 6.sp,
                     fontWeight: FontWeight.bold,
@@ -201,7 +208,7 @@ Widget priceCheckModal(
                 Row(
                   children: [
                     Text(
-                      "Price: ${UserPreference.getString(PrefKeys.currency)} ${double.tryParse(rate)?.toStringAsFixed(currencyPrecision) ?? rate}",
+                      "Price: ${double.parse((matchedItem.standardRate).toString()).toStringAsFixed(model.decimalPoints)}",
                       style: TextStyle(
                         fontSize: 5.sp,
                         color: Color(0xFF2B3691),
@@ -214,7 +221,7 @@ Widget priceCheckModal(
                   children: [
                     Text(
                       // "VAT: $stock",
-                      "VAT: ${UserPreference.getString(PrefKeys.currency)} ${vat.toStringAsFixed(model.decimalPoints)}",
+                      "VAT: ${double.parse(((matchedItem.itemvat/100 * matchedItem.standardRate)).toString()).toStringAsFixed(model.decimalPoints)}",
                       style: TextStyle(
                         fontSize: 5.sp,
                         color: Color(0xFF2B3691),
@@ -226,7 +233,20 @@ Widget priceCheckModal(
                 Row(
                   children: [
                     Text(
-                      "Stock: $stock",
+                      // "VAT: $stock",
+                      "Price With VAT: ${double.parse((matchedItem.standardRate + (matchedItem.itemvat/100 * matchedItem.standardRate)).toString()).toStringAsFixed(model.decimalPoints)}",
+                      style: TextStyle(
+                        fontSize: 5.sp,
+                        color: Color(0xFF2B3691),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 4.h),
+                Row(
+                  children: [
+                    Text(
+                      "Stock: ${double.parse((matchedItem.openingStock).toString()).toStringAsFixed(model.decimalPoints)}",
                       style: TextStyle(
                         fontSize: 5.sp,
                         color: Color(0xFF2B3691),
@@ -252,9 +272,8 @@ Widget priceCheckModal(
                     onPressed: () async {
                       await addToCart(matchedItem, model, context).then((_) {
                         selectedItem = null;
-                        matchedItem = null;
-                        rate = '';
-                        stock = 0;
+                        matchedItem = TempItem(name: '', itemCode: '', itemName: '', vatValue: 0, standardRate: 0, openingStock: 0, );
+                       
                         _controller.clear();
                       });
                     },
@@ -281,9 +300,8 @@ Widget priceCheckModal(
                     onPressed: () {
                       setState(() {
                         selectedItem = null;
-                        matchedItem = null;
-                        rate = '';
-                        stock = 0;
+                        matchedItem = TempItem(name: '', itemCode: '', itemName: '', vatValue: 0, standardRate: 0, openingStock: 0, );
+                       
                         _controller.clear();
                       });
                       Navigator.pop(context);
