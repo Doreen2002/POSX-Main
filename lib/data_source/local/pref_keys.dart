@@ -37,6 +37,10 @@ class PrefKeys {
     static const String syncInterval = "syncInterval";
 static const String companyEmail = "companyEmail";
 static const String isVatEnabled = "isVatEnabled";
+static const String isGroupCompany = "isGroupCompany";
+static const String groupCompanyName = "groupCompanyName";
+static const String groupCompanyAddress = "groupCompanyAddress";
+static const String groupCompanyVATID = "groupCompanyVATID";
   //<-------------Setting Value------------->
   static const String adminUserToken = "adminUserToken";
   static const String loggedInUserToken = "loggedInUserToken";

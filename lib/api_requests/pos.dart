@@ -41,20 +41,28 @@ Future<List<TempPOSProfileModel>> posProfileRequest(String httpType, String frap
           if (item['default'] == 1)
           {
               await UserPreference.getInstance();
-              await UserPreference.putInt(PrefKeys.allowNegativeStock, item['allow_negative_stock']);
-              // await UserPreference.putString(PrefKeys.companyName, item['company']);
-              // await UserPreference.putString(PrefKeys.taxID, item['tax_id']);
-              // await UserPreference.putString(PrefKeys.crNO, item['cr_no']);
-              //  await UserPreference.putString(PrefKeys.companyAddress, item['address']);
+              await UserPreference.putInt(PrefKeys.allowNegativeStock, item['allow_negative_stock'] ?? 0);
+              await UserPreference.putString(PrefKeys.companyName, item['company_name'] ?? "");
+              await UserPreference.putString(PrefKeys.taxID, item['tax_id']?? "");
+              await UserPreference.putString(PrefKeys.crNO, item['cr_no']?? "");
+              await UserPreference.putString(PrefKeys.companyAddress, item['address']?? "");
+              await UserPreference.putString(PrefKeys.companyEmail, item['email']?? "");
+              await UserPreference.putString(PrefKeys.receiptPhoneNumber, item['mobile_no']?? "");
+              await UserPreference.putBool(PrefKeys.isVatEnabled, item['enable_vat']);
+              await UserPreference.putInt(PrefKeys.isGroupCompany, item['custom_is_group_company'] ?? 0);
+              await UserPreference.putString(PrefKeys.groupCompanyName, item['custom_group_company_name'] ?? "");
+              await UserPreference.putString(PrefKeys.groupCompanyAddress, item['custom_group_company_address']?? "");
+              await UserPreference.putString(PrefKeys.groupCompanyVATID, item['custom_group_company_vat_id']?? "");
+              await UserPreference.putString(PrefKeys.companyEmail, item['email']?? "");
               await UserPreference.putString(PrefKeys.walkInCustomer, item['customer'] ?? "");
               await UserPreference.putString(PrefKeys.branchID, item['custom_pos_id'] ?? "");
-              await UserPreference.putString(PrefKeys.currency, item['currency']);
-              // await UserPreference.putString (PrefKeys.currencyPrecision, item['currency_precision'].toString());
-              await UserPreference.putString(PrefKeys.posProfileName, item['name']);
-              await UserPreference.putString(PrefKeys.country, item['country']);
-              await UserPreference.putString(PrefKeys.applyDiscountOn, item['apply_discount_on']);
-              await UserPreference.putString(PrefKeys.posProfileWarehouse, item['warehouse']);
-              await UserPreference.putString(PrefKeys.maxDiscountAllowed, item['custom_max_invoice_discount'].toString());
+              await UserPreference.putString(PrefKeys.currency, item['currency']?? "");
+              await UserPreference.putInt (PrefKeys.currencyPrecision, item['currency_precision']);
+              await UserPreference.putString(PrefKeys.posProfileName, item['name']?? "");
+              await UserPreference.putString(PrefKeys.country, item['country']?? "");
+              await UserPreference.putString(PrefKeys.applyDiscountOn, item['apply_discount_on']?? "");
+              await UserPreference.putString(PrefKeys.posProfileWarehouse, item['warehouse']?? "");
+              await UserPreference.putString(PrefKeys.maxDiscountAllowed, item['custom_max_invoice_discount'].toString() ?? "");
               await UserPreference.putBool(PrefKeys.enableBelowCostValidation, item['custom_enable_below_cost_validation'] == 1);
               
               // Cash Drawer Settings from ERPNext
@@ -138,7 +146,7 @@ Future<List<TempPOSProfileModel>> posProfileRequest(String httpType, String frap
       return [];
     }
   } catch (e) {
-    logErrorToFile("❌ Error: $e");
+    print("❌ Error: $e");
     
     return [];
   }
