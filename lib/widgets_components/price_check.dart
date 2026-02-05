@@ -23,8 +23,6 @@ List<String> itemNames =
 String? selectedItem;
 TempItem matchedItem = TempItem(name: '', itemCode: '', itemName: '', vatValue: 0, standardRate: 0, openingStock: 0, );
 
-
-
 Widget priceCheckModal(
   BuildContext context,
   model,

@@ -425,6 +425,9 @@ import 'package:flutter/foundation.dart';
                       children: [
                       if(UserPreference.getString(PrefKeys.taxID) != '')  pw.Text('VAT: ${UserPreference.getString(PrefKeys.taxID) ?? ""}' ,style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 7)),
                         if(UserPreference.getString(PrefKeys.companyAddress) != '') pw.Text(UserPreference.getString(PrefKeys.companyAddress) ?? "",style: pw.TextStyle(fontWeight: pw.FontWeight.normal,fontSize: 7)),
+                        if(UserPreference.getInt(PrefKeys.isGroupCompany) == 1) pw.Text(' ${UserPreference.getString(PrefKeys.groupCompanyName) ?? ""}' ,style: pw.TextStyle(fontSize: 7)),
+                        if(UserPreference.getInt(PrefKeys.isGroupCompany) == 1) pw.Text(' ${UserPreference.getString(PrefKeys.groupCompanyAddress) ?? ""}' ,style: pw.TextStyle(fontSize: 7)),
+                        if(UserPreference.getInt(PrefKeys.isGroupCompany) == 1) pw.Text(' ${UserPreference.getString(PrefKeys.groupCompanyVATID) ?? ""}' ,style: pw.TextStyle(fontSize: 7)),
                         pw.Text('PLEASE REFER TO THE EXCHANGE POLICY',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 7)),
                         pw.Text('PRICE INCLUDING VAT ',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 7)),
                         pw.Text('!!!THANK YOU!!!',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,fontSize: 8)),

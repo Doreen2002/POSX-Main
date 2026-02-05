@@ -49,10 +49,10 @@ Future<List<TempPOSProfileModel>> posProfileRequest(String httpType, String frap
               await UserPreference.putString(PrefKeys.companyEmail, item['email']?? "");
               await UserPreference.putString(PrefKeys.receiptPhoneNumber, item['mobile_no']?? "");
               await UserPreference.putBool(PrefKeys.isVatEnabled, item['enable_vat']);
-              await UserPreference.putInt(PrefKeys.isGroupCompany, item['custom_is_group_company'] ?? 0);
-              await UserPreference.putString(PrefKeys.groupCompanyName, item['custom_group_company_name'] ?? "");
-              await UserPreference.putString(PrefKeys.groupCompanyAddress, item['custom_group_company_address']?? "");
-              await UserPreference.putString(PrefKeys.groupCompanyVATID, item['custom_group_company_vat_id']?? "");
+              await UserPreference.putInt(PrefKeys.isGroupCompany, item['is_group_company'] ?? 0);
+              await UserPreference.putString(PrefKeys.groupCompanyName, item['group_company_name'] ?? "");
+              await UserPreference.putString(PrefKeys.groupCompanyAddress, item['group_company_address']?? "");
+              await UserPreference.putString(PrefKeys.groupCompanyVATID, item['group_company_vat_id']?? "");
               await UserPreference.putString(PrefKeys.companyEmail, item['email']?? "");
               await UserPreference.putString(PrefKeys.walkInCustomer, item['customer'] ?? "");
               await UserPreference.putString(PrefKeys.branchID, item['custom_pos_id'] ?? "");
