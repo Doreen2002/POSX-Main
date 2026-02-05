@@ -462,7 +462,6 @@ final List<String> _itemListdata = (model.itemListdata as List<TempItem>)
     .map((TempItem item) => item.itemName ?? '')
     .take(4)
     .toList();
-print(_itemListdata);
 return _itemListdata;
 
 }
