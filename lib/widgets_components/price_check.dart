@@ -4,6 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:offline_pos/data_source/local/pref_keys.dart';
 import 'package:offline_pos/data_source/local/user_preference.dart';
 import 'package:offline_pos/database_conn/get_item_queries.dart';
+import 'package:offline_pos/models/barcode.dart';
+import 'package:offline_pos/models/batch_list_model.dart';
 import 'package:offline_pos/models/item_model.dart';
 import 'package:offline_pos/widgets_components/all_items.dart';
 import 'package:offline_pos/controllers/item_screen_controller.dart';
@@ -54,6 +56,10 @@ Widget priceCheckModal(
               controller: controller,
               focusNode: focusNode,
               autofocus: true,
+              onSubmitted: (value) async{
+                final suggestion =  await _searchForItem(value,model);
+                setSelectedItemDetails(model,setState, suggestion.isNotEmpty ? suggestion[0] : '');
+              },
               style: TextStyle(fontSize: 5.sp, color: Colors.black),
               decoration: InputDecoration(
                 labelText: "Scan Barcode or Enter Item Name",
@@ -89,62 +95,7 @@ Widget priceCheckModal(
                 child: child,
               ),
           suggestionsCallback: (pattern) async {
-            if (pattern.trim().isEmpty) {
-              return []; 
-            }
-            // if (pattern.length < 1) {
-
-            //  model.notifyListeners();
-            // }
-            // }
-            final _original = itemListdata;
-
-            // Find all batch items matching the pattern
-            final matchingBatches =
-                batchListdata
-                    .where(
-                      (batch) => (batch.batchId ?? '').toLowerCase().contains(
-                        pattern.toLowerCase(),
-                      ),
-                    )
-                    .toList();
-
-            final matchingBarcodes =
-                barcodeListdata
-                    .where(
-                      (barcode) => (barcode.barcode ?? '')
-                          .toLowerCase()
-                          .contains(pattern.toLowerCase()),
-                    )
-                    .toList();
-
-            final relatedItemCodes =
-                matchingBatches
-                    .map((batch) => batch.item)
-                    .where((code) => code != null)
-                    .cast<String>()
-                    .toSet();
-            relatedItemCodes.addAll(
-              matchingBarcodes
-                  .map((barcode) => barcode.itemCode)
-                  .where((code) => code != null)
-                  .cast<String>(),
-            );
-
-            return itemListdata
-                .where(
-                  (item) =>
-                      (item.itemCode ?? "").toLowerCase().contains(
-                        pattern.toLowerCase(),
-                      ) ||
-                      (item.itemName ?? "").toLowerCase().contains(
-                        pattern.toLowerCase(),
-                      ) ||
-                      relatedItemCodes.contains(item.itemCode),
-                )
-                .map((item) => item.itemName.toString())
-                .take(4)
-                .toList();
+          return  await _searchForItem(pattern,model);
           },
 
           itemBuilder: (context, suggestion) {
@@ -463,4 +414,55 @@ model.itemListdata
   .where((item) => item.itemName.toLowerCase() == (selectedItem ?? "").toLowerCase())
   .first;   
 });
+}
+
+Future<List<String>> _searchForItem(pattern,model)
+async{
+if (pattern.trim().isEmpty) {
+return []; 
+}
+final matchingBatches =
+model.batchListdata
+.where(
+(BatchListModel batch) => (batch.batchId).toLowerCase().contains(
+pattern.toLowerCase(),
+),
+)
+.toList();
+
+final matchingBarcodes =
+model.barcodeListdata
+.where(
+ ( BarcodeModel barcode) => (barcode.barcode)
+.toLowerCase()
+.contains(pattern.toLowerCase()),
+)
+.toList();
+
+final relatedItemCodes =
+matchingBatches
+.map((batch) => batch.item)
+.where((code) => code != null)
+.cast<String>()
+.toSet();
+relatedItemCodes.addAll(
+matchingBarcodes
+.map((barcode) => barcode.itemCode)
+.where((code) => code != null)
+.cast<String>(),
+);
+
+final List<String> _itemListdata = (model.itemListdata as List<TempItem>)
+    .where(
+      (TempItem item) =>
+          (item.itemCode ?? '').toLowerCase().contains(pattern.toLowerCase()) ||
+          (item.itemName ?? '').toLowerCase().contains(pattern.toLowerCase()) ||
+          relatedItemCodes.contains(item.itemCode),
+    )
+    .map((TempItem item) => item.itemName ?? '')
+    .take(4)
+    .toList();
+print(_itemListdata);
+return _itemListdata;
+
 }
