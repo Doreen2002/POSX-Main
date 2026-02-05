@@ -12,17 +12,13 @@ import 'package:offline_pos/widgets_components/opening_entry.dart';
 import 'package:offline_pos/database_conn/create_pos_table.dart';
 import 'package:offline_pos/services/optimized_data_manager.dart';
 
-final bool fromCart = false;
+ bool fromCart = false;
 
-final TextEditingController _controller = TextEditingController();
-
-// Assuming you have a controller for your cart
-
-// Example item list
-final List<String> itemNames =
+TextEditingController _controller = TextEditingController();
+List<String> itemNames =
     itemListdata.map((item) => item.itemName.toString() ).toList();
 
-String? selectedItem;
+String? selectedItem = '';
 TempItem matchedItem = TempItem(name: '', itemCode: '', itemName: '', vatValue: 0, standardRate: 0, openingStock: 0, );
 
 Widget priceCheckModal(
@@ -158,17 +154,7 @@ Widget priceCheckModal(
           },
          
           onSelected: (suggestion) {
-            selectedItem = suggestion;
-            _controller.text = suggestion;
-            setState(() {
-            
-          
-            matchedItem =
-                model.itemListdata
-                    .where((item) => item.itemName == selectedItem)
-                    .first;
-                     
-           });
+           setSelectedItemDetails(model,setState, suggestion);
 
           },
         ),
@@ -466,3 +452,15 @@ catch(e)
 
   }
   
+
+void setSelectedItemDetails(model,setState, suggestion)
+{
+setState(() {
+selectedItem = suggestion;
+_controller.text = suggestion;
+matchedItem =
+model.itemListdata
+  .where((item) => item.itemName.toLowerCase() == (selectedItem ?? "").toLowerCase())
+  .first;   
+});
+}
