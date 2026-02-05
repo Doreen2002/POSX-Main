@@ -14,14 +14,16 @@ import 'package:offline_pos/widgets_components/opening_entry.dart';
 import 'package:offline_pos/database_conn/create_pos_table.dart';
 import 'package:offline_pos/services/optimized_data_manager.dart';
 
- bool fromCart = false;
+bool fromCart = false;
 
 TextEditingController _controller = TextEditingController();
 List<String> itemNames =
-    itemListdata.map((item) => item.itemName.toString() ).toList();
+  itemListdata.map((item) => item.itemName.toString() ).toList();
 
-String? selectedItem = '';
+String? selectedItem;
 TempItem matchedItem = TempItem(name: '', itemCode: '', itemName: '', vatValue: 0, standardRate: 0, openingStock: 0, );
+
+
 
 Widget priceCheckModal(
   BuildContext context,
