@@ -130,25 +130,25 @@ class ReceiptPrinterSection extends StatefulWidget {
              
               SizedBox(width: double.infinity, child: ElevatedButton.icon(onPressed: _scanning ? null : _scan, icon: _scanning ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2)) : const Icon(Icons.search, color: Color(0xFF2B3691),), label: Text(_scanning ? 'Scanning...' : 'Scan for Printers', style: TextStyle(color: Color(0xFF2B3691),),),)),
               SizedBox(height: 40.h),
-            //     SizedBox(width: double.infinity,  child:Row(
-            //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //       children: [
-            //        ElevatedButton.icon(onPressed: ()async{await _setPrinter();},  label: Text( 'Set Default Printer', ), style: ElevatedButton.styleFrom(
-            //   backgroundColor: Color(0xFF2B3691),
-            //   foregroundColor: Colors.white,
+                SizedBox(width: double.infinity,  child:Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                   ElevatedButton.icon(onPressed: ()async{await _setPrinter();},  label: Text( 'Set Default Printer', ), style: ElevatedButton.styleFrom(
+              backgroundColor: Color(0xFF2B3691),
+              foregroundColor: Colors.white,
               
-            //   padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 12.w),
-            // ),),
-            // Text("Default Printer : ${UserPreference.getString(PrefKeys.defaultPrinter)}", style: TextStyle(fontWeight:FontWeight.bold),)
-            //     ],)),
-            //     SizedBox(height: 80.h),
-            //     SizedBox(
-            //       width: double.infinity,child:Text("Print Format Settings  ", textAlign: TextAlign.center,  style: TextStyle(fontSize: 6.sp, fontWeight: FontWeight.w600))),
-            //      SizedBox(height: 20.h),
-            //     SizedBox(
-            //       width: double.infinity,
-            //       child: Row(
-            //         children: [
+              padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 12.w),
+            ),),
+            Text("Default Printer : ${UserPreference.getString(PrefKeys.defaultPrinter)}", style: TextStyle(fontWeight:FontWeight.bold),)
+                ],)),
+                SizedBox(height: 80.h),
+                SizedBox(
+                  width: double.infinity,child:Text("Print Format Settings  ", textAlign: TextAlign.center,  style: TextStyle(fontSize: 6.sp, fontWeight: FontWeight.w600))),
+                 SizedBox(height: 20.h),
+                SizedBox(
+                  width: double.infinity,
+                  child: Row(
+                    children: [
             //           Expanded(
             //             child: Row(
             //               children: [
@@ -324,43 +324,43 @@ class ReceiptPrinterSection extends StatefulWidget {
             //               ],
             //             ),
             //           ),
-            //       Expanded(
-            //         flex: 2,
-            //             child: Row(
-            //               children: [
-            //                 SizedBox(width:180,  child:const Text('Print Format Width (mm)', style: TextStyle(fontWeight: FontWeight.bold))),
-            //                  SizedBox(width: 2.w),
-            //                  SizedBox(
-            //                   width:  30.w,
-            //                   child: TextField(
-            //                     textAlign: TextAlign.center,
-            //                     controller: _printFormatWidth,
-            //                     inputFormatters: [
-            //                     DecimalTextInputFormatter(decimalRange: 2),
-            //                     LengthLimitingTextInputFormatter(5),
-            //                     ],
-            //                     decoration: const InputDecoration(
-            //                       border: OutlineInputBorder(),
-            //                     ),
-            //                     onChanged: (v) async {
+                  Expanded(
+                    flex: 2,
+                        child: Row(
+                          children: [
+                            SizedBox(width:180,  child:const Text('Print Format Width (mm)', style: TextStyle(fontWeight: FontWeight.bold))),
+                             SizedBox(width: 2.w),
+                             SizedBox(
+                              width:  30.w,
+                              child: TextField(
+                                textAlign: TextAlign.center,
+                                controller: _printFormatWidth,
+                                inputFormatters: [
+                                DecimalTextInputFormatter(decimalRange: 2),
+                                LengthLimitingTextInputFormatter(5),
+                                ],
+                                decoration: const InputDecoration(
+                                  border: OutlineInputBorder(),
+                                ),
+                                onChanged: (v) async {
                                 
-            //                     },
-            //                   ),
-            //                 ),
-            //               ],
-            //             ),
-            //           ),
-            //           SizedBox(width: 8.w),
-            //          ElevatedButton.icon(onPressed: ()async{await _savePrintFormatSettings();},  label: Text( 'Save', ), style: ElevatedButton.styleFrom(
-            //   backgroundColor: Color(0xFF2B3691),
-            //   foregroundColor: Colors.white,
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(width: 8.w),
+                     ElevatedButton.icon(onPressed: ()async{await _savePrintFormatSettings();},  label: Text( 'Save', ), style: ElevatedButton.styleFrom(
+              backgroundColor: Color(0xFF2B3691),
+              foregroundColor: Colors.white,
               
-            //   padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 12.w),
-            // ),), 
+              padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 12.w),
+            ),), 
                     
 
                   
-            //     ],),),
+                ],),),
                    SizedBox(height: 40.h),
               if (_available.isNotEmpty)
                 AutoPersist<String?>(prefKey: PrefKeys.receiptPrinterUrl, defaultValue: null, builder: (ctx, val, onChanged) {
