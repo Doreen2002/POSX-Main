@@ -101,15 +101,15 @@ class ReceiptPrinterSection extends StatefulWidget {
         async{
         
         await UserPreference.getInstance();
-        await UserPreference.putString(PrefKeys.companyName, _companyNameController.text);
-        await UserPreference.putString(PrefKeys.taxID, _taxIDController.text);
-        await UserPreference.putString(PrefKeys.receiptPhoneNumber, _mobileNoNameController.text);
-        await UserPreference.putString(PrefKeys.companyEmail, _emailController.text);
-        await UserPreference.putString(PrefKeys.companyAddress, _addressController.text);
-        await UserPreference.putString(PrefKeys.crNO, _cprController.text);
-        await UserPreference.putBool(PrefKeys.isVatEnabled,  _isVatEnabled ?? false);
+        // await UserPreference.putString(PrefKeys.companyName, _companyNameController.text);
+        // await UserPreference.putString(PrefKeys.taxID, _taxIDController.text);
+        // await UserPreference.putString(PrefKeys.receiptPhoneNumber, _mobileNoNameController.text);
+        // await UserPreference.putString(PrefKeys.companyEmail, _emailController.text);
+        // await UserPreference.putString(PrefKeys.companyAddress, _addressController.text);
+        // await UserPreference.putString(PrefKeys.crNO, _cprController.text);
+        // await UserPreference.putBool(PrefKeys.isVatEnabled,  _isVatEnabled ?? false);
         await UserPreference.putDouble(PrefKeys.printFormatWidth,  double.parse(_printFormatWidth.text ));
-        await UserPreference.putInt(PrefKeys.currencyPrecision,int.tryParse(_currencyPrecision.text ) ?? 2 );
+        // await UserPreference.putInt(PrefKeys.currencyPrecision,int.tryParse(_currencyPrecision.text ) ?? 2 );
        
          setState(() {
           
